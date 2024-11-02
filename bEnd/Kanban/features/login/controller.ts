@@ -1,6 +1,7 @@
 import { Context } from "@oak/oak";
-import type { User } from "../../orm/interfaces/user.ts";
+
 import { register } from "./user-service.ts";
+import type { User } from "../../orm/interfaces/user.ts";
 
 export async function registerUser(ctx: Context) {
     const { request, response } = ctx;

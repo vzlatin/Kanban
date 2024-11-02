@@ -10,3 +10,9 @@ export type RowTuple<T extends Record<string, unknown>> = {
         ? U
         : never
     : never;
+
+export type WhereClause<T> = Partial<Record<keyof T, unknown>>;
+
+type OR = "OR";
+type AND = "AND";
+export type Operator = OR | AND | undefined;

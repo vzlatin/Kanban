@@ -9,3 +9,14 @@ export interface User {
     activationLink: string;
     isActivated: boolean;
 }
+
+export const userColumns: Array<keyof User> = [
+    "id",
+    "firstName",
+    "lastName",
+    "email",
+    "password",
+    "role",
+    "activationLink",
+    "isActivated",
+];

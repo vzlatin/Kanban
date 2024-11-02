@@ -1,9 +1,9 @@
 import { Application, Router } from "@oak/oak";
 
+import { config } from "./config.ts";
 import loginRouter from "./features/login/routes.ts";
 import { closePool } from "./utils/database/connectionPool.ts";
 import { initializeDatabase } from "./utils/database/dbSetup.ts";
-import { config } from "./config.ts";
 
 initializeDatabase();
 

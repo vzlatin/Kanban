@@ -1,11 +1,12 @@
-import { generateKey, getJWT } from "../../utils/jwt/jsonWebToken.ts";
-import { Token, type TokenJWTPayload } from "../../orm/interfaces/token.ts";
+import { createJWT, verifyJWT } from "../../utils/jwt/jsonWebToken.ts";
+import { Token, tokenColumns } from "../../orm/interfaces/token.ts";
 import { config } from "../../config.ts";
 import { createModel } from "../../orm/orm.ts";
 
+import type { User } from "../../orm/interfaces/user.ts";
+
 export async function generateTokens(
-    accessPayload: TokenJWTPayload,
-    refreshPayload: TokenJWTPayload
+    user: User
 ): Promise<{ accessToken: string; refreshToken: string }> {
     const accessTokenSecret = config.accessTokenKey;
     const refreshTokenSecret = config.refreshTokenKey;
@@ -14,11 +15,19 @@ export async function generateTokens(
         throw new Error("Missing token secret. Aborting token generation");
     }
 
-    const accessTokenKey = await generateKey(accessTokenSecret);
-    const refreshTokenKey = await generateKey(refreshTokenSecret);
+    // const accessTokenKey = await generateKey(accessTokenSecret);
+    // const refreshTokenKey = await generateKey(refreshTokenSecret);
 
-    const accessToken = await getJWT(accessTokenKey, accessPayload);
-    const refreshToken = await getJWT(refreshTokenKey, refreshPayload);
+    const accessToken = await createJWT(
+        user,
+        accessTokenSecret,
+        config.accessTokenExpiration
+    );
+    const refreshToken = await createJWT(
+        user,
+        refreshTokenSecret,
+        config.refreshTokenExpiration
+    );
 
     return { accessToken, refreshToken };
 }
@@ -27,7 +36,7 @@ export async function saveToken(
     userId: number,
     refreshToken: string
 ): Promise<void> {
-    const TokenModel = createModel<Token>("tokens");
+    const TokenModel = createModel<Token>("tokens", tokenColumns);
     try {
         const tokenData = await TokenModel.findOne({ userId: userId });
         if (tokenData) {

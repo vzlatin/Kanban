@@ -4,12 +4,13 @@ import {
     aquireConnection,
     releaseConnection,
 } from "../utils/database/connectionPool.ts";
-import { RowTuple } from "./types.ts";
 import { row2Object } from "./utils/rowToObject.ts";
+import { RowTuple, type Operator, type WhereClause } from "./types.ts";
 
-type WhereClause<T> = Partial<Record<keyof T, unknown>>;
-
-export function createModel<T extends Record<string, unknown>>(table: string) {
+export function createModel<T extends Record<string, unknown>>(
+    table: string,
+    columns: Array<keyof T>
+) {
     return {
         insert: async (data: T): Promise<number> => {
             const connection = await aquireConnection();
@@ -32,13 +33,16 @@ export function createModel<T extends Record<string, unknown>>(table: string) {
             }
         },
 
-        findAll: async (where: WhereClause<T> = {}): Promise<T[]> => {
+        findAll: async (
+            where: WhereClause<T> = {},
+            operator?: Operator
+        ): Promise<T[] | undefined> => {
             const connection = await aquireConnection();
+            operator === undefined ? "AND" : operator;
             try {
-                const columns = Object.keys(where) as Array<keyof T>;
                 const whereClause = Object.keys(where)
                     .map((key) => `${key} = ?`)
-                    .join("AND");
+                    .join(`${operator}`);
                 const queryString =
                     `SELECT * FROM ${table}` +
                     (whereClause ? `WHERE ${whereClause}` : "");
@@ -46,6 +50,9 @@ export function createModel<T extends Record<string, unknown>>(table: string) {
                     queryString,
                     Object.values(where) as QueryParameterSet
                 );
+
+                if (!result || result.length === 0) return undefined;
+
                 return row2Object(result, columns);
             } catch (e) {
                 console.log(e);
@@ -60,13 +67,16 @@ export function createModel<T extends Record<string, unknown>>(table: string) {
          * parameter allows for a collection of records to be returned,
          * the function will just return the first matching entry
          */
-        findOne: async (where: WhereClause<T> = {}): Promise<T> => {
+        findOne: async (
+            where: WhereClause<T> = {},
+            operator?: Operator
+        ): Promise<T | undefined> => {
             const connection = await aquireConnection();
+            operator === undefined ? "AND" : operator;
             try {
-                const columns = Object.keys(where) as Array<keyof T>;
                 const whereClause = Object.keys(where)
                     .map((key) => `${key} = ?`)
-                    .join("AND");
+                    .join(`${operator}`);
                 const queryString =
                     `SELECT * FROM ${table} ` +
                     (whereClause ? `WHERE ${whereClause}` : "");
@@ -74,6 +84,11 @@ export function createModel<T extends Record<string, unknown>>(table: string) {
                     queryString,
                     Object.values(where) as QueryParameterSet
                 );
+
+                if (!result || result.length === 0) {
+                    return undefined;
+                }
+
                 return row2Object(result, columns)[0];
             } catch (e) {
                 console.log(e);
@@ -85,16 +100,18 @@ export function createModel<T extends Record<string, unknown>>(table: string) {
 
         update: async (
             where: WhereClause<T>,
-            data: Partial<T>
+            data: Partial<T>,
+            operator?: Operator
         ): Promise<void> => {
             const connection = await aquireConnection();
+            operator === undefined ? "AND" : operator;
             try {
                 const setString = Object.keys(data)
                     .map((key) => `${key} = ?`)
                     .join(", ");
                 const whereString = Object.keys(where)
                     .map((key) => `${key} = ?`)
-                    .join(" AND ");
+                    .join(` ${operator} `);
                 const values = [
                     ...Object.values(data),
                     ...Object.values(where),

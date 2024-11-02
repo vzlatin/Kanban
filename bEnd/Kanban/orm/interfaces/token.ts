@@ -11,3 +11,9 @@ export interface TokenJWTPayload {
     email: string;
     isActivated: boolean;
 }
+
+export const tokenColumns: Array<keyof Token> = [
+    "id",
+    "userId",
+    "refreshToken",
+];

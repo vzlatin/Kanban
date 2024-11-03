@@ -19,9 +19,7 @@ export function initializeDatabase(): void {
                 lastName TEXT NOT NULL,
                 email TEXT NOT NULL UNIQUE,
                 password TEXT NOT NULL,
-                role TEXT NOT NULL CHECK (role IN ('admin', 'manager', 'employee')),
-                activationLink TEXT NOT NULL,
-                isActivated BOOLEAN NOT NULL CHECK (isActivated IN (0, 1))
+                role TEXT NOT NULL CHECK (role IN ('admin', 'manager', 'employee'))
             ) 
         `);
 

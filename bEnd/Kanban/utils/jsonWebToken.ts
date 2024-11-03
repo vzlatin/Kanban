@@ -1,10 +1,5 @@
-import {
-    create,
-    verify,
-    getNumericDate,
-    type Payload,
-} from "https://deno.land/x/djwt@v3.0.2/mod.ts";
-import type { User } from "../../orm/interfaces/user.ts";
+import { create, verify, getNumericDate, type Payload } from "jwt";
+import type { User } from "../types/userTypes.ts";
 
 export async function createJWT(
     user: User,

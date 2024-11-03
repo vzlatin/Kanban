@@ -6,8 +6,6 @@ export interface User {
     email: string;
     password: string;
     role: "admin" | "manager" | "employee";
-    activationLink: string;
-    isActivated: boolean;
 }
 
 export const userColumns: Array<keyof User> = [
@@ -17,6 +15,4 @@ export const userColumns: Array<keyof User> = [
     "email",
     "password",
     "role",
-    "activationLink",
-    "isActivated",
 ];

@@ -1,24 +1,26 @@
 import type { Middleware } from "@oak/oak";
-import { isCustomError } from "../errors/helpers.ts";
+import { ApiError } from "../errors/apiErrors.ts";
+import { DatabaseErrors } from "../errors/databaseErrors.ts";
 
 export const errorHandler: Middleware = async (ctx, next) => {
     try {
         await next();
     } catch (e) {
         console.error("Error caught by the global error handler:", e);
-        if (isCustomError(e)) {
+        if (e instanceof ApiError || e instanceof DatabaseErrors) {
             ctx.response.status = e.status;
             ctx.response.body = {
                 success: false,
-                name: e.name,
+                name: e.errorName,
                 message: e.message,
+                errors: e.errors,
             };
         } else {
             ctx.response.status = 500;
             ctx.response.body = {
                 success: false,
                 name: "Uknown Error",
-                message: "And unkown error has occured",
+                message: "An unkown error has occured",
             };
         }
     }

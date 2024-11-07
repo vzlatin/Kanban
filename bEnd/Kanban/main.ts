@@ -1,4 +1,4 @@
-import { Application, Router } from "@oak/oak";
+import { Application } from "@oak/oak";
 
 import { config } from "./utils/config.ts";
 import router from "./routes.ts";

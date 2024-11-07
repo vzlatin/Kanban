@@ -11,6 +11,7 @@
 
         "bcrypt": "https://deno.land/x/bcrypt@v0.3.0/mod.ts",
         "jwt": "https://deno.land/x/djwt@v3.0.2/mod.ts",
-        "sqlite": "https://deno.land/x/sqlite@v3.9.1/mod.ts"
+        "sqlite": "https://deno.land/x/sqlite@v3.9.1/mod.ts",
+        "zod": "https://deno.land/x/zod@v3.23.8/mod.ts"
     }
 }

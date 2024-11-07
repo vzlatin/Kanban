@@ -4,8 +4,7 @@ import { config } from "../utils/config.ts";
 import { createModel } from "../orm/orm.ts";
 
 import type { User } from "../types/userTypes.ts";
-import { MissingConfig } from "../errors/configErrors.ts";
-import { DBInsertFailed } from "../errors/databaseErrors.ts";
+import { DatabaseErrors } from "../errors/databaseErrors.ts";
 
 export async function generateTokens(
     user: User
@@ -14,12 +13,10 @@ export async function generateTokens(
     const refreshTokenSecret = config.refreshTokenKey;
 
     if (!accessTokenSecret)
-        throw MissingConfig("Property missing or undefined: accessTokenSecret");
+        throw new Error("Property missing or undefined: accessTokenSecret");
 
     if (!refreshTokenSecret)
-        throw MissingConfig(
-            "Property missing or undefined: refreshTokenSecret"
-        );
+        throw new Error("Property missing or undefined: refreshTokenSecret");
 
     const accessToken = await createJWT(
         user,
@@ -53,8 +50,5 @@ export async function saveToken(token: Token): Promise<void> {
      * logs in for the first time, so we save it in the DB.
      */
     const lastInsertedId = await TokenModel.insert(token);
-    if (!lastInsertedId)
-        throw DBInsertFailed(
-            `Could not perform Insert operation using: ${JSON.stringify(token)}`
-        );
+    if (!lastInsertedId) throw DatabaseErrors.ConflictError();
 }

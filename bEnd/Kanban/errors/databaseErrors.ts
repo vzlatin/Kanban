@@ -1,24 +1,23 @@
-import type { CustomError } from "../types/errorTypes.ts";
+import type { StatusCode, StatusText } from "jsr:@oak/commons@1/status";
 
-/** Dabatabase related errors */
+export class DatabaseErrors extends Error {
+    errorName: StatusText;
+    status: StatusCode;
+    errors: unknown[];
 
-export function DBRecordAlreadyExists(message: string): CustomError {
-    const e = new Error(message) as CustomError;
-    e.status = 500;
-    e.name = "RecordAlreadyExistsError";
-    return e;
-}
+    constructor(
+        errorName: StatusText,
+        status: StatusCode,
+        message: string,
+        errors: unknown[] = []
+    ) {
+        super(message);
+        this.errorName = errorName;
+        this.status = status;
+        this.errors = errors;
+    }
 
-export function DBRecordNotFound(message: string): CustomError {
-    const e = new Error(message) as CustomError;
-    e.status = 500;
-    e.name = "RecordNotFoundError";
-    return e;
-}
-
-export function DBInsertFailed(message: string): CustomError {
-    const e = new Error(message) as CustomError;
-    e.status = 500;
-    e.name = "InsertFailedError";
-    return e;
+    static ConflictError(): DatabaseErrors {
+        return new DatabaseErrors("Conflict", 409, "Invalid Isert");
+    }
 }

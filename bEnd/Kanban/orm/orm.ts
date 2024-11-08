@@ -15,7 +15,7 @@ export function createModel<T extends Record<string, unknown>>(
     table: string,
     columns: Array<keyof T>
 ) {
-    return {
+    const model = {
         insert: async (data: T): Promise<number | undefined> => {
             const connection = await aquireConnection();
             const columns = Object.keys(data).join(",");
@@ -87,7 +87,7 @@ export function createModel<T extends Record<string, unknown>>(
         },
 
         update: async (
-            where: WhereClause<T>,
+            where: WhereClause<T> = {},
             data: Partial<T>,
             operator?: Operator
         ): Promise<void> => {
@@ -107,5 +107,31 @@ export function createModel<T extends Record<string, unknown>>(
             );
             releaseConnection(connection);
         },
+
+        delete: async (
+            where: WhereClause<T>,
+            operator?: Operator
+        ): Promise<T | undefined> => {
+            const connection = await aquireConnection();
+
+            operator === undefined ? "AND" : operator;
+
+            const deletedRow = await model.findOne(where, operator);
+
+            const whereClause = Object.keys(where)
+                .map((key) => `${key} = ?`)
+                .join(`${operator}`);
+            const queryString =
+                `DELETE FROM ${table} ` +
+                (whereClause ? `WHERE ${whereClause}` : "");
+            connection.query(
+                queryString,
+                Object.values(where) as QueryParameterSet
+            );
+
+            releaseConnection(connection);
+            return deletedRow;
+        },
     };
+    return model;
 }

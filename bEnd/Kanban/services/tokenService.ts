@@ -1,10 +1,12 @@
-import { createJWT } from "../utils/jsonWebToken.ts";
+import { createJWT, verifyJWT } from "../utils/jsonWebToken.ts";
 import { Token, tokenColumns } from "../types/tokenTypes.ts";
 import { config } from "../utils/config.ts";
 import { createModel } from "../orm/orm.ts";
 
 import type { User } from "../types/userTypes.ts";
-import { DatabaseErrors } from "../errors/databaseErrors.ts";
+import { DatabaseError } from "../errors/databaseErrors.ts";
+import { ApiError } from "../errors/apiErrors.ts";
+import type { Payload } from "jwt";
 
 export async function generateTokens(
     user: User
@@ -44,11 +46,29 @@ export async function saveToken(token: Token): Promise<void> {
             { userId: token.userId },
             { refreshToken: token.refreshToken }
         );
+        return;
     }
     /**
      * If no token was found in the database, it's likely that the user
      * logs in for the first time, so we save it in the DB.
      */
     const lastInsertedId = await TokenModel.insert(token);
-    if (!lastInsertedId) throw DatabaseErrors.ConflictError();
+    if (!lastInsertedId) throw DatabaseError.ConflictError();
+}
+
+export async function removeToken(token: string): Promise<string> {
+    const TokenModel = createModel<Token>("tokens", tokenColumns);
+    const tokenData = await TokenModel.delete({ refreshToken: token });
+    if (!tokenData) throw ApiError.BadRequestError("Incorrect refresh token");
+
+    return tokenData.refreshToken;
+}
+
+export async function validateToken(token: string): Promise<Payload> {
+    const TokenModel = createModel<Token>("tokens", tokenColumns);
+    const userData = await verifyJWT(token, config.refreshTokenKey);
+    const refreshToken = await TokenModel.findOne({ refreshToken: token });
+
+    if (!userData || !refreshToken) throw ApiError.UnauthorizedError();
+    return userData;
 }

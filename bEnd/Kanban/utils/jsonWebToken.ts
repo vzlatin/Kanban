@@ -11,7 +11,6 @@ export async function createJWT(
         {
             id: user.id,
             email: user.email,
-            activated: user.isActivated,
             exp: getNumericDate(60 * exp),
         },
         key

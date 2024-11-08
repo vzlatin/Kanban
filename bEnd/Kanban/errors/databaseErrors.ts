@@ -1,6 +1,6 @@
 import type { StatusCode, StatusText } from "jsr:@oak/commons@1/status";
 
-export class DatabaseErrors extends Error {
+export class DatabaseError extends Error {
     errorName: StatusText;
     status: StatusCode;
     errors: unknown[];
@@ -17,7 +17,7 @@ export class DatabaseErrors extends Error {
         this.errors = errors;
     }
 
-    static ConflictError(): DatabaseErrors {
-        return new DatabaseErrors("Conflict", 409, "Invalid Isert");
+    static ConflictError(): DatabaseError {
+        return new DatabaseError("Conflict", 409, "Invalid Isert");
     }
 }

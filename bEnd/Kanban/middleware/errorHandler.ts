@@ -1,13 +1,13 @@
 import type { Middleware } from "@oak/oak";
 import { ApiError } from "../errors/apiErrors.ts";
-import { DatabaseErrors } from "../errors/databaseErrors.ts";
+import { DatabaseError } from "../errors/databaseErrors.ts";
 
 export const errorHandler: Middleware = async (ctx, next) => {
     try {
         await next();
     } catch (e) {
         console.error("Error caught by the global error handler:", e);
-        if (e instanceof ApiError || e instanceof DatabaseErrors) {
+        if (e instanceof ApiError || e instanceof DatabaseError) {
             ctx.response.status = e.status;
             ctx.response.body = {
                 success: false,

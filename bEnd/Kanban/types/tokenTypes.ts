@@ -12,6 +12,8 @@ export interface TokenJWTPayload {
     isActivated: boolean;
 }
 
+export type TokenType = "refresh" | "access";
+
 export const tokenColumns: Array<keyof Token> = [
     "id",
     "userId",

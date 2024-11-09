@@ -1,6 +1,12 @@
 import { Context } from "@oak/oak";
 
-import { login, register, logout, refresh } from "../services/userService.ts";
+import {
+    login,
+    register,
+    logout,
+    refresh,
+    getAllUsers,
+} from "../services/userService.ts";
 import type { User } from "../types/userTypes.ts";
 import { ApiError } from "../errors/apiErrors.ts";
 
@@ -67,4 +73,10 @@ export async function refreshUser(ctx: Context): Promise<void> {
     });
     response.status = 201;
     response.body = userData;
+}
+
+export async function getUsers(ctx: Context): Promise<void> {
+    const { response } = ctx;
+    const users = await getAllUsers();
+    response.body = users;
 }

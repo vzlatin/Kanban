@@ -74,7 +74,7 @@ export async function logout(token: string): Promise<string> {
 }
 
 export async function refresh(token: string) {
-    const userData = await validateToken(token);
+    const userData = await validateToken(token, "refresh");
 
     const UserModel = createModel<User>("users", userColumns);
     const user = await UserModel.findOne({ id: userData.id });
@@ -87,4 +87,11 @@ export async function refresh(token: string) {
         tokens,
         user: user,
     };
+}
+
+export async function getAllUsers(): Promise<User[]> {
+    const UserModel = createModel<User>("users", userColumns);
+    const users = await UserModel.findAll();
+    if (!users) throw DatabaseError.ConflictError();
+    return users;
 }

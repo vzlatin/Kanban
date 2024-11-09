@@ -1,5 +1,5 @@
 import { createJWT, verifyJWT } from "../utils/jsonWebToken.ts";
-import { Token, tokenColumns } from "../types/tokenTypes.ts";
+import { Token, tokenColumns, type TokenType } from "../types/tokenTypes.ts";
 import { config } from "../utils/config.ts";
 import { createModel } from "../orm/orm.ts";
 
@@ -64,11 +64,21 @@ export async function removeToken(token: string): Promise<string> {
     return tokenData.refreshToken;
 }
 
-export async function validateToken(token: string): Promise<Payload> {
+export async function validateToken(
+    token: string,
+    tokenType: TokenType
+): Promise<Payload> {
     const TokenModel = createModel<Token>("tokens", tokenColumns);
-    const userData = await verifyJWT(token, config.refreshTokenKey);
-    const refreshToken = await TokenModel.findOne({ refreshToken: token });
+    const key =
+        tokenType === "refresh"
+            ? config.refreshTokenKey
+            : config.accessTokenKey;
+    const userData = await verifyJWT(token, key);
 
-    if (!userData || !refreshToken) throw ApiError.UnauthorizedError();
+    if (tokenType === "refresh") {
+        const refreshToken = await TokenModel.findOne({ refreshToken: token });
+        if (!userData || !refreshToken) throw ApiError.UnauthorizedError();
+    }
+
     return userData;
 }

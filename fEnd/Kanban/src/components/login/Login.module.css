@@ -1,0 +1,98 @@
+.login-container {
+    height: 100vh;
+    position: relative;
+}
+
+.login-form {
+    width: 45rem;
+    height: 50rem;
+    border: 1px solid black;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.work-in-progress,
+.done {
+    width: 20rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    /* height: 100%; */
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+}
+
+p {
+    font-family: "QuicksandMedium", sans-serif;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+p:hover {
+    cursor: default;
+}
+
+.task {
+    width: 18rem;
+    height: 5rem;
+    /* border: 1px solid black; */
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    box-shadow: 6px 6px 12px #9f9f9f, -6px -6px 12px #ffffff;
+}
+
+.task-number {
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+}
+
+.task-input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* justify-content: center; */
+    margin-top: 0.8rem;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.label {
+    position: absolute;
+    left: 0.5rem;
+    font-family: "QuicksandLight", sans-serif;
+}
+
+input {
+    position: absolute;
+    right: 1rem;
+    height: 2rem;
+    padding: 0.4rem 0.4rem;
+    width: 60%;
+    border-radius: 0.5rem;
+    border: none;
+    appearance: none;
+    font-family: "QuicksandMedium", sans-serif;
+    background-color: #e6e7ee;
+    box-shadow: inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #fff;
+}
+input:focus {
+    border: none;
+    outline: none;
+}
+
+@media only screen and (max-width: 1920px) {
+    .login-form {
+        width: 45rem;
+        height: 40rem;
+    }
+}

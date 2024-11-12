@@ -1,0 +1,6 @@
+.task {
+    border-radius: 1rem;
+    width: 14rem;
+    height: 7rem;
+    box-shadow: 6px 6px 12px #9f9f9f, -6px -6px 12px #ffffff;
+}

@@ -3,3 +3,9 @@
     margin-top: 0.625rem;
     flex-shrink: 0;
 }
+
+@media only screen and (max-width: 1920px) {
+    .sidebar {
+        width: 20rem;
+    }
+}

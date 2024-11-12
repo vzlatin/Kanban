@@ -1,5 +1,13 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
 body {
-    background-color: #ebecf0;
+    background-color: #e6e7ee;
+    color: #44476a;
+    margin: 0;
+    padding: 0;
 }
 
 ul {

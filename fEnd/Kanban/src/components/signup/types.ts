@@ -11,8 +11,15 @@ export interface ITask {
     htmlId: string;
     id: string;
     content: string;
+    isValid: boolean;
+    value: string;
 }
 
-export type ColumnProps = { column: IColumn; styles: CSSModuleClasses };
+export type ColumnProps = {
+    column: IColumn;
+};
 
-export type TaskProps = { task: ITask; styles: CSSModuleClasses };
+export type TaskProps = {
+    task: ITask;
+    index: number;
+};

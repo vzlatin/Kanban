@@ -2,6 +2,11 @@
     box-sizing: border-box;
 }
 
+/* TEMPORARY */
+body {
+    overflow-y: scroll;
+}
+
 html,
 body {
     background-color: #e6e7ee;

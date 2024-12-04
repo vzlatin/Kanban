@@ -26,7 +26,10 @@ export async function registerUser(ctx: Context): Promise<void> {
 		maxAge: 30 * 60 * 60 * 24,
 	});
 	response.status = 201;
-	response.body = userData;
+	response.body = {
+		accessToken: userData.tokens.accessToken,
+		user: userData.user,
+	};
 }
 
 export async function loginUser(ctx: Context): Promise<void> {
@@ -46,7 +49,10 @@ export async function loginUser(ctx: Context): Promise<void> {
 		sameSite: "none",
 	});
 	response.status = 201;
-	response.body = userData;
+	response.body = {
+		accessToken: userData.tokens.accessToken,
+		user: userData.user,
+	};
 }
 
 export async function logoutUser(ctx: Context): Promise<void> {
@@ -56,6 +62,8 @@ export async function logoutUser(ctx: Context): Promise<void> {
 
 	const token = await logout(refreshToken);
 	ctx.cookies.delete("refreshToken");
+	// At this point the token was already deleted from the DB,
+	// so it's fine to return it.
 	response.body = token;
 }
 
@@ -72,7 +80,10 @@ export async function refreshUser(ctx: Context): Promise<void> {
 		sameSite: "none",
 	});
 	response.status = 201;
-	response.body = userData;
+	response.body = {
+		accessToken: userData.tokens.accessToken,
+		user: userData.user,
+	};
 }
 
 export async function getUsers(ctx: Context): Promise<void> {

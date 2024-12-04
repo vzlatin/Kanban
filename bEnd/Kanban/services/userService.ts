@@ -10,13 +10,14 @@ import {
 	saveToken,
 	validateToken,
 } from "./tokenService.ts";
+import { userDto } from "../utils/dtos.ts";
 
 export async function register(user: User): Promise<{
 	tokens: {
 		accessToken: string;
 		refreshToken: string;
 	};
-	user: User;
+	user: Omit<User, "password">;
 }> {
 	const UserModel = createModel<User>("users", userColumns);
 
@@ -34,12 +35,15 @@ export async function register(user: User): Promise<{
 
 	/** If we reach this, the previous insert has succeded. We can guarantee lastInsertedRowId exists */
 	const insertedUser = await UserModel.findOne({ id: lastInsertedRowId });
-	const tokens = await generateTokens(insertedUser!);
+	if (!insertedUser) throw DatabaseError.ConflictError();
+
+	const tokens = await generateTokens(insertedUser);
 	const { refreshToken } = tokens;
-	await saveToken({ userId: insertedUser!.id!, refreshToken });
+	await saveToken({ userId: insertedUser.id!, refreshToken });
+
 	return {
 		tokens,
-		user: insertedUser!,
+		user: userDto(insertedUser),
 	};
 }
 
@@ -60,7 +64,7 @@ export async function login(email: string, password: string) {
 
 	return {
 		tokens,
-		user: candidate,
+		user: userDto(candidate),
 	};
 }
 
@@ -73,6 +77,7 @@ export async function refresh(token: string) {
 
 	const UserModel = createModel<User>("users", userColumns);
 	const user = await UserModel.findOne({ id: userData.id });
+	if (!user) throw DatabaseError.ConflictError();
 
 	const tokens = await generateTokens(user!);
 	const { refreshToken } = tokens;
@@ -80,13 +85,14 @@ export async function refresh(token: string) {
 
 	return {
 		tokens,
-		user: user,
+		user: userDto(user),
 	};
 }
 
-export async function getAllUsers(): Promise<User[]> {
+export async function getAllUsers(): Promise<Partial<User>[]> {
 	const UserModel = createModel<User>("users", userColumns);
 	const users = await UserModel.findAll();
 	if (!users) throw DatabaseError.ConflictError();
-	return users;
+	const usersDto = users.map((user) => userDto(user));
+	return usersDto;
 }

@@ -3,6 +3,7 @@ import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import styles from "./Signup.module.css";
 import SignupColumn from "./signup-helper-components/signup-column/SignupColumn";
 import { useSignupStore } from "./store";
+import { NavLink } from "react-router-dom";
 
 const Signup = () => {
 	const columns = useSignupStore((state) => state.columns);
@@ -31,9 +32,9 @@ const Signup = () => {
 
 							<p>
 								Already have an account ? <br />
-								<a href="#">Sign in here.</a>
+								<NavLink to={"/signin"}>Sign in here.</NavLink>
 							</p>
-							<button className={styles["signup-button"]}>Sign Up</button>
+							<button className={styles["signup-button"]}>Sign In</button>
 						</div>
 					</div>
 					<DragDropContext onDragEnd={dragEndHandler}>

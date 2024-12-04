@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { SignupStore } from "./types";
-import { validate } from "./validators";
 
 export const useSignupStore = create<SignupStore>((set) => ({
 	tasks: {

@@ -54,7 +54,7 @@ const SignupTask: React.FC<TaskProps> = ({ taskId, index }) => {
 								{task.content}
 							</label>
 							<input
-								className={styles.password}
+								className={styles["task-field-input"]}
 								value={inputValue}
 								onChange={(e) => {
 									setInputValue(e.target.value);
@@ -62,7 +62,7 @@ const SignupTask: React.FC<TaskProps> = ({ taskId, index }) => {
 								type={task.type}
 								name={task.name}
 								id={task.htmlId}
-								autoComplete="true"
+								autoComplete="off"
 							/>
 						</div>
 

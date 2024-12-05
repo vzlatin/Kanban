@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { AuthStore } from "./types";
 import { UserRole } from "../../interfaces/data-interfaces";
 import { signin } from "../../services/auth.service";
+import { refreshAccessToken } from "../../services/token.service";
+import { ApiError } from "../../http/errors";
 
 const initialState = {
 	user: {
@@ -12,20 +14,16 @@ const initialState = {
 		role: UserRole.None,
 	},
 	isAuthenticated: false,
-	tokens: {
-		accessT: "",
-		refreshT: "",
-	},
+	error: null,
+	accessToken: "",
 };
 
 export const useAuthStore = create<AuthStore>((set) => ({
 	...initialState,
-	setToken: (accessT) =>
-		set((state) => ({ ...state, tokens: { ...state.tokens, accessT } })),
 	signin: async (email, password) => {
 		try {
 			const response = await signin(email, password);
-			const { tokens, user } = response.data;
+			const { accessToken, user } = response.data;
 
 			set((state) => ({
 				...state,
@@ -37,13 +35,26 @@ export const useAuthStore = create<AuthStore>((set) => ({
 					role: user.role,
 				},
 				isAuthenticated: true,
-				tokens: {
-					accessT: tokens.accessToken,
-					refreshT: tokens.refreshToken,
-				},
+				accessToken,
 			}));
-		} catch (error) {
-			console.log(error);
+		} catch (e) {
+			if (e instanceof ApiError) set({ error: e });
+			else
+				set({
+					error: new ApiError(
+						"An unkown error has occured",
+						"Unknown Error",
+						0
+					),
+				});
+		}
+	},
+	refreshAccessToken: async () => {
+		try {
+			const response = await refreshAccessToken();
+			console.log(JSON.stringify(response));
+		} catch (e) {
+			console.error(e);
 		}
 	},
 }));

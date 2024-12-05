@@ -1,12 +1,11 @@
+import { ApiError } from "../../http/errors";
 import { User } from "../../interfaces/data-interfaces";
 
 export interface AuthStore {
 	user: User;
-	tokens: {
-		accessT: string;
-		refreshT: string;
-	};
+	accessToken: string;
 	isAuthenticated: boolean;
-	setToken: (accessT: string) => void;
+	error: ApiError | null;
 	signin: (email: string, password: string) => Promise<void>;
+	refreshAccessToken: () => Promise<void>;
 }

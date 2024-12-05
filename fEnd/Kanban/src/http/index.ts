@@ -1,11 +1,57 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { getToken } from "../services/token.service";
+import {
+	ApiErrorResponse,
+	CustomAxiosRequestConfig,
+} from "../interfaces/http-interfaces";
+import {
+	ApiError,
+	BadRequestError,
+	NetworkError,
+	ServerError,
+	UnauthorizedError,
+	UnsuportedMediaTypeError,
+} from "./errors";
 
-const BASE_URL = "http://127.0.0.1:5000"; // To be moved into an environment variable
+const baseURL: string = import.meta.env.VITE_BASE_URL;
+const maxRetries: number = import.meta.env.VITE_MAX_RETRIES;
+const timeout: number = import.meta.env.VITE_TIMEOUT;
 
-const $api = axios.create({
+const $defaultApi = axios.create({
 	withCredentials: true,
-	baseURL: BASE_URL,
+	baseURL,
+	timeout,
+});
+
+// Response interceptor to normalize the errors and
+// retry the request
+$defaultApi.interceptors.response.use(
+	(response) => response,
+	async (error: AxiosError<ApiErrorResponse>) => {
+		const config = error.config as CustomAxiosRequestConfig;
+		if (!config || config.retryCount === undefined) {
+			config.retryCount = 0;
+		}
+
+		if (
+			config.retryCount < maxRetries &&
+			(isNetworkError(error) || isServerError(error))
+		) {
+			config.retryCount += 1;
+			console.warn(
+				`Retrying request. Attempt: ${config.retryCount} / ${maxRetries}`
+			);
+			return $defaultApi(config);
+		}
+
+		throw normalizeError(error);
+	}
+);
+
+export const $api = axios.create({
+	withCredentials: true,
+	baseURL,
+	timeout,
 });
 
 $api.interceptors.request.use(
@@ -16,4 +62,35 @@ $api.interceptors.request.use(
 	(error) => Promise.reject(error)
 );
 
-export default $api;
+export default $defaultApi;
+
+const isNetworkError = (error: AxiosError<ApiErrorResponse>): boolean => {
+	return !error.response || error.code === "ECONNABORTED";
+};
+
+const isServerError = (error: AxiosError<ApiErrorResponse>): boolean => {
+	return error.response?.status !== undefined && error.response.status >= 500;
+};
+
+const normalizeError = (error: AxiosError<ApiErrorResponse>): ApiError => {
+	if (error.response) {
+		// If there's a response, it means that the server has returned
+		// a response containing an error, a.k.a. status is >= 400
+		const { data, status } = error.response;
+
+		if (status === 400) return new BadRequestError(data.message, data.errors);
+		if (status === 401) return new UnauthorizedError();
+		if (status === 415) return new UnsuportedMediaTypeError();
+		if (status >= 500) return new ServerError(data.message, status);
+		// For any other response errors:
+		return new ApiError(data.message, data.name, status);
+	}
+
+	if (isNetworkError(error)) return new NetworkError();
+
+	return new ApiError(
+		error.message || "An unexpected error has occured",
+		error.name || "Unexpected Error",
+		0
+	);
+};

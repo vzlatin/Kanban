@@ -1,3 +1,5 @@
+import { ApiValidationError } from "../interfaces/http-interfaces";
+
 export class ApiError extends Error {
 	name: string;
 	status: number;
@@ -16,9 +18,9 @@ export class UnauthorizedError extends ApiError {
 }
 
 export class BadRequestError extends ApiError {
-	errors: unknown[] | undefined;
+	errors: ApiValidationError[];
 
-	constructor(message: string, errors: unknown[] | undefined) {
+	constructor(message: string, errors: ApiValidationError[] = []) {
 		super(message, "Bad Request Error", 400);
 		this.errors = errors;
 	}

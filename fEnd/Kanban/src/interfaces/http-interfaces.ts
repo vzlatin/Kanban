@@ -10,7 +10,14 @@ export interface ApiErrorResponse {
 	success: boolean;
 	name: string;
 	message: string;
-	errors?: unknown[];
+	errors?: ApiValidationError[];
+}
+
+export interface ApiValidationError {
+	error?: {
+		path: (string | number)[];
+		message: string;
+	};
 }
 
 export interface CustomAxiosRequestConfig extends AxiosRequestConfig {

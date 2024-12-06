@@ -6,6 +6,8 @@ export interface AuthStore {
 	accessToken: string;
 	isAuthenticated: boolean;
 	error: ApiError | null;
+	loading: boolean;
 	signin: (email: string, password: string) => Promise<void>;
 	refreshAccessToken: () => Promise<void>;
+	setLoading: (val: boolean) => void;
 }

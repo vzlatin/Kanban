@@ -24,6 +24,7 @@ export async function registerUser(ctx: Context): Promise<void> {
 		httpOnly: true,
 		secure: false,
 		maxAge: 30 * 60 * 60 * 24,
+		sameSite: "none",
 	});
 	response.status = 201;
 	response.body = {

@@ -4,15 +4,18 @@ import Board from "./components/board/Board";
 import Signup from "./pages/signup/Signup";
 import Signin from "./pages/signin/Signin";
 import AuthProtectedRoute from "./utils/auth.guards";
+import PersistentLogin from "./components/peristent-login/PeristentLogin";
 
 const router = createBrowserRouter(
 	[
 		{
 			path: "/",
 			element: (
-				<AuthProtectedRoute>
-					<Home />
-				</AuthProtectedRoute>
+				<PersistentLogin>
+					<AuthProtectedRoute>
+						<Home />
+					</AuthProtectedRoute>
+				</PersistentLogin>
 			),
 			errorElement: <div>404 Not Found</div>, // This is to be implemented later.
 			children: [

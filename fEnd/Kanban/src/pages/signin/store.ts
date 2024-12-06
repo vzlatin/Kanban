@@ -15,6 +15,7 @@ const initialState = {
 	},
 	isAuthenticated: false,
 	error: null,
+	loading: false,
 	accessToken: "",
 };
 
@@ -22,20 +23,16 @@ export const useAuthStore = create<AuthStore>((set) => ({
 	...initialState,
 	signin: async (email, password) => {
 		try {
+			// set({ loading: true });
 			const response = await signin(email, password);
 			const { accessToken, user } = response.data;
 
 			set((state) => ({
 				...state,
-				user: {
-					id: user.id,
-					email: user.email,
-					firstName: user.firstName,
-					lastName: user.lastName,
-					role: user.role,
-				},
+				user,
 				isAuthenticated: true,
 				accessToken,
+				// loading: false,
 			}));
 		} catch (e) {
 			if (e instanceof ApiError) set({ error: e });
@@ -46,15 +43,40 @@ export const useAuthStore = create<AuthStore>((set) => ({
 						"Unknown Error",
 						0
 					),
+					// loading: false,
 				});
 		}
 	},
 	refreshAccessToken: async () => {
 		try {
+			// set({ loading: true });
 			const response = await refreshAccessToken();
-			console.log(JSON.stringify(response));
+			const { accessToken, user } = response.data;
+
+			set((state) => {
+				return {
+					...state,
+					user,
+					accessToken,
+					isAuthenticated: true,
+					error: null,
+					loading: false,
+				};
+			});
 		} catch (e) {
-			console.error(e);
+			if (e instanceof ApiError) set({ error: e });
+			else
+				set({
+					error: new ApiError(
+						"An unkown error has occured",
+						"Unknown Error",
+						0
+					),
+					// loading: false,
+				});
 		}
+	},
+	setLoading: (val) => {
+		set({ loading: val });
 	},
 }));

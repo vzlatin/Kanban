@@ -18,9 +18,9 @@ const maxRetries: number = import.meta.env.VITE_MAX_RETRIES;
 const timeout: number = import.meta.env.VITE_TIMEOUT;
 
 const $defaultApi = axios.create({
-	withCredentials: true,
 	baseURL,
 	timeout,
+	withCredentials: true,
 });
 
 // Response interceptor to normalize the errors and
@@ -49,9 +49,9 @@ $defaultApi.interceptors.response.use(
 );
 
 export const $api = axios.create({
-	withCredentials: true,
 	baseURL,
 	timeout,
+	withCredentials: true,
 });
 
 $api.interceptors.request.use(

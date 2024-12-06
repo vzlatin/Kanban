@@ -1,14 +1,18 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styles from "./Signin.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthStore } from "./store";
 import { checkAuth } from "../../services/user.service";
+import { toast } from "react-toastify";
+import ErrorNotification from "../../components/error/ErrorNotification";
+import { ApiError } from "../../http/errors";
 
 const Signin = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
 	const signin = useAuthStore((state) => state.signin);
+	const error = useAuthStore((state) => state.error);
 
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -23,6 +27,24 @@ const Signin = () => {
 			navigate(redirectTo, { replace: true });
 		}
 	};
+
+	const showErrorNotification = (error: ApiError) => {
+		toast(<ErrorNotification error={error} />, {
+			className: "error-toast",
+			position: "top-center",
+			autoClose: 5000,
+			hideProgressBar: true,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+		});
+	};
+
+	useEffect(() => {
+		if (error) {
+			showErrorNotification(error);
+		}
+	}, [error]);
 
 	return (
 		<>

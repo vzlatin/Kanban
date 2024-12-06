@@ -1,56 +1,61 @@
 * {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 /* TEMPORARY */
 body {
-    overflow-y: scroll;
+	overflow-y: scroll;
 }
 
 html,
 body {
-    background-color: #e6e7ee;
-    color: #44476a;
-    margin: 0;
-    padding: 0;
+	background-color: #e6e7ee;
+	color: #44476a;
+	margin: 0;
+	padding: 0;
 }
 
 ul {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.error-toast {
+	border: 0.08rem solid red;
+	background-color: #e6e7ee;
 }
 
 @font-face {
-    font-family: "QuicksandLight";
-    src: url("./assets/fonts/Quicksand-Light.ttf") format("truetype");
-    font-weight: 300;
-    font-style: normal;
+	font-family: "QuicksandLight";
+	src: url("./assets/fonts/Quicksand-Light.ttf") format("truetype");
+	font-weight: 300;
+	font-style: normal;
 }
 
 @font-face {
-    font-family: "QuicksandRegular";
-    src: url("./assets/fonts/Quicksand-Regular.ttf") format("truetype");
-    font-weight: 400;
-    font-style: normal;
+	font-family: "QuicksandRegular";
+	src: url("./assets/fonts/Quicksand-Regular.ttf") format("truetype");
+	font-weight: 400;
+	font-style: normal;
 }
 
 @font-face {
-    font-family: "QuicksandMedium";
-    src: url("./assets/fonts/Quicksand-Medium.ttf") format("truetype");
-    font-weight: 500;
-    font-style: normal;
+	font-family: "QuicksandMedium";
+	src: url("./assets/fonts/Quicksand-Medium.ttf") format("truetype");
+	font-weight: 500;
+	font-style: normal;
 }
 
 @font-face {
-    font-family: "QuicksandSemiBold";
-    src: url("./assets/fonts/Quicksand-Medium.ttf") format("truetype");
-    font-weight: 600;
-    font-style: normal;
+	font-family: "QuicksandSemiBold";
+	src: url("./assets/fonts/Quicksand-Medium.ttf") format("truetype");
+	font-weight: 600;
+	font-style: normal;
 }
 
 @font-face {
-    font-family: "QuicksandBold";
-    src: url("./assets/fonts/Quicksand-SemiBold.ttf") format("truetype");
-    font-weight: 700;
-    font-style: normal;
+	font-family: "QuicksandBold";
+	src: url("./assets/fonts/Quicksand-SemiBold.ttf") format("truetype");
+	font-weight: 700;
+	font-style: normal;
 }

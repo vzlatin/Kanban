@@ -34,7 +34,7 @@ const Signup = () => {
 								Already have an account ? <br />
 								<NavLink to={"/signin"}>Sign in here.</NavLink>
 							</p>
-							<button className={styles["signup-button"]}>Sign In</button>
+							<button className={styles["signup-button"]}>Sign Up</button>
 						</div>
 					</div>
 					<DragDropContext onDragEnd={dragEndHandler}>

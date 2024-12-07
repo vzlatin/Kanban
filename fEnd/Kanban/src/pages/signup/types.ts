@@ -1,4 +1,5 @@
 import { DraggableLocation } from "@hello-pangea/dnd";
+import { UserRole } from "../../interfaces/data-interfaces";
 
 export interface IColumn {
 	id: string;
@@ -24,6 +25,14 @@ export type ColumnProps = {
 export type TaskProps = {
 	taskId: string;
 	index: number;
+};
+
+export type Credentials = {
+	firstName: string;
+	lastName: string;
+	email: string;
+	password: string;
+	role: UserRole;
 };
 
 export interface SignupStore {

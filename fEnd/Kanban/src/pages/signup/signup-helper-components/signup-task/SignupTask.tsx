@@ -10,7 +10,7 @@ const SignupTask: React.FC<TaskProps> = ({ taskId, index }) => {
 	const task = useSignupStore((state) => state.tasks[taskId]);
 	const updateTask = useSignupStore((state) => state.updateTask);
 
-	const [inputValue, setInputValue] = useState("");
+	const [inputValue, setInputValue] = useState(task.value);
 	const debouncedInputValue = useDebounce(inputValue);
 
 	const [errors, setErrors] = useState<Record<string, string>[]>([]);

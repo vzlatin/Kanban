@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { AuthStore } from "./types";
 import { UserRole } from "../../interfaces/data-interfaces";
-import { signin } from "../../services/auth.service";
+import { signin, signup } from "../../services/auth.service";
 import { refreshAccessToken } from "../../services/token.service";
 import { ApiError } from "../../http/errors";
 
@@ -23,7 +23,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
 	...initialState,
 	signin: async (email, password) => {
 		try {
-			// set({ loading: true });
 			const response = await signin(email, password);
 			const { accessToken, user } = response.data;
 
@@ -31,8 +30,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
 				...state,
 				user,
 				isAuthenticated: true,
+				error: null,
 				accessToken,
-				// loading: false,
+				loading: false,
 			}));
 		} catch (e) {
 			if (e instanceof ApiError) set({ error: e });
@@ -43,7 +43,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
 						"Unknown Error",
 						0
 					),
-					// loading: false,
 				});
 		}
 	},
@@ -72,7 +71,33 @@ export const useAuthStore = create<AuthStore>((set) => ({
 						"Unknown Error",
 						0
 					),
-					// loading: false,
+					loading: false,
+				});
+		}
+	},
+	signup: async (credentials) => {
+		try {
+			const response = await signup(credentials);
+			const { accessToken, user } = response.data;
+
+			set((state) => ({
+				...state,
+				user,
+				isAuthenticated: true,
+				accessToken,
+				error: null,
+				loading: false,
+			}));
+		} catch (e) {
+			if (e instanceof ApiError) set({ error: e });
+			else
+				set({
+					error: new ApiError(
+						"An unkown error has occured",
+						"Unknown Error",
+						0
+					),
+					loading: false,
 				});
 		}
 	},

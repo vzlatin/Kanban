@@ -56,7 +56,6 @@ export const useSignupStore = create<SignupStore>((set) => ({
 			taskIds: [],
 		},
 	],
-
 	moveTask: (source, destination) =>
 		set((state) => {
 			const copy = { ...state };
@@ -95,7 +94,6 @@ export const useSignupStore = create<SignupStore>((set) => ({
 					isValid,
 				},
 			};
-			console.log("TASK: ", newTasks[task.id]);
 			return { tasks: newTasks };
 		});
 	},

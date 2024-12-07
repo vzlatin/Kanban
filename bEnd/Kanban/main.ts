@@ -24,11 +24,17 @@ app.addEventListener("close", () => {
 	closePool();
 });
 
+const port = parseInt(config.port);
+const hostname = config.hostname;
+
 console.log(`Listening to ${config.hostname} on port: ${config.port}`);
 try {
 	await app.listen({
-		port: parseInt(config.port),
-		hostname: config.hostname,
+		port,
+		hostname,
+		secure: true,
+		cert: Deno.readTextFileSync("./localhost.crt"),
+		key: Deno.readTextFileSync("./localhost.key"),
 	});
 } catch (e) {
 	console.log(e);

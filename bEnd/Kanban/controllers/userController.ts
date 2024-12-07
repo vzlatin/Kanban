@@ -22,7 +22,7 @@ export async function registerUser(ctx: Context): Promise<void> {
 	const userData = await register(user);
 	ctx.cookies.set("refreshToken", userData.tokens.refreshToken, {
 		httpOnly: true,
-		secure: false,
+		secure: true,
 		maxAge: 30 * 60 * 60 * 24,
 		sameSite: "none",
 	});
@@ -45,7 +45,7 @@ export async function loginUser(ctx: Context): Promise<void> {
 	const userData = await login(email, password);
 	ctx.cookies.set("refreshToken", userData.tokens.refreshToken, {
 		httpOnly: true,
-		secure: false,
+		secure: true,
 		maxAge: 30 * 60 * 60 * 24,
 		sameSite: "none",
 	});
@@ -76,7 +76,7 @@ export async function refreshUser(ctx: Context): Promise<void> {
 	const userData = await refresh(refreshToken);
 	ctx.cookies.set("refreshToken", userData.tokens.refreshToken, {
 		httpOnly: true,
-		secure: false,
+		secure: true,
 		maxAge: 30 * 60 * 60 * 24,
 		sameSite: "none",
 	});

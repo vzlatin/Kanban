@@ -1,3 +1,6 @@
 .env
 
 kanban.db
+
+localhost.crt
+localhost.key

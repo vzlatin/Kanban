@@ -52,17 +52,17 @@
 }
 .drag-handle-disabled {
 	cursor: inherit;
-	color: red;
-	border: 0.063rem red dashed;
+	color: var(--color-error);
+	border: 0.063rem var(--color-error) dashed;
 }
 .drag-handle-disabled:hover {
 	cursor: not-allowed;
-	color: red;
+	color: var(--color-error);
 	border: 0.063rem red dashed;
 }
 .drag-handle-disabled > p:hover {
 	cursor: not-allowed;
-	color: red;
+	color: var(--color-error);
 }
 
 .task-input {
@@ -106,6 +106,7 @@
 
 .error-message {
 	font-size: 0.75rem;
-	color: red;
+	/* color: red; */
+	color: var(--color-error);
 	font-family: "QuicksandLight", sans-serif;
 }

@@ -80,11 +80,12 @@ const Signup = () => {
 	);
 
 	async function signupHandler() {
-		setLoading(true);
+		// setLoading(true);
 		// This value is hardcoded so, we can guarantee that this can't be undefined
 		const done = columns.find((column) => column.id === "done")!;
 		if (done.taskIds.length < 4) {
 			renderInfoToast('Please drag all tasks to the "Done" column');
+			renderErrorToast("Some Error Message");
 			return;
 		}
 

@@ -1,3 +1,11 @@
+:root {
+	--color-error: #860111;
+	--color-info: #f5c71a;
+	--color-font: #44476a;
+	--color-background: #e6e7ee;
+	--color-accent-blue: #2653ee;
+}
+
 * {
 	box-sizing: border-box;
 }
@@ -9,8 +17,8 @@ body {
 
 html,
 body {
-	background-color: #e6e7ee;
-	color: #44476a;
+	background-color: var(--color-background);
+	color: var(--color-font);
 	margin: 0;
 	padding: 0;
 }
@@ -20,10 +28,36 @@ ul {
 	padding: 0;
 }
 
+/* --- react toastify styles start --- */
+
 .error-toast {
-	border: 0.08rem solid red;
-	background-color: #e6e7ee;
+	border: 0.08rem solid var(--color-error);
+	background-color: var(--color-background);
 }
+.error-toast-body {
+	font-size: 1rem;
+	color: var(--color-font);
+}
+
+.info-toast {
+	border: 0.08rem solid var(--color-info);
+	background-color: var(--color-background);
+}
+.info-toast-body {
+	font-size: 1rem;
+	color: var(--color-font);
+}
+
+.Toastify {
+	--toastify-color-progress-info: var(--color-info);
+	--toastify-color-progress-error: var(--color-error);
+	--toastify-toast-width: 31.25rem;
+	--toastify-toast-min-height: 4rem;
+	--toastify-toast-max-height: 50rem;
+	--toastify-font-family: "QuicksandRegular", sans-serif;
+}
+
+/* --- React Toastify styles end --- */
 
 @font-face {
 	font-family: "QuicksandLight";

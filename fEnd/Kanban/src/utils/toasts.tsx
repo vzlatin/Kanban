@@ -5,8 +5,10 @@ import { Bounce, toast } from "react-toastify";
  */
 
 export const renderInfoToast = (content: string | React.ReactNode) => {
-	toast(content, {
+	toast.info(content, {
+		icon: <img src="/info.svg" />,
 		className: "info-toast",
+		bodyClassName: "info-toast-body",
 		position: "top-center",
 		autoClose: 5000,
 		hideProgressBar: false,
@@ -18,8 +20,10 @@ export const renderInfoToast = (content: string | React.ReactNode) => {
 };
 
 export const renderErrorToast = (content: string | React.ReactNode) => {
-	toast(content, {
+	toast.error(content, {
+		icon: <img src="./error.svg" />,
 		className: "error-toast",
+		bodyClassName: "error-toast-body",
 		position: "top-center",
 		autoClose: 5000,
 		hideProgressBar: false,

@@ -8,18 +8,18 @@ import { useAuthStore } from "../signin/store";
 import { renderErrorToast, renderInfoToast } from "../../utils/toasts";
 import { UserRole } from "../../interfaces/data-interfaces";
 import { checkAuth } from "../../services/user.service";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ErrorNotification from "../../components/error/ErrorNotification";
 
 const Signup = () => {
+	const [loading, setLoading] = useState(false);
+
 	const columns = useSignupStore((state) => state.columns);
 	const moveTask = useSignupStore((state) => state.moveTask);
 	const tasks = useSignupStore((state) => state.tasks);
 
 	const signup = useAuthStore((state) => state.signup);
 	const error = useAuthStore((state) => state.error);
-	const loading = useAuthStore((state) => state.loading);
-	const setLoading = useAuthStore((state) => state.setLoading);
 
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -80,12 +80,11 @@ const Signup = () => {
 	);
 
 	async function signupHandler() {
-		// setLoading(true);
+		setLoading(true);
 		// This value is hardcoded so, we can guarantee that this can't be undefined
 		const done = columns.find((column) => column.id === "done")!;
 		if (done.taskIds.length < 4) {
 			renderInfoToast('Please drag all tasks to the "Done" column');
-			renderErrorToast("Some Error Message");
 			return;
 		}
 
@@ -119,6 +118,7 @@ const Signup = () => {
 		);
 
 		await signup(credentials);
+		setLoading(false);
 		if (checkAuth()) {
 			const redirectTo = location.state?.from?.pathname || "/";
 			navigate(redirectTo, { replace: true });

@@ -83,28 +83,12 @@
 	flex-direction: column;
 	width: 80%;
 }
-.label-email {
+.label-email,
+.label-password,
+.label-trust-device {
 	font-family: "QuicksandLight", sans-serif;
 }
-.email-input {
-	height: 2.5rem;
-	padding: 0.4rem 0.4rem;
-	border-radius: 0.5rem;
-	border: none;
-	appearance: none;
-	font-family: "QuicksandMedium", sans-serif;
-	background-color: #e6e7ee;
-	box-shadow: inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #fff;
-}
-
-.password {
-	display: flex;
-	flex-direction: column;
-	width: 80%;
-}
-.label-password {
-	font-family: "QuicksandLight", sans-serif;
-}
+.email-input,
 .password-input {
 	height: 2.5rem;
 	padding: 0.4rem 0.4rem;
@@ -113,8 +97,72 @@
 	appearance: none;
 	font-family: "QuicksandMedium", sans-serif;
 	background-color: #e6e7ee;
+	border: 0.063rem var(--color-accent-grey-light) solid;
 	box-shadow: inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #fff;
 }
+
+.password {
+	display: flex;
+	flex-direction: column;
+	width: 80%;
+}
+
+.trust-device {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 0.5rem;
+	width: 80%;
+}
+
+.trust-device-input {
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+
+.label-trust-device {
+	cursor: pointer;
+	text-indent: -9999px;
+	width: 50px;
+	height: 27px;
+	/* background: grey; */
+	display: block;
+	border-radius: 100px;
+	position: relative;
+	border: 0.063rem var(--color-accent-grey-light) solid;
+	box-shadow: 5px 5px 10px #9f9f9f, -5px -5px 10px #ffffff;
+}
+
+.label-trust-device:after {
+	content: "";
+	position: absolute;
+	top: 2px;
+	left: 5px;
+	width: 22px;
+	height: 22px;
+	/* background: #fff; */
+	box-shadow: 5px 5px 10px #9f9f9f, -5px -5px 10px #ffffff;
+	border-radius: 90px;
+	transition: 0.3s;
+}
+
+.trust-device-input:checked + .label-trust-device {
+	border: 0.05rem solid #2653ee;
+}
+/* .label-trust-device:checked {
+	background: #2653ee;
+} */
+
+.trust-device-input:checked + .label-trust-device:after {
+	left: calc(100% - 5px);
+	transform: translateX(-100%);
+}
+
+.label-trust-device:active:after {
+	width: 30px;
+}
+
 .email-input:focus,
 .password-input:focus {
 	border: 0.05rem solid #2653ee;

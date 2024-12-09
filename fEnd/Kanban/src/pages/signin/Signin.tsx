@@ -9,27 +9,15 @@ import { renderErrorToast } from "../../utils/toasts";
 const Signin = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [loading, setLoading] = useState(false);
 
 	const signin = useAuthStore((state) => state.signin);
 	const error = useAuthStore((state) => state.error);
-	const loading = useAuthStore((state) => state.loading);
-	const setLoading = useAuthStore((state) => state.setLoading);
+	const trustDevice = useAuthStore((state) => state.trustDevice);
+	const setTrustDevice = useAuthStore((state) => state.setTrustDevice);
 
 	const navigate = useNavigate();
 	const location = useLocation();
-
-	const signinHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
-		setLoading(true);
-		//Validate the input or whatever
-		e.preventDefault();
-
-		await signin(email, password);
-
-		if (checkAuth()) {
-			const redirectTo = location.state?.from?.pathname || "/";
-			navigate(redirectTo, { replace: true });
-		}
-	};
 
 	useEffect(() => {
 		if (error) {
@@ -97,6 +85,22 @@ const Signin = () => {
 									}}
 								/>
 							</div>
+							<div className={styles["trust-device"]}>
+								<p>Trust this device</p>
+								<input
+									type="checkbox"
+									id="signin-trust-device"
+									className={styles["trust-device-input"]}
+									checked={trustDevice}
+									onChange={(e) => {
+										setTrustDevice(e.target.checked);
+									}}
+								/>
+								<label
+									htmlFor="signin-trust-device"
+									className={styles["label-trust-device"]}
+								></label>
+							</div>
 							<button
 								className={styles["signup-button"]}
 								onClick={signinHandler}
@@ -109,6 +113,20 @@ const Signin = () => {
 			)}
 		</>
 	);
+
+	async function signinHandler(e: React.MouseEvent<HTMLButtonElement>) {
+		setLoading(true);
+		//Validate the input or whatever
+		e.preventDefault();
+
+		await signin(email, password);
+		setLoading(false);
+
+		if (checkAuth()) {
+			const redirectTo = location.state?.from?.pathname || "/";
+			navigate(redirectTo, { replace: true });
+		}
+	}
 };
 
 export default Signin;

@@ -15,7 +15,7 @@ const initialState = {
 	},
 	isAuthenticated: false,
 	error: null,
-	loading: false,
+	trustDevice: JSON.parse(localStorage.getItem("trustDevice") || "false"),
 	accessToken: "",
 };
 
@@ -32,7 +32,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
 				isAuthenticated: true,
 				error: null,
 				accessToken,
-				loading: false,
 			}));
 		} catch (e) {
 			if (e instanceof ApiError) set({ error: e });
@@ -59,7 +58,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
 					accessToken,
 					isAuthenticated: true,
 					error: null,
-					loading: false,
 				};
 			});
 		} catch (e) {
@@ -71,7 +69,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
 						"Unknown Error",
 						0
 					),
-					loading: false,
 				});
 		}
 	},
@@ -86,7 +83,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
 				isAuthenticated: true,
 				accessToken,
 				error: null,
-				loading: false,
 			}));
 		} catch (e) {
 			if (e instanceof ApiError) set({ error: e });
@@ -97,11 +93,11 @@ export const useAuthStore = create<AuthStore>((set) => ({
 						"Unknown Error",
 						0
 					),
-					loading: false,
 				});
 		}
 	},
-	setLoading: (val) => {
-		set({ loading: val });
+	setTrustDevice: (val) => {
+		localStorage.setItem("trustDevice", JSON.stringify(val));
+		set({ trustDevice: val });
 	},
 }));

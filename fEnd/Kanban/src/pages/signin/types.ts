@@ -7,9 +7,9 @@ export interface AuthStore {
 	accessToken: string;
 	isAuthenticated: boolean;
 	error: ApiError | null;
-	loading: boolean;
+	trustDevice: boolean;
 	signin: (email: string, password: string) => Promise<void>;
 	signup: (credentials: Credentials) => Promise<void>;
+	setTrustDevice: (val: boolean) => void;
 	refreshAccessToken: () => Promise<void>;
-	setLoading: (val: boolean) => void;
 }

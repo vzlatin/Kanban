@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useAuthStore } from "../../pages/signin/store";
 // import { ApiError } from "../../http/errors";
 // import ErrorNotification from "../error/ErrorNotification";
@@ -10,9 +10,10 @@ interface PersistentLoginProps {
 }
 
 const PersistentLogin: React.FC<PersistentLoginProps> = ({ children }) => {
+	const [loading, setLoading] = useState(true);
+
 	const refreshAccessToken = useAuthStore((state) => state.refreshAccessToken);
-	const loading = useAuthStore((state) => state.loading);
-	const setLoading = useAuthStore((state) => state.setLoading);
+	const trustDevice = useAuthStore((state) => state.trustDevice);
 
 	// const showErrorNotification = (error: ApiError) => {
 	// 	toast(<ErrorNotification error={error} />, {
@@ -27,8 +28,16 @@ const PersistentLogin: React.FC<PersistentLoginProps> = ({ children }) => {
 	// };
 
 	useEffect(() => {
-		setLoading(true);
-		!checkAuth() ? refreshAccessToken() : setLoading(false);
+		const refresh = async () => {
+			try {
+				await refreshAccessToken();
+			} catch (error) {
+				console.log(error);
+			} finally {
+				setLoading(false);
+			}
+		};
+		!checkAuth() && trustDevice ? refresh() : setLoading(false);
 	}, []);
 
 	// useEffect(() => {
@@ -37,7 +46,17 @@ const PersistentLogin: React.FC<PersistentLoginProps> = ({ children }) => {
 	// 	}
 	// }, [error]);
 
-	return <>{loading ? <p>Loading Spinner ...</p> : children}</>;
+	return (
+		<>
+			{!trustDevice ? (
+				children
+			) : loading ? (
+				<p>Loading Spinner ...</p>
+			) : (
+				children
+			)}
+		</>
+	);
 };
 
 export default PersistentLogin;

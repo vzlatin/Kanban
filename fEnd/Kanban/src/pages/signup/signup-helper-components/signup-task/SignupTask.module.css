@@ -6,7 +6,7 @@
 	margin-bottom: 1rem;
 	flex-direction: column;
 	border-radius: 0.5rem;
-	box-shadow: 6px 6px 12px #9f9f9f, -6px -6px 12px #ffffff;
+	box-shadow: var(--shadow-box-main);
 }
 
 .title-container {
@@ -28,7 +28,7 @@
 	padding-left: 0.2rem;
 	padding-right: 0.2rem;
 	border-radius: 0.5rem;
-	border: 0.063rem #44476a dashed;
+	border: 0.063rem var(--color-font) dashed;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -38,16 +38,16 @@
 }
 .drag-handle-enabled {
 	cursor: inherit;
-	color: #2653ee;
-	border: 0.063rem #2653ee dashed;
+	color: var(--color-accent-blue);
+	border: 0.063rem var(--color-accent-blue) dashed;
 }
 .drag-handle-enabled:hover {
 	cursor: pointer;
-	border: 0.063rem #2653ee dashed;
-	color: #2653ee;
+	border: 0.063rem var(--color-accent-blue) dashed;
+	color: var(--color-accent-blue);
 }
 .drag-handle-enabled > p:hover {
-	color: #2653ee;
+	color: var(--color-accent-blue);
 	cursor: pointer;
 }
 .drag-handle-disabled {
@@ -58,7 +58,7 @@
 .drag-handle-disabled:hover {
 	cursor: not-allowed;
 	color: var(--color-error);
-	border: 0.063rem red dashed;
+	border: 0.063rem var(--color-error) dashed;
 }
 .drag-handle-disabled > p:hover {
 	cursor: not-allowed;
@@ -87,14 +87,14 @@
 	padding: 0.4rem 0.4rem;
 	width: 60%;
 	border-radius: 0.5rem;
-	border: none;
 	appearance: none;
 	font-family: "QuicksandMedium", sans-serif;
-	background-color: #e6e7ee;
-	box-shadow: inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #fff;
+	background-color: var(--color-background);
+	box-shadow: var(--shadow-input-inset);
+	border: 0.063rem var(--color-accent-grey-light) solid;
 }
 .task-field-input:focus {
-	border: 0.05rem solid #2653ee;
+	border: 0.05rem solid var(--color-accent-blue);
 	outline: none;
 }
 

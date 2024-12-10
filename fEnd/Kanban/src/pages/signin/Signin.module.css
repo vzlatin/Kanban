@@ -49,24 +49,24 @@
 
 .signup-button {
 	border: none;
-	color: #ffffff;
-	background-color: #2653ee;
+	color: var(--color-white);
+	background-color: var(--color-accent-blue);
 	font-size: 1rem;
 	font-family: "QuicksandBold", sans-serif;
 	margin-top: 0.78rem;
 	width: 16rem;
 	height: 6rem;
 	border-radius: 0.5rem;
-	box-shadow: 6px 6px 12px #9f9f9f, -6px -6px 12px #ffffff;
+	box-shadow: var(--shadow-box-main);
 }
 .signup-button:hover {
 	cursor: pointer;
-	color: #2653ee;
-	border: 0.063rem solid #2653ee;
-	background-color: #e6e7ee;
+	color: var(--color-accent-blue);
+	border: 0.063rem solid var(--color-accent-blue);
+	background-color: var(--color-background);
 }
 .signup-button:active {
-	box-shadow: inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #fff;
+	box-shadow: var(--shadow-input-inset);
 }
 
 .form-container {
@@ -96,9 +96,9 @@
 	border: none;
 	appearance: none;
 	font-family: "QuicksandMedium", sans-serif;
-	background-color: #e6e7ee;
+	background-color: var(--color-background);
 	border: 0.063rem var(--color-accent-grey-light) solid;
-	box-shadow: inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #fff;
+	box-shadow: var(--shadow-input-inset);
 }
 
 .password {
@@ -115,6 +115,10 @@
 	width: 80%;
 }
 
+.trust-device > p {
+	font-family: "QuicksandLight", sans-serif;
+}
+
 .trust-device-input {
 	height: 0;
 	width: 0;
@@ -123,49 +127,45 @@
 
 .label-trust-device {
 	cursor: pointer;
-	text-indent: -9999px;
-	width: 50px;
-	height: 27px;
+	text-indent: -624.938rem;
+	width: 3.125rem;
+	height: 1.688rem;
 	/* background: grey; */
 	display: block;
-	border-radius: 100px;
+	border-radius: 6.25rem;
 	position: relative;
 	border: 0.063rem var(--color-accent-grey-light) solid;
-	box-shadow: 5px 5px 10px #9f9f9f, -5px -5px 10px #ffffff;
+	box-shadow: var(--shadow-box-main);
 }
 
 .label-trust-device:after {
 	content: "";
 	position: absolute;
-	top: 2px;
-	left: 5px;
-	width: 22px;
-	height: 22px;
-	/* background: #fff; */
-	box-shadow: 5px 5px 10px #9f9f9f, -5px -5px 10px #ffffff;
-	border-radius: 90px;
+	top: 0.125rem;
+	left: 0.313rem;
+	width: 1.375rem;
+	height: 1.375rem;
+	border-radius: 5.625rem;
 	transition: 0.3s;
+	box-shadow: var(--shadow-box-main);
 }
 
 .trust-device-input:checked + .label-trust-device {
-	border: 0.05rem solid #2653ee;
+	border: 0.05rem solid var(--color-accent-blue);
 }
-/* .label-trust-device:checked {
-	background: #2653ee;
-} */
 
 .trust-device-input:checked + .label-trust-device:after {
-	left: calc(100% - 5px);
+	left: calc(100% - 0.313rem);
 	transform: translateX(-100%);
 }
 
 .label-trust-device:active:after {
-	width: 30px;
+	width: 1.875rem;
 }
 
 .email-input:focus,
 .password-input:focus {
-	border: 0.05rem solid #2653ee;
+	border: 0.05rem solid var(--color-accent-blue);
 	outline: none;
 }
 

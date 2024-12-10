@@ -20,7 +20,7 @@ const SignupColumn: React.FC<ColumnProps> = ({ column }) => {
 							className={styles[`${column.id}`]}
 							style={
 								snapshot.isDraggingOver
-									? { border: "0.063rem #44476a dashed" }
+									? { border: "0.063rem var(--color-font) dashed" }
 									: {}
 							}
 						>

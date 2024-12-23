@@ -11,6 +11,6 @@ export default defineConfig({
 			cert: fs.readFileSync("./localhost.crt"),
 		},
 		port: 5173,
-		host: "localhost",
+		host: "127.0.0.1",
 	},
 });

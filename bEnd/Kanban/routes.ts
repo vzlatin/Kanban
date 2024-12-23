@@ -9,9 +9,11 @@ import {
 } from "./controllers/userController.ts";
 import { validateUser } from "./validators/userValidator.ts";
 import { authHandler } from "./middleware/authHandler.ts";
+import { wsConnectionHandler } from "./controllers/wsController.ts";
 
 const router = new Router();
 
+router.get("/ws", wsConnectionHandler);
 router.post("/signup", validateUser, registerUser);
 router.post("/signin", loginUser);
 router.post("/logout", logoutUser);

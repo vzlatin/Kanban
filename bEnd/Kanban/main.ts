@@ -12,7 +12,7 @@ initializeDatabase();
 const app = new Application();
 app.use(
 	oakCors({
-		origin: /^.+localhost:5173$/,
+		origin: /^.+127.0.0.1:5173$/,
 		credentials: true,
 	})
 );

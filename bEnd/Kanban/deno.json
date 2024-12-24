@@ -1,6 +1,7 @@
 {
 	"tasks": {
-		"dev": "deno run --watch --allow-net --allow-read --allow-write --allow-env main.ts"
+		"dev": "deno run --watch --allow-net --allow-read --allow-write --allow-env main.ts",
+		"clear": "deno run --allow-read --allow-write ./database/clearDB.ts"
 	},
 	"imports": {
 		"@oak/oak": "jsr:@oak/oak@^17.1.2",
@@ -13,6 +14,7 @@
 		"jwt": "https://deno.land/x/djwt@v3.0.2/mod.ts",
 		"sqlite": "https://deno.land/x/sqlite@v3.9.1/mod.ts",
 		"zod": "https://deno.land/x/zod@v3.23.8/mod.ts",
-		"x/cors": "https://deno.land/x/cors@v1.2.2/mod.ts"
+		"x/cors": "https://deno.land/x/cors@v1.2.2/mod.ts",
+		"crypto": "node:crypto"
 	}
 }

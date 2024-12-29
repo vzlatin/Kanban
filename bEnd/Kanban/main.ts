@@ -1,11 +1,11 @@
 import { Application } from "@oak/oak";
 import { oakCors } from "x/cors";
 
-import { config } from "./utils/config.ts";
+import { config } from "./https/utils/config.ts";
 import router from "./routes.ts";
-import { closePool } from "./database/connectionPool.ts";
-import { initializeDatabase } from "./database/dbSetup.ts";
-import { errorHandler } from "./middleware/errorHandler.ts";
+import { closePool } from "./storage/database/connectionPool.ts";
+import { initializeDatabase } from "./storage/database/dbSetup.ts";
+import { errorHandler } from "./https/middleware/errorHandler.ts";
 
 initializeDatabase();
 

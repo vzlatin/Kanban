@@ -1,15 +1,15 @@
 import { hash, compare } from "bcrypt";
 
-import { createModel } from "../orm/orm.ts";
-import { ApiError } from "../errors/apiErrors.ts";
+import { createModel } from "../../storage/orm/orm.ts";
+import { ApiError } from "../../errors/apiErrors.ts";
 import { User, userColumns } from "../types/userTypes.ts";
-import { DatabaseError } from "../errors/databaseErrors.ts";
+import { DatabaseError } from "../../errors/databaseErrors.ts";
 import {
 	generateTokens,
 	removeToken,
 	saveToken,
 	validateToken,
-} from "./tokenService.ts";
+} from "../../shared/services/tokenService.ts";
 import { userDto } from "../utils/dtos.ts";
 
 export async function register(user: User): Promise<{

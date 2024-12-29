@@ -8,7 +8,7 @@ import {
 	getAllUsers,
 } from "../services/userService.ts";
 import type { User } from "../types/userTypes.ts";
-import { ApiError } from "../errors/apiErrors.ts";
+import { ApiError } from "../../errors/apiErrors.ts";
 
 export async function registerUser(ctx: Context): Promise<void> {
 	const { request, response } = ctx;

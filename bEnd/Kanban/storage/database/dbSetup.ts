@@ -45,7 +45,9 @@ export function initializeDatabase(): void {
 	_db.query(`
             CREATE TABLE IF NOT EXISTS columns (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-                title TEXT NOT NULL
+                boardId INTEGER NOT NULL,
+                title TEXT NOT NULL,
+                FOREIGN KEY(boardID) REFERENCES boards(id) ON DELETE CASCADE
             ) 
         `);
 
@@ -54,13 +56,17 @@ export function initializeDatabase(): void {
             CREATE TABLE IF NOT EXISTS tasks (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
                 userId INTEGER NOT NULL,
+                columnId INTEGER NOT NULL,
+                boardId INTEGER NOT NULL,
                 title TEXT NOT NULL,
                 description TEXT,
                 status TEXT NOT NULL CHECK (status IN ('new', 'in_progress', 'testing', 'done')),
                 tag TEXT,
                 createdOn TEXT NOT NULL,
                 completedOn TEXT,
-                FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE
+                FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE,
+                FOREIGN KEY(columnId) REFERENCES columns(id) ON DELETE CASCADE,
+                FOREIGN KEY(boardId) REFERENCES boards(id) ON DELETE CASCADE
             ) 
         `);
 

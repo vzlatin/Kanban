@@ -9,7 +9,7 @@ import {
 	removeToken,
 	saveToken,
 	validateToken,
-} from "../../shared/services/tokenService.ts";
+} from "../../shared/services/token.service.ts";
 import { userDto } from "../utils/dtos.ts";
 
 export async function register(user: User): Promise<{

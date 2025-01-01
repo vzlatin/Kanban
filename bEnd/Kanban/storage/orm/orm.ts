@@ -1,23 +1,19 @@
-import { type QueryParameterSet } from "sqlite";
+import { DB, type QueryParameterSet } from "sqlite";
 
 import {
 	aquireConnection,
 	releaseConnection,
 } from "../database/connectionPool.ts";
 import { row2Object } from "./helpers.ts";
-import {
-	RowTuple,
-	type Operator,
-	type WhereClause,
-} from "../../https/types/ormTypes.ts";
+import { RowTuple, type Operator, type WhereClause } from "./types/ormTypes.ts";
 
 export function createModel<T extends Record<string, unknown>>(
 	table: string,
 	columns: Array<keyof T>
 ) {
 	const model = {
-		insert: async (data: T): Promise<number | undefined> => {
-			const connection = await aquireConnection();
+		insert: async (data: T, conn?: DB): Promise<number | undefined> => {
+			const connection = conn || (await aquireConnection());
 			const columns = Object.keys(data).join(",");
 			const placeholders = Object.keys(data)
 				.map(() => "?")
@@ -35,10 +31,10 @@ export function createModel<T extends Record<string, unknown>>(
 
 		findAll: async (
 			where: WhereClause<T> = {},
-			operator?: Operator
+			operator: Operator = "AND",
+			conn?: DB
 		): Promise<T[] | undefined> => {
-			const connection = await aquireConnection();
-			operator === undefined ? "AND" : operator;
+			const connection = conn || (await aquireConnection());
 			const whereClause = Object.keys(where)
 				.map((key) => `${key} = ?`)
 				.join(`${operator}`);
@@ -62,10 +58,10 @@ export function createModel<T extends Record<string, unknown>>(
 		 */
 		findOne: async (
 			where: WhereClause<T> = {},
-			operator?: Operator
+			operator: Operator = "AND",
+			conn?: DB
 		): Promise<T | undefined> => {
-			const connection = await aquireConnection();
-			operator === undefined ? "AND" : operator;
+			const connection = conn || (await aquireConnection());
 			const whereClause = Object.keys(where)
 				.map((key) => `${key} = ?`)
 				.join(`${operator}`);
@@ -87,10 +83,10 @@ export function createModel<T extends Record<string, unknown>>(
 		update: async (
 			where: WhereClause<T> = {},
 			data: Partial<T>,
-			operator?: Operator
-		): Promise<void> => {
-			const connection = await aquireConnection();
-			operator === undefined ? "AND" : operator;
+			operator: Operator = "AND",
+			conn?: DB
+		): Promise<T | undefined> => {
+			const connection = conn || (await aquireConnection());
 			const setString = Object.keys(data)
 				.map((key) => `${key} = ?`)
 				.join(", ");
@@ -103,16 +99,18 @@ export function createModel<T extends Record<string, unknown>>(
 				`UPDATE ${table} SET ${setString} WHERE ${whereString}`,
 				values
 			);
+			const updatedRow = await model.findOne(where, operator);
 			releaseConnection(connection);
+
+			return updatedRow;
 		},
 
 		delete: async (
 			where: WhereClause<T>,
-			operator?: Operator
+			operator: Operator = "AND",
+			conn?: DB
 		): Promise<T | undefined> => {
-			const connection = await aquireConnection();
-
-			operator === undefined ? "AND" : operator;
+			const connection = conn || (await aquireConnection());
 
 			const deletedRow = await model.findOne(where, operator);
 

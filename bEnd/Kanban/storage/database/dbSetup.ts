@@ -60,7 +60,7 @@ export function initializeDatabase(): void {
                 boardId INTEGER NOT NULL,
                 title TEXT NOT NULL,
                 description TEXT,
-                status TEXT NOT NULL CHECK (status IN ('new', 'in_progress', 'testing', 'done')),
+                status TEXT NOT NULL CHECK (status IN ('New', 'InProgress', 'Testing', 'Done')),
                 tag TEXT,
                 createdOn TEXT NOT NULL,
                 completedOn TEXT,

@@ -3,14 +3,34 @@ import { Context } from "@oak/oak";
 import { initialConnectionAuthHandlerWS } from "../utils/auth.ts";
 
 import {
-	InboundMessage,
-	InboundMessageP,
-	InboundMessageSchema,
 	InboundMessageT,
+	InboundMessageSchema,
+	InboundMessage,
 } from "../types/zod/inbound.ts";
-import { validateToken } from "../../shared/services/tokenService.ts";
+import { validateToken } from "../../shared/services/token.service.ts";
 import { sendErrorMessage } from "../utils/wsUtils.ts";
 import { Message, OutboundMessageType } from "../types/messages.ts";
+import {
+	createBoard,
+	deleteBoard,
+	updateBoard,
+} from "../services/board.service.ts";
+import {
+	createColumn,
+	deleteColumn,
+	updateColumn,
+} from "../services/column.service.ts";
+import {
+	createTask,
+	deleteTask,
+	updateTask,
+} from "../services/task.service.ts";
+import { createComment, deleteComment } from "../services/comment.service.ts";
+import {
+	createTaskToDo,
+	deleteTaskToDo,
+	updateTaskToDo,
+} from "../services/tasktodo.service.ts";
 
 class Broadcaster {
 	private clients: Set<WebSocket> = new Set<WebSocket>();
@@ -20,8 +40,6 @@ class Broadcaster {
 	}
 
 	public async handleSocket(ctx: Context) {
-		console.log("Request reaching handler");
-
 		const socket = await initialConnectionAuthHandlerWS(ctx);
 		this.handleConnection(socket);
 	}
@@ -30,17 +48,21 @@ class Broadcaster {
 		this.clients.add(socket);
 		console.log("New Client Connected");
 
-		socket.onopen = () => this.broadcastUsers();
+		socket.onopen = this.broadcastUsers.bind(this);
 
-		socket.onmessage = (message: MessageEvent<string>) => {
+		socket.onmessage = async (message: MessageEvent<string>) => {
 			const result = InboundMessageSchema.safeParse(JSON.parse(message.data));
-
 			if (!result.success) {
 				sendErrorMessage(socket, result.error);
 				return;
 			}
 
-			this.handleMessage(result.data);
+			try {
+				await this.handleMessage(result.data);
+			} catch (e) {
+				sendErrorMessage(socket, e);
+				return;
+			}
 		};
 		socket.onerror = () => {};
 
@@ -70,51 +92,121 @@ class Broadcaster {
 		}
 	}
 
-	private handleMessage(message: {
-		type: InboundMessageT;
-		payload: InboundMessageP;
-	}) {
+	private async handleMessage(message: InboundMessage) {
 		switch (message.type) {
-			case InboundMessage.Enum.CreateBoard:
-				console.log("Received a request to create a new board");
+			case InboundMessageT.Enum.CreateBoard: {
+				const board = await createBoard(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.BoardCreated,
+					payload: board,
+				});
 				break;
-			case InboundMessage.Enum.DeleteBoard:
-				console.log("Message type: " + message.type);
+			}
+			case InboundMessageT.Enum.UpdateBoard: {
+				const board = await updateBoard(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.BoardUpdated,
+					payload: board,
+				});
 				break;
-			case InboundMessage.Enum.UpdateBoard:
-				console.log("Message type: " + message.type);
+			}
+			case InboundMessageT.Enum.DeleteBoard: {
+				const board = await deleteBoard(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.BoardDeleted,
+					// [id] is a required field in the DB, it's always present.
+					payload: { id: board.id! },
+				});
 				break;
-			case InboundMessage.Enum.CreateColumn:
-				console.log("Message type: " + message.type);
+			}
+			case InboundMessageT.Enum.CreateColumn: {
+				const column = await createColumn(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.ColumnCreated,
+					payload: column,
+				});
 				break;
-			case InboundMessage.Enum.DeleteColumn:
-				console.log("Message type: " + message.type);
+			}
+			case InboundMessageT.Enum.UpdateColumn: {
+				const column = await updateColumn(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.ColumnUpdated,
+					payload: column,
+				});
 				break;
-			case InboundMessage.Enum.UpdateColumn:
-				console.log("Message type: " + message.type);
+			}
+			case InboundMessageT.Enum.DeleteColumn: {
+				const column = await deleteColumn(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.ColumnDeleted,
+					payload: { id: column.id! },
+				});
 				break;
-			case InboundMessage.Enum.CreateTask:
-				console.log("Message type: " + message.type);
+			}
+			case InboundMessageT.Enum.CreateTask: {
+				const task = await createTask(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.TaskCreated,
+					payload: task,
+				});
 				break;
-			case InboundMessage.Enum.DeleteTask:
-				console.log("Message type: " + message.type);
+			}
+			case InboundMessageT.Enum.DeleteTask: {
+				const task = await deleteTask(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.TaskDeleted,
+					payload: { id: task.id! },
+				});
 				break;
-			case InboundMessage.Enum.UpdateTask:
-				console.log("Message type: " + message.type);
+			}
+			case InboundMessageT.Enum.UpdateTask: {
+				const task = await updateTask(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.TaskUpdated,
+					payload: task,
+				});
 				break;
-			case InboundMessage.Enum.CreateComment:
-				console.log("Message type: " + message.type);
+			}
+			case InboundMessageT.Enum.CreateComment: {
+				const comment = await createComment(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.CommentCreated,
+					payload: comment,
+				});
 				break;
-			case InboundMessage.Enum.DeleteComment:
-				console.log("Message type: " + message.type);
+			}
+			case InboundMessageT.Enum.DeleteComment: {
+				const comment = await deleteComment(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.CommentDeleted,
+					payload: { id: comment.id! },
+				});
 				break;
-			case InboundMessage.Enum.CreateTaskToDo:
-				console.log("Message type: " + message.type);
+			}
+			case InboundMessageT.Enum.CreateTaskToDo: {
+				const tasktodo = await createTaskToDo(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.TaskToDoCreated,
+					payload: tasktodo,
+				});
 				break;
-			case InboundMessage.Enum.DeleteTaskToDo:
-				console.log("Message type: " + message.type);
+			}
+			case InboundMessageT.Enum.UpdateTaskToDo: {
+				const tasktodo = await updateTaskToDo(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.TaskToDoUpdated,
+					payload: tasktodo,
+				});
 				break;
-			case InboundMessage.Enum.UpdateTaskToDo:
+			}
+			case InboundMessageT.Enum.DeleteTaskToDo: {
+				const tasktodo = await deleteTaskToDo(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.TaskToDoDeleted,
+					payload: { id: tasktodo.id! },
+				});
+				break;
+			}
 		}
 	}
 

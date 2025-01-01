@@ -1,6 +1,6 @@
 import type { Middleware } from "@oak/oak";
 import { ApiError } from "../../errors/apiErrors.ts";
-import { validateToken } from "../../shared/services/tokenService.ts";
+import { validateToken } from "../../shared/services/token.service.ts";
 
 export const authHandler: Middleware = async (ctx, next) => {
 	const { request } = ctx;

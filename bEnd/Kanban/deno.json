@@ -1,7 +1,7 @@
 {
 	"tasks": {
 		"dev": "deno run --watch --allow-net --allow-read --allow-write --allow-env main.ts",
-		"clear": "deno run --allow-read --allow-write ./database/clearDB.ts"
+		"clear": "deno run --allow-read --allow-write ./storage/database/clearDB.ts"
 	},
 	"imports": {
 		"@oak/oak": "jsr:@oak/oak@^17.1.2",

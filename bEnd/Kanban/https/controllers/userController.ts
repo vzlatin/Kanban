@@ -6,7 +6,7 @@ import {
 	logout,
 	refresh,
 	getAllUsers,
-} from "../services/userService.ts";
+} from "../services/user.service.ts";
 import type { User } from "../types/userTypes.ts";
 import { ApiError } from "../../errors/apiErrors.ts";
 

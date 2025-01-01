@@ -46,10 +46,14 @@ export async function saveToken(token: Token): Promise<void> {
 		 * If there is a token, we overwrite the refresh token
 		 * which should be updated on every login.
 		 */
-		await TokenModel.update(
+		const updatedToken = await TokenModel.update(
 			{ userId: token.userId },
 			{ refreshToken: token.refreshToken }
 		);
+		if (!updatedToken)
+			throw ApiError.BadRequestError(
+				`Token with used id: ${token.userId} doesn't exist`
+			);
 		return;
 	}
 	/**

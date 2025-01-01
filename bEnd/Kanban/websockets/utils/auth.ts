@@ -1,6 +1,6 @@
 import { Context } from "@oak/oak/context";
 import { ApiError } from "../../errors/apiErrors.ts";
-import { validateToken } from "../../shared/services/tokenService.ts";
+import { validateToken } from "../../shared/services/token.service.ts";
 import { Payload } from "jwt";
 
 export const initialConnectionAuthHandlerWS = async (ctx: Context) => {

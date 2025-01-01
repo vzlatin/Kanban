@@ -5,7 +5,6 @@ import {
 	ServerError,
 	UnauthorizedError,
 } from "../../http/errors";
-import styles from "./ErrorNotification.module.css";
 
 interface ErrorNotificationProps {
 	error: ApiError | null;

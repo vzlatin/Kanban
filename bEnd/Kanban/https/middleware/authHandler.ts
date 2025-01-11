@@ -9,7 +9,6 @@ export const authHandler: Middleware = async (ctx, next) => {
 
 	const accessToken = authorizationHeader.split(" ")[1];
 	if (!accessToken) throw ApiError.UnauthorizedError();
-
 	try {
 		const userData = await validateToken(accessToken, "access");
 		// This is not necessary in this case, I don't need this data downstream.

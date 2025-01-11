@@ -18,48 +18,55 @@ export const InboundMessageT = z.enum([
 	"CreateTaskToDo",
 	"DeleteTaskToDo",
 	"UpdateTaskToDo",
+	"CreateSection",
+	"UpdateSection",
+	"DeleteSection",
 ]);
+
+export const ZDeleteEntityPayload = z.object({
+	id: z.number(),
+});
 
 export const ZCreateBoardPayload = z.object({
 	title: z.string(),
+	section: z.number(),
 });
 
 export const ZUpdateBoardPayload = z.object({
 	id: z.number(),
-	title: z.string(),
+	title: z.optional(z.string()),
+	section: z.optional(z.number()),
 });
-export const ZDeleteBoardPayload = z.object({
-	id: z.number(),
-});
+
+export const ZDeleteBoardPayload = ZDeleteEntityPayload.extend({});
 
 export const ZCreateColumnPayload = z.object({
 	boardId: z.number(),
 	title: z.string(),
+	columnOrder: z.number(),
 });
 
 export const ZUpdateColumnPayload = z.object({
 	id: z.number(),
-	title: z.string(),
+	title: z.optional(z.string()),
+	columnOrder: z.optional(z.number()),
 });
 
-export const ZDeleteColumnPayload = z.object({
-	id: z.number(),
-});
+export const ZDeleteColumnPayload = ZDeleteEntityPayload.extend({});
 
 export const ZCreateTaskPayload = z.object({
-	userId: z.number(),
+	userId: z.optional(z.number()),
 	columnId: z.number(),
 	boardId: z.number(),
+	taskOrder: z.number(),
 	title: z.string(),
 	description: z.optional(z.string()),
 	status: z.enum(["New", "InProgress", "Testing", "Done"]),
 	tag: z.optional(z.string()),
-	createdOn: z.optional(
-		z.preprocess((arg) => {
-			if (typeof arg === "string") return new Date(arg);
-			return arg; // If already a Date, pass through
-		}, z.date())
-	),
+	createdOn: z.preprocess((arg) => {
+		if (typeof arg === "string") return new Date(arg);
+		return arg; // If already a Date, pass through
+	}, z.date()),
 	completedOn: z.optional(
 		z.preprocess((arg) => {
 			if (typeof arg === "string") return new Date(arg);
@@ -74,6 +81,7 @@ export const ZUpdateTaskPayload = z.object({
 	title: z.optional(z.string()),
 	description: z.optional(z.string()),
 	status: z.optional(z.enum(["New", "InProgress", "Testing", "Done"])),
+	taskOrder: z.optional(z.number()),
 	tag: z.optional(z.string()),
 	completedOn: z.optional(
 		z.preprocess((arg) => {
@@ -83,9 +91,7 @@ export const ZUpdateTaskPayload = z.object({
 	),
 });
 
-export const ZDeleteTaskPayload = z.object({
-	id: z.number(),
-});
+export const ZDeleteTaskPayload = ZDeleteEntityPayload.extend({});
 
 export const ZCreateCommentPayload = z.object({
 	taskId: z.number(),
@@ -99,9 +105,7 @@ export const ZCreateCommentPayload = z.object({
 	),
 });
 
-export const ZDeleteCommentPayload = z.object({
-	id: z.number(),
-});
+export const ZDeleteCommentPayload = ZDeleteEntityPayload.extend({});
 
 export const ZCreateTaskToDoPayload = z.object({
 	taskId: z.number(),
@@ -116,9 +120,19 @@ export const ZUpdateTaskToDoPayload = z.object({
 	completed: z.optional(z.boolean()),
 });
 
-export const ZDeleteTaskToDoPayload = z.object({
+export const ZDeleteTaskToDoPayload = ZDeleteEntityPayload.extend({});
+
+export const ZCreateSectionPayload = z.object({
 	id: z.number(),
+	title: z.string(),
 });
+
+export const ZUpdateSectionPayload = z.object({
+	id: z.number(),
+	title: z.optional(z.string()),
+});
+
+export const ZDeleteSectionPayload = ZDeleteTaskPayload.extend({});
 
 export const InboundMessageSchema = z.discriminatedUnion("type", [
 	z.object({
@@ -177,6 +191,18 @@ export const InboundMessageSchema = z.discriminatedUnion("type", [
 		type: z.literal("DeleteTaskToDo"),
 		payload: ZDeleteTaskToDoPayload,
 	}),
+	z.object({
+		type: z.literal("CreateSection"),
+		payload: ZCreateSectionPayload,
+	}),
+	z.object({
+		type: z.literal("UpdateSection"),
+		payload: ZUpdateSectionPayload,
+	}),
+	z.object({
+		type: z.literal("DeleteSection"),
+		payload: ZDeleteSectionPayload,
+	}),
 ]);
 
 export type InboundMessage = z.infer<typeof InboundMessageSchema>;
@@ -196,4 +222,7 @@ export type MessageMap = {
 	[InboundMessageT.Enum.UpdateTaskToDo]: z.infer<typeof ZUpdateTaskToDoPayload>;
 	[InboundMessageT.Enum.CreateComment]: z.infer<typeof ZCreateCommentPayload>;
 	[InboundMessageT.Enum.DeleteComment]: z.infer<typeof ZDeleteCommentPayload>;
+	[InboundMessageT.Enum.CreateSection]: z.infer<typeof ZCreateSectionPayload>;
+	[InboundMessageT.Enum.UpdateSection]: z.infer<typeof ZUpdateSectionPayload>;
+	[InboundMessageT.Enum.DeleteSection]: z.infer<typeof ZDeleteSectionPayload>;
 };

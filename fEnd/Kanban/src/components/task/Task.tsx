@@ -1,7 +1,12 @@
 import styles from "./Task.module.css";
+import { Task as T } from "../../interfaces/data-interfaces";
 
-const Task = () => {
-    return <div className={styles.task}></div>;
+type TaskProps = {
+	task: T;
+};
+
+const Task: React.FC<TaskProps> = ({ task }) => {
+	return <div className={styles.task}>{task.title}</div>;
 };
 
 export default Task;

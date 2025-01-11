@@ -31,6 +31,11 @@ import {
 	deleteTaskToDo,
 	updateTaskToDo,
 } from "../services/tasktodo.service.ts";
+import {
+	createSection,
+	deleteSection,
+	updateSection,
+} from "../services/section.service.ts";
 
 class Broadcaster {
 	private clients: Set<WebSocket> = new Set<WebSocket>();
@@ -92,6 +97,8 @@ class Broadcaster {
 		}
 	}
 
+	// Non null assertion is justified because the id will always be
+	// returned from the database.
 	private async handleMessage(message: InboundMessage) {
 		switch (message.type) {
 			case InboundMessageT.Enum.CreateBoard: {
@@ -114,7 +121,6 @@ class Broadcaster {
 				const board = await deleteBoard(message.payload);
 				this.broadcast({
 					type: OutboundMessageType.BoardDeleted,
-					// [id] is a required field in the DB, it's always present.
 					payload: { id: board.id! },
 				});
 				break;
@@ -206,6 +212,29 @@ class Broadcaster {
 					payload: { id: tasktodo.id! },
 				});
 				break;
+			}
+			case InboundMessageT.Enum.CreateSection: {
+				const section = await createSection(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.SectionCreated,
+					payload: section,
+				});
+				break;
+			}
+			case InboundMessageT.Enum.UpdateSection: {
+				const section = await updateSection(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.SectionUpdated,
+					payload: section,
+				});
+				break;
+			}
+			case InboundMessageT.Enum.DeleteSection: {
+				const section = await deleteSection(message.payload);
+				this.broadcast({
+					type: OutboundMessageType.SectionDeleted,
+					payload: { id: section.id! },
+				});
 			}
 		}
 	}

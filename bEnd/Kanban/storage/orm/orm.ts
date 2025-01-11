@@ -7,10 +7,10 @@ import {
 import { row2Object } from "./helpers.ts";
 import { RowTuple, type Operator, type WhereClause } from "./types/ormTypes.ts";
 
-export function createModel<T extends Record<string, unknown>>(
-	table: string,
-	columns: Array<keyof T>
-) {
+export function createModel<
+	T extends Record<string, unknown>,
+	U extends Record<string, unknown> = never
+>(table: string, columns: Array<keyof T>) {
 	const model = {
 		insert: async (data: T, conn?: DB): Promise<number | undefined> => {
 			const connection = conn || (await aquireConnection());
@@ -124,6 +124,77 @@ export function createModel<T extends Record<string, unknown>>(
 			releaseConnection(connection);
 			return deletedRow;
 		},
+
+		findWithJoin: async (
+			joinTable: string,
+			primaryKey: keyof T,
+			foreignKey: keyof U,
+			selectColumns: {
+				primary: Array<keyof T>;
+				joined: Array<keyof U>;
+			},
+			where: Partial<T> = {},
+			operator: Operator = "AND",
+			conn?: DB
+		): Promise<(T & { [K in keyof U[]]: U[] })[]> => {
+			const connection = conn || (await aquireConnection());
+
+			const primaryColumns = selectColumns.primary
+				.map((col) => `${table}.${String(col)}`)
+				.join(", ");
+			const joinedColumns = selectColumns.joined
+				.map((col) => `${joinTable}.${String(col)}`)
+				.join(", ");
+			const selectClause = `${primaryColumns}, ${joinedColumns}`;
+
+			const whereClause = Object.keys(where)
+				.map((key) => `${table}.${key} = ?`)
+				.join(` ${operator} `);
+			const whereValues = Object.values(where) as QueryParameterSet;
+
+			const query = `
+                SELECT ${selectClause}
+                FROM ${table}
+                LEFT JOIN ${joinTable} ON ${table}.${String(
+				primaryKey
+			)} = ${joinTable}.${String(foreignKey)}
+                ${whereClause ? `WHERE ${whereClause}` : ""}`;
+
+			const result = connection.query(query, whereValues);
+			releaseConnection(connection);
+
+			const primaryMap: Record<string | number, T & { [K in keyof U[]]: U[] }> =
+				{};
+			const joinedColumnOffset = selectColumns.primary.length;
+
+			for (const row of result) {
+				const primaryData = row.slice(0, joinedColumnOffset);
+				const joinedData = row.slice(joinedColumnOffset);
+
+				const primaryRecord: T = Object.fromEntries(
+					selectColumns.primary.map((col, idx) => [col, primaryData[idx]])
+				) as T;
+
+				const joinedRecord: U = Object.fromEntries(
+					selectColumns.joined.map((col, idx) => [col, joinedData[idx]])
+				) as U;
+
+				const primaryKeyValue = primaryRecord[primaryKey] as string | number;
+				if (!primaryMap[primaryKeyValue]) {
+					primaryMap[primaryKeyValue] = {
+						...primaryRecord,
+						[joinTable]: [],
+					} as T & { [K in keyof U[]]: U[] };
+				}
+
+				if (Object.values(joinedRecord).some((val) => val !== null)) {
+					(primaryMap[primaryKeyValue][joinTable] as U[]).push(joinedRecord);
+				}
+			}
+
+			return Object.values(primaryMap);
+		},
 	};
+
 	return model;
 }

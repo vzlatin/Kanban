@@ -3,6 +3,7 @@ import {
 	Board,
 	Column,
 	Comment,
+	Section,
 	Task,
 	TaskStatus,
 	TaskToDo,
@@ -26,6 +27,9 @@ export enum OutboundMessageType {
 	TaskToDoCreated = "TaskToDoCreated",
 	TaskToDoUpdated = "TaskToDoUpdated",
 	TaskToDoDeleted = "TaskToDoDeleted",
+	SectionCreated = "SectionCreated",
+	SectionUpdated = "SectionUpdated",
+	SectionDeleted = "SectionDeleted",
 }
 
 export enum InboundMessageType {
@@ -43,6 +47,9 @@ export enum InboundMessageType {
 	CreateTaskToDo = "CreateTaskToDo",
 	DeleteTaskToDo = "DeleteTaskToDo",
 	UpdateTaskToDo = "UpdateTaskToDo",
+	CreateSection = "CreateSection",
+	UpdateSection = "UpdateSection",
+	DeleteSection = "DeleteSection",
 }
 
 export interface UserConnectedPayload {
@@ -54,18 +61,23 @@ export interface ErrorPayload {
 	code: number;
 }
 
+export interface EntityDeletedPayload {
+	id: number;
+}
+
 export interface CreateBoardPayload {
 	title: string;
+	section: number;
 }
 export interface BoardCreatedPayload extends Board {}
 
-export interface UpdateBoardPayload extends Board {}
+export interface UpdateBoardPayload {
+	title?: string;
+}
 export interface BoardUpdatedPayload extends UpdateBoardPayload {}
 
-export interface DeleteBoardPaylod {
-	id: number;
-}
-export interface BoardDeletedPayload extends DeleteBoardPaylod {}
+export interface DeleteBoardPaylod extends EntityDeletedPayload {}
+export interface BoardDeletedPayload extends EntityDeletedPayload {}
 
 export interface CreateColumnPayload {
 	title: string;
@@ -75,19 +87,21 @@ export interface ColumnCreatedPayload extends Column {}
 
 export interface UpdateColumnPayload {
 	id: number;
-	title: string;
+	title?: string;
+	columnOrder?: number;
 }
 export interface ColumnUpdatedPayload extends Column {}
 
-export interface DeleteColumnPaylod {
-	id: number;
-}
-export interface ColumnDeletedPayload extends DeleteBoardPaylod {}
+export interface DeleteColumnPaylod extends EntityDeletedPayload {}
+export interface ColumnDeletedPayload extends EntityDeletedPayload {}
 
 export interface CreateTaskPayload {
-	userId: number;
+	userId?: number;
+	columnId: number;
+	boardId: number;
 	title: string;
 	description?: string;
+	taskOrder: number;
 	status: TaskStatus;
 	tag?: string;
 	createdOn: Date;
@@ -99,15 +113,14 @@ export interface UpdateTaskPayload {
 	title?: string;
 	description?: string;
 	status?: TaskStatus;
+	taskOrder?: number;
 	tag?: string;
 	completedOn?: Date;
 }
 export interface TaskUpdatedPayload extends Task {}
 
-export interface DeleteTaskPayload {
-	id: number;
-}
-export interface TaskDeletedPayload extends DeleteBoardPaylod {}
+export interface DeleteTaskPayload extends EntityDeletedPayload {}
+export interface TaskDeletedPayload extends EntityDeletedPayload {}
 
 export interface CreateCommentPayload {
 	taskId: number;
@@ -117,10 +130,8 @@ export interface CreateCommentPayload {
 }
 export interface CommentCreatedPayload extends Comment {}
 
-export interface DeleteCommentPayload {
-	id: number;
-}
-export interface CommentDeletedPayload extends DeleteCommentPayload {}
+export interface DeleteCommentPayload extends EntityDeletedPayload {}
+export interface CommentDeletedPayload extends EntityDeletedPayload {}
 
 export interface CreateTaskToDoPayload {
 	taskId: number;
@@ -137,10 +148,21 @@ export interface UpdateTaskToDoPayload {
 }
 export interface TaskToDoUpdatedPayload extends TaskToDo {}
 
-export interface DeleteTaskToDoPayload {
-	id: number;
+export interface DeleteTaskToDoPayload extends EntityDeletedPayload {}
+export interface TaskToDoDeletedPayload extends EntityDeletedPayload {}
+
+export interface CreateSectionPayload {
+	title: string;
 }
-export interface TaskToDoDeletedPayload extends DeleteBoardPaylod {}
+export interface SectionCreatedPayload extends Section {}
+
+export interface UpdateSectionPayload {
+	title?: string;
+}
+export interface SectionUpdatedPayload extends Section {}
+
+export interface DeleteSectionPayload extends EntityDeletedPayload {}
+export interface SectionDeletedPayload extends EntityDeletedPayload {}
 
 export type Message =
 	| {
@@ -198,6 +220,18 @@ export type Message =
 	| {
 			type: InboundMessageType.DeleteComment;
 			payload: DeleteCommentPayload;
+	  }
+	| {
+			type: InboundMessageType.CreateSection;
+			payload: CreateSectionPayload;
+	  }
+	| {
+			type: InboundMessageType.UpdateSection;
+			payload: UpdateSectionPayload;
+	  }
+	| {
+			type: InboundMessageType.DeleteSection;
+			payload: DeleteSectionPayload;
 	  }
 	| {
 			type: OutboundMessageType.UserConnected;
@@ -262,4 +296,16 @@ export type Message =
 	| {
 			type: OutboundMessageType.TaskToDoDeleted;
 			payload: TaskToDoDeletedPayload;
+	  }
+	| {
+			type: OutboundMessageType.SectionCreated;
+			payload: SectionCreatedPayload;
+	  }
+	| {
+			type: OutboundMessageType.SectionUpdated;
+			payload: SectionUpdatedPayload;
+	  }
+	| {
+			type: OutboundMessageType.SectionDeleted;
+			payload: SectionDeletedPayload;
 	  };

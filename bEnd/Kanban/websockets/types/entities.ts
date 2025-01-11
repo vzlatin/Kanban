@@ -4,28 +4,31 @@ export interface Board {
 	[key: string]: unknown;
 	id?: number;
 	title: string;
+	section: number;
 }
-export const boardColumns = ["id", "title"];
+export const boardColumns = ["id", "title", "section"];
 
 export interface Column {
 	[key: string]: unknown;
 	id?: number;
 	boardId: number;
 	title: string;
+	columnOrder: number;
 }
-export const columnColumns = ["id", "boardId", "title"];
+export const columnColumns = ["id", "boardId", "title", "columnOrder"];
 
 export interface Task {
 	[key: string]: unknown;
 	id?: number;
-	userId: number;
+	userId?: number;
 	columnId: number;
 	boardId: number;
 	title: string;
 	description?: string;
+	taskOrder: number;
 	status: TaskStatus;
 	tag?: string;
-	createdOn?: Date;
+	createdOn: Date;
 	completedOn?: Date;
 }
 export const taskColumns = [
@@ -35,6 +38,7 @@ export const taskColumns = [
 	"boardId",
 	"title",
 	"description",
+	"taskOrder",
 	"status",
 	"tag",
 	"createdOn",
@@ -65,3 +69,10 @@ export const commentColumns = [
 	"content",
 	"createdOn",
 ];
+
+export interface Section {
+	[key: string]: unknown;
+	id?: number;
+	title: string;
+}
+export const sectionColumns = ["id", "title"];

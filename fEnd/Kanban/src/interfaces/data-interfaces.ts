@@ -1,7 +1,13 @@
+export interface Section {
+	id: number;
+	title: string;
+	boards: Board[];
+}
+
 export interface Board {
 	id: number;
 	title: string;
-	description?: string;
+	section: number;
 	columns: Column[];
 }
 
@@ -9,18 +15,22 @@ export interface Column {
 	id: number;
 	title: string;
 	boardId: number;
-	order: number;
+	columnOrder: number;
 	tasks: Task[];
 }
 
 export interface Task {
 	id: number;
+	columnId: number;
+	boardId: number;
 	title: string;
 	description?: string;
-	order: number;
-	assignedUser?: User;
+	taskOrder: number;
+	tag: string;
+	userId?: User;
 	status: TaskStatus;
-	columnId: number;
+	createdOn: Date;
+	completedOn?: Date;
 }
 
 export interface User {
@@ -34,8 +44,7 @@ export interface User {
 enum TaskStatus {
 	Review = "review",
 	InProgress = "in progress",
-	OnHold = "on hold",
-	Cancelled = "cancelled",
+	Testing = "Testing",
 	Done = "done",
 }
 

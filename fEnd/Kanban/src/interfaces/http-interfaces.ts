@@ -1,10 +1,13 @@
 import { AxiosRequestConfig } from "axios";
-import { User } from "./data-interfaces";
+import { Column, Section, User } from "./data-interfaces";
 
 export interface AuthResponse {
 	user: User;
 	accessToken: string;
 }
+
+export interface SectionResponse extends Section {}
+export interface ColumnResponse extends Column {}
 
 export interface ApiErrorResponse {
 	success: boolean;

@@ -1,36 +1,26 @@
 import styles from "./Sidebar.module.css";
 
 import SidebarSection from "../sidebar-section/SidebarSection";
+import { Board } from "../../interfaces/data-interfaces";
 
-const Sidebar = () => {
-	// This is boilerplate code, actual data to be fetched from the api.
-	const sections = [
-		{
-			title: "Collab Boards",
-			data: [
-				{ id: "1", name: "Design Tasks" },
-				{ id: "2", name: "Hack CIA" },
-				{ id: "3", name: "Onboarding Materials" },
-				{ id: "4", name: "Marketing" },
-			],
-		},
-		{
-			title: "Personal",
-			data: [
-				{ id: "5", name: "Home Renovation" },
-				{ id: "6", name: "Untiteled" },
-			],
-		},
-	];
+type SidebarProps = {
+	sections: {
+		id: number;
+		title: string;
+		boards: Board[];
+	}[];
+};
 
+const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
 	return (
 		<>
+			<h3>Sections</h3>
 			<div className={styles.sidebar}>
-				{sections.map((section, sectionIndex) => (
+				{sections.map((section) => (
 					<SidebarSection
-						key={sectionIndex}
+						key={section.id}
 						title={section.title}
-						data={section.data}
+						data={section.boards}
 					/>
 				))}
 			</div>

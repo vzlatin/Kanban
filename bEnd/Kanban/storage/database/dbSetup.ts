@@ -1,6 +1,6 @@
 /**
  * This script performs the database setup.
- * At the time of development, Deno lacks a good, mature or an actively maintainer ORM.
+ * At the time of development, Deno lacks a good, mature or an actively maintained ORM.
  * Given the circumstances, migrations are also not possible, at least not with a
  * plug and play solution. Will look into perhaps writing my own migration scripts.
  *
@@ -33,11 +33,21 @@ export function initializeDatabase(): void {
         ) 
     `);
 
+	// Create the sections table
+	_db.query(`
+            CREATE TABLE IF NOT EXISTS sections (
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+                title TEXT NOT NULL
+            )
+        `);
+
 	// Create the boards table
 	_db.query(`
             CREATE TABLE IF NOT EXISTS boards (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-                title TEXT NOT NULL
+                title TEXT NOT NULL,
+                section INTEGER NOT NULL,
+                FOREIGN KEY(section) REFERENCES sections(id) ON DELETE CASCADE
             )
         `);
 
@@ -47,7 +57,9 @@ export function initializeDatabase(): void {
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
                 boardId INTEGER NOT NULL,
                 title TEXT NOT NULL,
-                FOREIGN KEY(boardID) REFERENCES boards(id) ON DELETE CASCADE
+                columnOrder INTEGER NOT NULL,
+                FOREIGN KEY(boardID) REFERENCES boards(id) ON DELETE CASCADE,
+                UNIQUE (boardId, columnOrder)
             ) 
         `);
 
@@ -60,13 +72,15 @@ export function initializeDatabase(): void {
                 boardId INTEGER NOT NULL,
                 title TEXT NOT NULL,
                 description TEXT,
+                taskOrder INTEGER NOT NULL UNIQUE,
                 status TEXT NOT NULL CHECK (status IN ('New', 'InProgress', 'Testing', 'Done')),
                 tag TEXT,
                 createdOn TEXT NOT NULL,
                 completedOn TEXT,
                 FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE,
                 FOREIGN KEY(columnId) REFERENCES columns(id) ON DELETE CASCADE,
-                FOREIGN KEY(boardId) REFERENCES boards(id) ON DELETE CASCADE
+                FOREIGN KEY(boardId) REFERENCES boards(id) ON DELETE CASCADE,
+                UNIQUE (columnId, taskOrder)
             ) 
         `);
 

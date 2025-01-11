@@ -10,9 +10,10 @@ import { errorHandler } from "./https/middleware/errorHandler.ts";
 initializeDatabase();
 
 const app = new Application();
+
 app.use(
 	oakCors({
-		origin: /^.+127.0.0.1:5173$/,
+		origin: "https://127.0.0.1:5173",
 		credentials: true,
 	})
 );

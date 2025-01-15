@@ -16,7 +16,7 @@ const Board = () => {
 
 	useEffect(() => {
 		getColumns(id);
-	}, []);
+	}, [boardID]);
 
 	return (
 		<>

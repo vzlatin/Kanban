@@ -8,6 +8,7 @@ export interface AuthResponse {
 
 export interface SectionResponse extends Section {}
 export interface ColumnResponse extends Column {}
+export interface UserReponse extends User {}
 
 export interface ApiErrorResponse {
 	success: boolean;

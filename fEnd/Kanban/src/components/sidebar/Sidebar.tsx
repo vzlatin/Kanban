@@ -14,7 +14,6 @@ type SidebarProps = {
 const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
 	return (
 		<>
-			<h3>Sections</h3>
 			<div className={styles.sidebar}>
 				{sections.map((section) => (
 					<SidebarSection

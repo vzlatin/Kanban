@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
+<g id="surface1">
+<path style="fill:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(26.666668%,27.843139%,41.568628%);stroke-opacity:1;stroke-miterlimit:4;" d="M 17.001562 11.001563 C 17.001562 7.6875 14.315625 5.001562 11.001563 5.001562 C 7.6875 5.001562 5.001562 7.6875 5.001562 11.001563 C 5.001562 14.315625 7.6875 17.001562 11.001563 17.001562 C 14.315625 17.001562 17.001562 14.315625 17.001562 11.001563 Z M 17.001562 11.001563 " transform="matrix(0.833333,0,0,0.833333,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke:rgb(26.666668%,27.843139%,41.568628%);stroke-opacity:1;stroke-miterlimit:4;" d="M 11.001563 8.001563 C 10.607812 8.001563 10.214062 8.076562 9.853125 8.226562 C 9.4875 8.38125 9.159375 8.601562 8.878125 8.878125 C 8.601562 9.159375 8.38125 9.4875 8.226562 9.853125 C 8.076562 10.214062 8.001563 10.607812 8.001563 11.001563 " transform="matrix(0.833333,0,0,0.833333,0,0)"/>
+<path style="fill:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke:rgb(26.666668%,27.843139%,41.568628%);stroke-opacity:1;stroke-miterlimit:4;" d="M 20.001562 20.001562 L 17.001562 17.001562 " transform="matrix(0.833333,0,0,0.833333,0,0)"/>
+</g>
+</svg>

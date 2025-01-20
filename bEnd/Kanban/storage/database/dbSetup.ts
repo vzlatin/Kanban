@@ -1,18 +1,19 @@
+import { config } from "../../https/utils/config.ts";
+
 /**
  * This script performs the database setup.
  * At the time of development, Deno lacks a good, mature or an actively maintained ORM.
  * Given the circumstances, migrations are also not possible, at least not with a
  * plug and play solution. Will look into perhaps writing my own migration scripts.
- *
  */
 
 import { DB } from "sqlite";
 
 export function initializeDatabase(): void {
-	const _db = new DB("kanban.db");
+  const _db = new DB(config.path);
 
-	// Create the users table
-	_db.query(`
+  // Create the users table
+  _db.execute(`
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
                 firstName TEXT NOT NULL,
@@ -23,8 +24,8 @@ export function initializeDatabase(): void {
             ) 
         `);
 
-	// Create the tokens table
-	_db.query(`
+  // Create the tokens table
+  _db.execute(`
             CREATE TABLE IF NOT EXISTS tokens (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
                 userId INTEGER NOT NULL,
@@ -33,16 +34,16 @@ export function initializeDatabase(): void {
         ) 
     `);
 
-	// Create the sections table
-	_db.query(`
+  // Create the sections table
+  _db.execute(`
             CREATE TABLE IF NOT EXISTS sections (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
                 title TEXT NOT NULL
             )
         `);
 
-	// Create the boards table
-	_db.query(`
+  // Create the boards table
+  _db.execute(`
             CREATE TABLE IF NOT EXISTS boards (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
                 title TEXT NOT NULL,
@@ -51,8 +52,8 @@ export function initializeDatabase(): void {
             )
         `);
 
-	// Create the columns table
-	_db.query(`
+  // Create the columns table
+  _db.execute(`
             CREATE TABLE IF NOT EXISTS columns (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
                 boardId INTEGER NOT NULL,
@@ -63,8 +64,8 @@ export function initializeDatabase(): void {
             ) 
         `);
 
-	// Create the tasks table
-	_db.query(`
+  // Create the tasks table
+  _db.execute(`
             CREATE TABLE IF NOT EXISTS tasks (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
                 userId INTEGER NOT NULL,
@@ -84,8 +85,8 @@ export function initializeDatabase(): void {
             ) 
         `);
 
-	// Create the tasktodos table
-	_db.query(`
+  // Create the tasktodos table
+  _db.execute(`
             CREATE TABLE IF NOT EXISTS tasktodos (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
                 taskId INTEGER NOT NULL,
@@ -95,8 +96,8 @@ export function initializeDatabase(): void {
             ) 
         `);
 
-	// Create the comments table
-	_db.query(`
+  // Create the comments table
+  _db.execute(`
             CREATE TABLE IF NOT EXISTS comments (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
                 taskId INTEGER NOT NULL,
@@ -108,5 +109,5 @@ export function initializeDatabase(): void {
             ) 
         `);
 
-	_db.close();
+  _db.close();
 }

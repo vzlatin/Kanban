@@ -5,10 +5,8 @@
  */
 export type RowTuple<T extends Record<string, unknown>> = {
     [K in keyof T]: T[K];
-} extends infer U
-    ? U extends unknown[]
-        ? U
-        : never
+} extends infer U ? U extends unknown[] ? U
+    : never
     : never;
 
 export type WhereClause<T> = Partial<Record<keyof T, unknown>>;

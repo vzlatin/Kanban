@@ -1,11 +1,12 @@
 import { DB } from "sqlite";
+import { config } from "../../https/utils/config.ts";
 
 const poolSize = 6;
 const timeout = 5000;
 
 const connections: DB[] = Array.from(
-    { length: poolSize },
-    () => new DB("kanban.db")
+  { length: poolSize },
+  () => new DB(config.path),
 );
 const queue: Array<() => void> = [];
 
@@ -18,39 +19,41 @@ const queue: Array<() => void> = [];
  * by the releaseConnection function. Whenever a function will release
  * a database connection, the releaseConnection will dequeue any aquiry attempt,
  * granted the timeout hasn't expired, and will execute it.
- *
  */
 export function aquireConnection(): Promise<DB> {
-    const startTime = Date.now();
+  const startTime = Date.now();
+  console.log("length: ", connections.length);
+  console.log("connection aquired");
 
-    return new Promise((resolve, reject) => {
-        const attemptAquire = () => {
-            const now = Date.now();
+  return new Promise((resolve, reject) => {
+    const attemptAquire = () => {
+      const now = Date.now();
 
-            if (connections.length > 0) {
-                resolve(connections.pop()!);
-            } else if (now - startTime >= timeout) {
-                reject(
-                    new Error(
-                        "Connection timeout: No available database connections"
-                    )
-                );
-            } else {
-                queue.push(attemptAquire);
-            }
-        };
-        attemptAquire();
-    });
+      if (connections.length > 0) {
+        resolve(connections.pop()!);
+      } else if (now - startTime >= timeout) {
+        reject(
+          new Error(
+            "Connection timeout: No available database connections",
+          ),
+        );
+      } else {
+        queue.push(attemptAquire);
+      }
+    };
+    attemptAquire();
+  });
 }
 
 export function releaseConnection(connection: DB): void {
-    connections.push(connection);
-    if (queue.length > 0) {
-        const nextRequest = queue.shift();
-        if (nextRequest) nextRequest();
-    }
+  console.log("connection released");
+  connections.push(connection);
+  if (queue.length > 0) {
+    const nextRequest = queue.shift();
+    if (nextRequest) nextRequest();
+  }
 }
 
 export function closePool(): void {
-    connections.forEach((connection) => connection.close());
+  connections.forEach((connection) => connection.close());
 }

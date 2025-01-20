@@ -1,200 +1,221 @@
 import { DB, type QueryParameterSet } from "sqlite";
 
 import {
-	aquireConnection,
-	releaseConnection,
+  aquireConnection,
+  releaseConnection,
 } from "../database/connectionPool.ts";
 import { row2Object } from "./helpers.ts";
-import { RowTuple, type Operator, type WhereClause } from "./types/ormTypes.ts";
+import { type Operator, RowTuple, type WhereClause } from "./types/ormTypes.ts";
 
 export function createModel<
-	T extends Record<string, unknown>,
-	U extends Record<string, unknown> = never
+  T extends Record<string, unknown>,
+  U extends Record<string, unknown> = never,
 >(table: string, columns: Array<keyof T>) {
-	const model = {
-		insert: async (data: T, conn?: DB): Promise<number | undefined> => {
-			const connection = conn || (await aquireConnection());
-			const columns = Object.keys(data).join(",");
-			const placeholders = Object.keys(data)
-				.map(() => "?")
-				.join(",");
-			const values = Object.values(data) as QueryParameterSet;
-			connection.query(
-				`INSERT INTO ${table} (${columns}) VALUES (${placeholders})`,
-				values
-			);
-			releaseConnection(connection);
-			return connection.lastInsertRowId
-				? connection.lastInsertRowId
-				: undefined;
-		},
+  const model = {
+    insert: async (data: T, conn?: DB): Promise<number | undefined> => {
+      const connection = conn || (await aquireConnection());
+      const columns = Object.keys(data).join(",");
+      const placeholders = Object.keys(data)
+        .map(() => "?")
+        .join(",");
+      const values = Object.values(data) as QueryParameterSet;
+      connection.query(
+        `INSERT INTO ${table} (${columns}) VALUES (${placeholders})`,
+        values,
+      );
+      releaseConnection(connection);
+      return connection.lastInsertRowId
+        ? connection.lastInsertRowId
+        : undefined;
+    },
 
-		findAll: async (
-			where: WhereClause<T> = {},
-			operator: Operator = "AND",
-			conn?: DB
-		): Promise<T[] | undefined> => {
-			const connection = conn || (await aquireConnection());
-			const whereClause = Object.keys(where)
-				.map((key) => `${key} = ?`)
-				.join(`${operator}`);
-			const queryString =
-				`SELECT * FROM ${table}` + (whereClause ? `WHERE ${whereClause}` : "");
-			const result = connection.query<RowTuple<T>>(
-				queryString,
-				Object.values(where) as QueryParameterSet
-			);
+    findAll: async (
+      where: WhereClause<T> = {},
+      operator: Operator = "AND",
+      conn?: DB,
+    ): Promise<T[] | undefined> => {
+      const connection = conn || (await aquireConnection());
+      const whereClause = Object.keys(where)
+        .map((key) => `${key} = ?`)
+        .join(`${operator}`);
+      const queryString = `SELECT * FROM ${table}` +
+        (whereClause ? `WHERE ${whereClause}` : "");
+      const result = connection.query<RowTuple<T>>(
+        queryString,
+        Object.values(where) as QueryParameterSet,
+      );
 
-			if (!result || result.length === 0) return undefined;
+      if (!result || result.length === 0) {
+        releaseConnection(connection);
+        return undefined;
+      }
 
-			releaseConnection(connection);
-			return row2Object(result, columns);
-		},
+      releaseConnection(connection);
+      return row2Object(result, columns);
+    },
 
-		/**
-		 * Since calls to query always returns an array of tuples, if the
-		 * parameter allows for a collection of records to be returned,
-		 * the function will just return the first matching entry
-		 */
-		findOne: async (
-			where: WhereClause<T> = {},
-			operator: Operator = "AND",
-			conn?: DB
-		): Promise<T | undefined> => {
-			const connection = conn || (await aquireConnection());
-			const whereClause = Object.keys(where)
-				.map((key) => `${key} = ?`)
-				.join(`${operator}`);
-			const queryString =
-				`SELECT * FROM ${table} ` + (whereClause ? `WHERE ${whereClause}` : "");
-			const result = connection.query<RowTuple<T>>(
-				queryString,
-				Object.values(where) as QueryParameterSet
-			);
+    /**
+     * Since calls to query always returns an array of tuples, if the
+     * parameter allows for a collection of records to be returned,
+     * the function will just return the first matching entry
+     */
+    findOne: async (
+      where: WhereClause<T> = {},
+      operator: Operator = "AND",
+      conn?: DB,
+    ): Promise<T | undefined> => {
+      const connection = conn || (await aquireConnection());
+      const whereClause = Object.keys(where)
+        .map((key) => `${key} = ?`)
+        .join(`${operator}`);
+      const queryString = `SELECT * FROM ${table} ` +
+        (whereClause ? `WHERE ${whereClause}` : "");
+      const result = connection.query<RowTuple<T>>(
+        queryString,
+        Object.values(where) as QueryParameterSet,
+      );
 
-			if (!result || result.length === 0) {
-				return undefined;
-			}
+      if (!result || result.length === 0) {
+        releaseConnection(connection);
+        return undefined;
+      }
 
-			releaseConnection(connection);
-			return row2Object(result, columns)[0];
-		},
+      releaseConnection(connection);
+      return row2Object(result, columns)[0];
+    },
 
-		update: async (
-			where: WhereClause<T> = {},
-			data: Partial<T>,
-			operator: Operator = "AND",
-			conn?: DB
-		): Promise<T | undefined> => {
-			const connection = conn || (await aquireConnection());
-			const setString = Object.keys(data)
-				.map((key) => `${key} = ?`)
-				.join(", ");
-			const whereString = Object.keys(where)
-				.map((key) => `${key} = ?`)
-				.join(` ${operator} `);
-			const values = [...Object.values(data), ...Object.values(where)];
+    update: async (
+      where: WhereClause<T> = {},
+      data: Partial<T>,
+      operator: Operator = "AND",
+      conn?: DB,
+    ): Promise<T | undefined> => {
+      const connection = conn || (await aquireConnection());
+      const setString = Object.keys(data)
+        .map((key) => `${key} = ?`)
+        .join(", ");
+      const whereString = Object.keys(where)
+        .map((key) => `${key} = ?`)
+        .join(` ${operator} `);
+      const values = [...Object.values(data), ...Object.values(where)];
 
-			connection.query(
-				`UPDATE ${table} SET ${setString} WHERE ${whereString}`,
-				values
-			);
-			const updatedRow = await model.findOne(where, operator);
-			releaseConnection(connection);
+      connection.query(
+        `UPDATE ${table} SET ${setString} WHERE ${whereString}`,
+        values,
+      );
+      const updatedRow = await model.findOne(where, operator);
+      releaseConnection(connection);
 
-			return updatedRow;
-		},
+      return updatedRow;
+    },
 
-		delete: async (
-			where: WhereClause<T>,
-			operator: Operator = "AND",
-			conn?: DB
-		): Promise<T | undefined> => {
-			const connection = conn || (await aquireConnection());
+    delete: async (
+      where: WhereClause<T>,
+      operator: Operator = "AND",
+      conn?: DB,
+    ): Promise<T | undefined> => {
+      const connection = conn || (await aquireConnection());
 
-			const deletedRow = await model.findOne(where, operator);
+      const deletedRow = await model.findOne(where, operator);
 
-			const whereClause = Object.keys(where)
-				.map((key) => `${key} = ?`)
-				.join(`${operator}`);
-			const queryString =
-				`DELETE FROM ${table} ` + (whereClause ? `WHERE ${whereClause}` : "");
-			connection.query(queryString, Object.values(where) as QueryParameterSet);
+      const whereClause = Object.keys(where)
+        .map((key) => `${key} = ?`)
+        .join(`${operator}`);
+      const queryString = `DELETE FROM ${table} ` +
+        (whereClause ? `WHERE ${whereClause}` : "");
+      connection.query(
+        queryString,
+        Object.values(where) as QueryParameterSet,
+      );
 
-			releaseConnection(connection);
-			return deletedRow;
-		},
+      releaseConnection(connection);
+      return deletedRow;
+    },
 
-		findWithJoin: async (
-			joinTable: string,
-			primaryKey: keyof T,
-			foreignKey: keyof U,
-			selectColumns: {
-				primary: Array<keyof T>;
-				joined: Array<keyof U>;
-			},
-			where: Partial<T> = {},
-			operator: Operator = "AND",
-			conn?: DB
-		): Promise<(T & { [K in keyof U[]]: U[] })[]> => {
-			const connection = conn || (await aquireConnection());
+    findWithJoin: async (
+      joinTable: string,
+      primaryKey: keyof T,
+      foreignKey: keyof U,
+      selectColumns: {
+        primary: Array<keyof T>;
+        joined: Array<keyof U>;
+      },
+      where: Partial<T> = {},
+      operator: Operator = "AND",
+      conn?: DB,
+    ): Promise<(T & { [K in keyof U[]]: U[] })[]> => {
+      const connection = conn || (await aquireConnection());
 
-			const primaryColumns = selectColumns.primary
-				.map((col) => `${table}.${String(col)}`)
-				.join(", ");
-			const joinedColumns = selectColumns.joined
-				.map((col) => `${joinTable}.${String(col)}`)
-				.join(", ");
-			const selectClause = `${primaryColumns}, ${joinedColumns}`;
+      const primaryColumns = selectColumns.primary
+        .map((col) => `${table}.${String(col)}`)
+        .join(", ");
+      const joinedColumns = selectColumns.joined
+        .map((col) => `${joinTable}.${String(col)}`)
+        .join(", ");
+      const selectClause = `${primaryColumns}, ${joinedColumns}`;
 
-			const whereClause = Object.keys(where)
-				.map((key) => `${table}.${key} = ?`)
-				.join(` ${operator} `);
-			const whereValues = Object.values(where) as QueryParameterSet;
+      const whereClause = Object.keys(where)
+        .map((key) => `${table}.${key} = ?`)
+        .join(` ${operator} `);
+      const whereValues = Object.values(where) as QueryParameterSet;
 
-			const query = `
+      const query = `
                 SELECT ${selectClause}
                 FROM ${table}
-                LEFT JOIN ${joinTable} ON ${table}.${String(
-				primaryKey
-			)} = ${joinTable}.${String(foreignKey)}
+                LEFT JOIN ${joinTable} ON ${table}.${
+        String(
+          primaryKey,
+        )
+      } = ${joinTable}.${String(foreignKey)}
                 ${whereClause ? `WHERE ${whereClause}` : ""}`;
 
-			const result = connection.query(query, whereValues);
-			releaseConnection(connection);
+      const result = connection.query(query, whereValues);
+      releaseConnection(connection);
 
-			const primaryMap: Record<string | number, T & { [K in keyof U[]]: U[] }> =
-				{};
-			const joinedColumnOffset = selectColumns.primary.length;
+      const primaryMap: Record<
+        string | number,
+        T & { [K in keyof U[]]: U[] }
+      > = {};
+      const joinedColumnOffset = selectColumns.primary.length;
 
-			for (const row of result) {
-				const primaryData = row.slice(0, joinedColumnOffset);
-				const joinedData = row.slice(joinedColumnOffset);
+      for (const row of result) {
+        const primaryData = row.slice(0, joinedColumnOffset);
+        const joinedData = row.slice(joinedColumnOffset);
 
-				const primaryRecord: T = Object.fromEntries(
-					selectColumns.primary.map((col, idx) => [col, primaryData[idx]])
-				) as T;
+        const primaryRecord: T = Object.fromEntries(
+          selectColumns.primary.map((
+            col,
+            idx,
+          ) => [col, primaryData[idx]]),
+        ) as T;
 
-				const joinedRecord: U = Object.fromEntries(
-					selectColumns.joined.map((col, idx) => [col, joinedData[idx]])
-				) as U;
+        const joinedRecord: U = Object.fromEntries(
+          selectColumns.joined.map((
+            col,
+            idx,
+          ) => [col, joinedData[idx]]),
+        ) as U;
 
-				const primaryKeyValue = primaryRecord[primaryKey] as string | number;
-				if (!primaryMap[primaryKeyValue]) {
-					primaryMap[primaryKeyValue] = {
-						...primaryRecord,
-						[joinTable]: [],
-					} as T & { [K in keyof U[]]: U[] };
-				}
+        const primaryKeyValue = primaryRecord[primaryKey] as
+          | string
+          | number;
+        if (!primaryMap[primaryKeyValue]) {
+          primaryMap[primaryKeyValue] = {
+            ...primaryRecord,
+            [joinTable]: [],
+          } as T & { [K in keyof U[]]: U[] };
+        }
 
-				if (Object.values(joinedRecord).some((val) => val !== null)) {
-					(primaryMap[primaryKeyValue][joinTable] as U[]).push(joinedRecord);
-				}
-			}
+        if (Object.values(joinedRecord).some((val) => val !== null)) {
+          (primaryMap[primaryKeyValue][joinTable] as U[]).push(
+            joinedRecord,
+          );
+        }
+      }
 
-			return Object.values(primaryMap);
-		},
-	};
+      return Object.values(primaryMap);
+    },
+  };
 
-	return model;
+  return model;
 }

@@ -7,59 +7,66 @@ import { MessageMap } from "../types/zod/inbound.ts";
 import { ApiError } from "../../errors/apiErrors.ts";
 
 export async function createBoard(
-	payload: MessageMap["CreateBoard"]
+    payload: MessageMap["CreateBoard"],
 ): Promise<Board> {
-	const BoardModel = createModel<Board>("boards", boardColumns);
-	return await withTransaction(async (conn: DB) => {
-		const lastInsertedRowId = await BoardModel.insert(payload, conn);
-		if (!lastInsertedRowId) throw DatabaseError.ConflictError();
+    const BoardModel = createModel<Board>("boards", boardColumns);
+    return await withTransaction(async (conn: DB) => {
+        const lastInsertedRowId = await BoardModel.insert(payload, conn);
+        if (!lastInsertedRowId) throw DatabaseError.ConflictError();
 
-		const board = await BoardModel.findOne({ id: lastInsertedRowId });
-		if (!board) throw DatabaseError.ConflictError();
+        const board = await BoardModel.findOne({ id: lastInsertedRowId });
+        if (!board) throw DatabaseError.ConflictError();
 
-		return board;
-	});
+        return board;
+    });
 }
 
 export async function updateBoard(
-	payload: MessageMap["UpdateBoard"]
+    payload: MessageMap["UpdateBoard"],
 ): Promise<Board> {
-	const BoardModel = createModel<Board>("boards", boardColumns);
-	return await withTransaction(async (conn: DB) => {
-		const candidate = await BoardModel.findOne(
-			{ id: payload.id },
-			undefined,
-			conn
-		);
-		if (!candidate)
-			throw ApiError.BadRequestError(
-				`A board with id: ${payload.id} doesn't exist`
-			);
+    const BoardModel = createModel<Board>("boards", boardColumns);
+    return await withTransaction(async (conn: DB) => {
+        const candidate = await BoardModel.findOne(
+            { id: payload.id },
+            undefined,
+            conn,
+        );
+        if (!candidate) {
+            throw ApiError.BadRequestError(
+                `A board with id: ${payload.id} doesn't exist`,
+            );
+        }
 
-		const board = await BoardModel.update(
-			{ id: payload.id },
-			{ title: payload.title },
-			undefined,
-			conn
-		);
-		if (!board)
-			throw ApiError.BadRequestError(
-				`A board with id: ${payload.id} doesn't exist`
-			);
-		return board;
-	});
+        const board = await BoardModel.update(
+            { id: payload.id },
+            { title: payload.title },
+            undefined,
+            conn,
+        );
+        if (!board) {
+            throw ApiError.BadRequestError(
+                `A board with id: ${payload.id} doesn't exist`,
+            );
+        }
+        return board;
+    });
 }
 
 export async function deleteBoard(
-	payload: MessageMap["DeleteBoard"]
+    payload: MessageMap["DeleteBoard"],
 ): Promise<Board> {
-	const BoardModel = createModel<Board>("boards", boardColumns);
-	return await withTransaction(async (conn: DB) => {
-		const board = await BoardModel.delete({ id: payload.id }, undefined, conn);
-		if (!board)
-			throw ApiError.BadRequestError(
-				`A board with id: ${payload.id} doesn't exist`
-			);
-		return board;
-	});
+    const BoardModel = createModel<Board>("boards", boardColumns);
+    return await withTransaction(async (conn: DB) => {
+        const board = await BoardModel.delete(
+            { id: payload.id },
+            undefined,
+            conn,
+        );
+        if (!board) {
+            throw ApiError.BadRequestError(
+                `A board with id: ${payload.id} doesn't exist`,
+            );
+        }
+        return board;
+    });
 }

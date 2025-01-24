@@ -14,6 +14,8 @@ export function createModel<
   const model = {
     insert: async (data: T, conn?: DB): Promise<number | undefined> => {
       const connection = conn || (await aquireConnection());
+      const shouldRelease = !conn;
+      console.log("Connection aquired: insert");
       const columns = Object.keys(data).join(",");
       const placeholders = Object.keys(data)
         .map(() => "?")
@@ -23,7 +25,7 @@ export function createModel<
         `INSERT INTO ${table} (${columns}) VALUES (${placeholders})`,
         values,
       );
-      releaseConnection(connection);
+      if (shouldRelease) releaseConnection(connection);
       return connection.lastInsertRowId
         ? connection.lastInsertRowId
         : undefined;
@@ -35,6 +37,8 @@ export function createModel<
       conn?: DB,
     ): Promise<T[] | undefined> => {
       const connection = conn || (await aquireConnection());
+      const shouldRelease = !conn;
+      console.log("Connection aquired: findall");
       const whereClause = Object.keys(where)
         .map((key) => `${key} = ?`)
         .join(`${operator}`);
@@ -46,11 +50,11 @@ export function createModel<
       );
 
       if (!result || result.length === 0) {
-        releaseConnection(connection);
+        if (shouldRelease) releaseConnection(connection);
         return undefined;
       }
 
-      releaseConnection(connection);
+      if (shouldRelease) releaseConnection(connection);
       return row2Object(result, columns);
     },
 
@@ -65,6 +69,8 @@ export function createModel<
       conn?: DB,
     ): Promise<T | undefined> => {
       const connection = conn || (await aquireConnection());
+      const shouldRelease = !conn;
+      console.log("Connection aquired: findone");
       const whereClause = Object.keys(where)
         .map((key) => `${key} = ?`)
         .join(`${operator}`);
@@ -76,11 +82,11 @@ export function createModel<
       );
 
       if (!result || result.length === 0) {
-        releaseConnection(connection);
+        if (shouldRelease) releaseConnection(connection);
         return undefined;
       }
 
-      releaseConnection(connection);
+      if (shouldRelease) releaseConnection(connection);
       return row2Object(result, columns)[0];
     },
 
@@ -91,6 +97,8 @@ export function createModel<
       conn?: DB,
     ): Promise<T | undefined> => {
       const connection = conn || (await aquireConnection());
+      const shouldRelease = !conn;
+      console.log("Connection aquired: update");
       const setString = Object.keys(data)
         .map((key) => `${key} = ?`)
         .join(", ");
@@ -103,8 +111,9 @@ export function createModel<
         `UPDATE ${table} SET ${setString} WHERE ${whereString}`,
         values,
       );
-      const updatedRow = await model.findOne(where, operator);
-      releaseConnection(connection);
+      console.log("update query executed");
+      const updatedRow = await model.findOne(where, operator, connection);
+      if (shouldRelease) releaseConnection(connection);
 
       return updatedRow;
     },
@@ -115,8 +124,9 @@ export function createModel<
       conn?: DB,
     ): Promise<T | undefined> => {
       const connection = conn || (await aquireConnection());
-
-      const deletedRow = await model.findOne(where, operator);
+      const shouldRelease = !conn;
+      console.log("Connection aquired: delete");
+      const deletedRow = await model.findOne(where, operator, connection);
 
       const whereClause = Object.keys(where)
         .map((key) => `${key} = ?`)
@@ -128,7 +138,7 @@ export function createModel<
         Object.values(where) as QueryParameterSet,
       );
 
-      releaseConnection(connection);
+      if (shouldRelease) releaseConnection(connection);
       return deletedRow;
     },
 
@@ -145,7 +155,8 @@ export function createModel<
       conn?: DB,
     ): Promise<(T & { [K in keyof U[]]: U[] })[]> => {
       const connection = conn || (await aquireConnection());
-
+      const shouldRelease = !conn;
+      console.log("Connection aquired: findwithjoin");
       const primaryColumns = selectColumns.primary
         .map((col) => `${table}.${String(col)}`)
         .join(", ");
@@ -170,7 +181,7 @@ export function createModel<
                 ${whereClause ? `WHERE ${whereClause}` : ""}`;
 
       const result = connection.query(query, whereValues);
-      releaseConnection(connection);
+      if (shouldRelease) releaseConnection(connection);
 
       const primaryMap: Record<
         string | number,

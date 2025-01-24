@@ -22,13 +22,13 @@ const queue: Array<() => void> = [];
  */
 export function aquireConnection(): Promise<DB> {
   const startTime = Date.now();
-  console.log("length: ", connections.length);
-  console.log("connection aquired");
-
   return new Promise((resolve, reject) => {
     const attemptAquire = () => {
       const now = Date.now();
 
+      console.log("Attempting to acquire a connection...");
+      console.log(`Connections available: ${connections.length}`);
+      console.log(`Queue size: ${queue.length}`);
       if (connections.length > 0) {
         resolve(connections.pop()!);
       } else if (now - startTime >= timeout) {
@@ -45,13 +45,29 @@ export function aquireConnection(): Promise<DB> {
   });
 }
 
+//export function releaseConnection(connection: DB): void {
+//  connections.push(connection);
+//  if (queue.length > 0) {
+//    const nextRequest = queue.shift();
+//    if (nextRequest) nextRequest();
+//    console.log("connection released");
+//  }
+//  console.log("connection released");
+//}
+
 export function releaseConnection(connection: DB): void {
-  console.log("connection released");
+  console.log("Releasing a connection...");
   connections.push(connection);
-  if (queue.length > 0) {
+
+  // Process the next queued request, if any
+  while (queue.length > 0) {
     const nextRequest = queue.shift();
-    if (nextRequest) nextRequest();
+    if (nextRequest) {
+      nextRequest(); // Attempt to acquire connection for the queued task
+      break; // Only process one task per release
+    }
   }
+  console.log(`Connections available after release: ${connections.length}`);
 }
 
 export function closePool(): void {

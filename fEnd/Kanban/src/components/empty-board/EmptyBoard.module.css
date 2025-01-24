@@ -1,0 +1,12 @@
+/*.wrapper {*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  justify-content: center;*/
+/*}*/
+
+.no-board-selected {
+  font-family: "QuicksandBold", sans-serif;
+  color: var(--color-font);
+  font-size: 2rem;
+  margin: 15rem auto;
+}

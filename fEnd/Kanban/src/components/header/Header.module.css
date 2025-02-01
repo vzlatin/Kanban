@@ -1,0 +1,95 @@
+.header {
+  height: 3.125rem;
+  width: 100%;
+  padding: 0rem 1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 10rem;
+  align-items: center;
+}
+
+.search {
+  width: 15rem;
+  display: flex;
+}
+
+.search-input {
+  height: 2.5rem;
+  padding: 0.4rem 0.4rem 0.4rem 2rem;
+  border-radius: 0.5rem;
+  border: none;
+  appearance: none;
+  font-family: "QuicksandMedium", sans-serif;
+  background-color: var(--color-background);
+  background-image: url("search.svg");
+  background-repeat: no-repeat;
+  background-position: 0.5rem;
+  border: 0.063rem var(--color-accent-grey-light) solid;
+  box-shadow: var(--shadow-input-inset);
+}
+
+/* .search-logo-image {
+	height: 2rem;
+	width: 2rem;
+} */
+
+.team {
+  display: flex;
+}
+
+.team-members {
+  display: flex;
+  flex-direction: row;
+  /*align-items: center;*/
+  justify-content: center;
+  gap: 1rem;
+}
+
+.member {
+  width: 5rem;
+  height: 2rem;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+}
+
+.profile {
+  margin-left: auto;
+  position: relative;
+}
+.profile:hover {
+  cursor: pointer;
+}
+
+.profile-image {
+  border: 1px solid black;
+  border-radius: 50%;
+  padding: 0.4rem;
+}
+
+.profile-menu {
+  /*display: none;*/
+  width: 10rem;
+  padding: 0.3rem;
+  position: absolute;
+  right: 0.2rem;
+  z-index: 1;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-box-main);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.menu-item {
+  border-radius: 0.3rem;
+  text-decoration: none;
+  padding: 0.5rem;
+}
+.menu-item:hover {
+  background-color: var(--color-accent-grey-light);
+  cursor: pointer;
+}
+.menu-item:active {
+  box-shadow: var(--shadow-input-inset);
+}

@@ -1,0 +1,6 @@
+.task {
+	border-radius: 1rem;
+	width: 14rem;
+	height: 7rem;
+	box-shadow: var(--shadow-box-main);
+}

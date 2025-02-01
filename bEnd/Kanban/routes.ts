@@ -1,15 +1,15 @@
 import { Router } from "@oak/oak";
 
 import {
-  getUsers,
-  loginUser,
-  logoutUser,
-  refreshUser,
-  registerUser,
+    getUsers,
+    loginUser,
+    logoutUser,
+    refreshUser,
+    registerUser,
 } from "./https/controllers/user.controller.ts";
 import {
-  getColumns,
-  getSections,
+    getColumns,
+    getSections,
 } from "./https/controllers/data.controller.ts";
 import { validateUser } from "./https/validators/userValidator.ts";
 import { authHandler } from "./https/middleware/authHandler.ts";

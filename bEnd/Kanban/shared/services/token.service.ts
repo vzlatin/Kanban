@@ -1,8 +1,8 @@
 import { createJWT, verifyJWT } from "../../https/utils/jsonWebToken.ts";
 import {
-    Token,
-    tokenColumns,
-    type TokenType,
+  Token,
+  tokenColumns,
+  type TokenType,
 } from "../../https/types/tokenTypes.ts";
 import { config } from "../../https/utils/config.ts";
 import { createModel } from "../../storage/orm/orm.ts";
@@ -11,89 +11,97 @@ import type { User } from "../../https/types/userTypes.ts";
 import { DatabaseError } from "../../errors/databaseErrors.ts";
 import { ApiError } from "../../errors/apiErrors.ts";
 import type { Payload } from "jwt";
+import {
+  aquireConnection,
+  releaseConnection,
+} from "../../storage/database/connectionPool.ts";
 
 export async function generateTokens(
-    user: User,
+  user: User,
 ): Promise<{ accessToken: string; refreshToken: string }> {
-    const accessTokenSecret = config.accessTokenKey;
-    const refreshTokenSecret = config.refreshTokenKey;
+  const accessTokenSecret = config.accessTokenKey;
+  const refreshTokenSecret = config.refreshTokenKey;
 
-    if (!accessTokenSecret) {
-        throw new Error("Property missing or undefined: accessTokenSecret");
-    }
+  if (!accessTokenSecret) {
+    throw new Error("Property missing or undefined: accessTokenSecret");
+  }
 
-    if (!refreshTokenSecret) {
-        throw new Error("Property missing or undefined: refreshTokenSecret");
-    }
+  if (!refreshTokenSecret) {
+    throw new Error("Property missing or undefined: refreshTokenSecret");
+  }
 
-    const accessToken = await createJWT(
-        user,
-        accessTokenSecret,
-        config.accessTokenExpiration,
-    );
-    const refreshToken = await createJWT(
-        user,
-        refreshTokenSecret,
-        config.refreshTokenExpiration,
-    );
+  const accessToken = await createJWT(
+    user,
+    accessTokenSecret,
+    config.accessTokenExpiration,
+  );
+  const refreshToken = await createJWT(
+    user,
+    refreshTokenSecret,
+    config.refreshTokenExpiration,
+  );
 
-    return { accessToken, refreshToken };
+  return { accessToken, refreshToken };
 }
 
-export async function saveToken(token: Token): Promise<void> {
-    const TokenModel = createModel<Token>("tokens", tokenColumns);
-    const tokenData = await TokenModel.findOne({ userId: token.userId });
-    if (tokenData) {
-        /**
-         * If there is a token, we overwrite the refresh token
-         * which should be updated on every login.
-         */
-        const updatedToken = await TokenModel.update(
-            { userId: token.userId },
-            { refreshToken: token.refreshToken },
-        );
-        if (!updatedToken) {
-            throw ApiError.BadRequestError(
-                `Token with used id: ${token.userId} doesn't exist`,
-            );
-        }
-        return;
-    }
+export function saveToken(token: Token): void {
+  const TokenModel = createModel<Token>("tokens", tokenColumns);
+
+  const tokenData = TokenModel.findOne(
+    { userId: token.userId },
+    "AND",
+  );
+
+  if (tokenData) {
     /**
-     * If no token was found in the database, it's likely that the user
-     * logs in for the first time, so we save it in the DB.
+     * If there is a token, we overwrite the refresh token
+     * which should be updated on every login.
      */
-    const lastInsertedId = await TokenModel.insert(token);
+    const updatedToken = TokenModel.update(
+      { userId: token.userId },
+      { refreshToken: token.refreshToken },
+      "AND",
+    );
+
+    if (!updatedToken) {
+      throw ApiError.BadRequestError(
+        `Token with userId: ${token.userId} doesn't exist`,
+      );
+    }
+  } else {
+    const lastInsertedId = TokenModel.insert(token);
+
     if (!lastInsertedId) throw DatabaseError.ConflictError();
+  }
 }
 
-export async function removeToken(token: string): Promise<string> {
-    const TokenModel = createModel<Token>("tokens", tokenColumns);
-    const tokenData = await TokenModel.delete({ refreshToken: token });
-    if (!tokenData) throw ApiError.BadRequestError("Incorrect refresh token");
+export function removeToken(token: string): string {
+  const TokenModel = createModel<Token>("tokens", tokenColumns);
+  const tokenData = TokenModel.delete({ refreshToken: token });
+  if (!tokenData) throw ApiError.BadRequestError("Incorrect refresh token");
 
-    return tokenData.refreshToken;
+  return tokenData.refreshToken;
 }
 
 export async function validateToken(
-    token: string,
-    tokenType: TokenType,
+  token: string,
+  tokenType: TokenType,
 ): Promise<Omit<Payload, "exp">> {
-    const TokenModel = createModel<Token>("tokens", tokenColumns);
-    const key = tokenType === "refresh"
-        ? config.refreshTokenKey
-        : config.accessTokenKey;
-    const userData = await verifyJWT(token, key);
+  const TokenModel = createModel<Token>("tokens", tokenColumns);
+  const key = tokenType === "refresh"
+    ? config.refreshTokenKey
+    : config.accessTokenKey;
+  const userData = await verifyJWT(token, key);
 
-    if (tokenType === "refresh") {
-        const refreshToken = await TokenModel.findOne({ refreshToken: token });
-        if (!userData || !refreshToken) throw ApiError.UnauthorizedError();
-    }
+  if (tokenType === "refresh") {
+    const refreshToken = TokenModel.findOne({ refreshToken: token });
+    if (!userData || !refreshToken) throw ApiError.UnauthorizedError();
+  }
 
-    return {
-        id: userData.id,
-        email: userData.email,
-        fName: userData.fName,
-        lName: userData.lName,
-    };
+  return {
+    id: userData.id,
+    email: userData.email,
+    fName: userData.fName,
+    lName: userData.lName,
+  };
 }

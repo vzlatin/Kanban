@@ -28,11 +28,7 @@ app.addEventListener("close", () => {
 const port = parseInt(config.port!);
 const hostname = config.hostname;
 
-//const hostname = "127.0.0.1";
-//const port = 5000;
-
 console.log(`Listening to ${config.hostname} on port: ${config.port}`);
-//console.log(`Listening to ${hostname} on port: ${port}`);
 try {
   await app.listen({
     port,

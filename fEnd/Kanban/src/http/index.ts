@@ -17,8 +17,6 @@ const baseURL: string = import.meta.env.VITE_BASE_URL;
 const maxRetries: number = import.meta.env.VITE_MAX_RETRIES;
 const timeout: number = import.meta.env.VITE_TIMEOUT;
 
-console.log(baseURL);
-
 const $defaultApi = axios.create({
   baseURL,
   timeout,
@@ -30,6 +28,7 @@ const $defaultApi = axios.create({
 $defaultApi.interceptors.response.use(
   (response) => response,
   async (error: AxiosError<ApiErrorResponse>) => {
+    console.log(error);
     const config = error.config as CustomAxiosRequestConfig;
     if (!config || config.retryCount === undefined) {
       config.retryCount = 0;

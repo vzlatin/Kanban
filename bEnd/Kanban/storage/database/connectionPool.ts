@@ -26,37 +26,22 @@ export function aquireConnection(): Promise<DB> {
     const attemptAquire = () => {
       const now = Date.now();
 
-      console.log("Attempting to acquire a connection...");
-      console.log(`Connections available: ${connections.length}`);
-      console.log(`Queue size: ${queue.length}`);
       if (connections.length > 0) {
         resolve(connections.pop()!);
       } else if (now - startTime >= timeout) {
         reject(
-          new Error(
-            "Connection timeout: No available database connections",
-          ),
+          new Error("Connection timeout: No available database connections"),
         );
       } else {
         queue.push(attemptAquire);
       }
     };
+
     attemptAquire();
   });
 }
 
-//export function releaseConnection(connection: DB): void {
-//  connections.push(connection);
-//  if (queue.length > 0) {
-//    const nextRequest = queue.shift();
-//    if (nextRequest) nextRequest();
-//    console.log("connection released");
-//  }
-//  console.log("connection released");
-//}
-
 export function releaseConnection(connection: DB): void {
-  console.log("Releasing a connection...");
   connections.push(connection);
 
   // Process the next queued request, if any
@@ -67,7 +52,6 @@ export function releaseConnection(connection: DB): void {
       break; // Only process one task per release
     }
   }
-  console.log(`Connections available after release: ${connections.length}`);
 }
 
 export function closePool(): void {

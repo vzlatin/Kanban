@@ -9,7 +9,7 @@ await load({
 export const config = {
   path: resolve(Deno.cwd(), "storage", "database", "kanban.db"),
   hostname: Deno.env.get("H") ?? "localhost",
-  port: Deno.env.get("P") ?? 5000,
+  port: Deno.env.get("P") ?? "5000",
   accessTokenKey: await crypto.subtle.generateKey(
     { name: "HMAC", hash: "SHA-512" },
     true,

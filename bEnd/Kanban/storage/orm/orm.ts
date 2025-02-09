@@ -6,16 +6,17 @@ import {
 } from "../database/connectionPool.ts";
 import { row2Object } from "./helpers.ts";
 import { type Operator, RowTuple, type WhereClause } from "./types/ormTypes.ts";
+import { config } from "../../https/utils/config.ts";
+
+const connection = new DB(config.path);
+connection.query("PRAGMA journal_mode=WAL");
 
 export function createModel<
   T extends Record<string, unknown>,
   U extends Record<string, unknown> = never,
 >(table: string, columns: Array<keyof T>) {
   const model = {
-    insert: async (data: T, conn?: DB): Promise<number | undefined> => {
-      const connection = conn || (await aquireConnection());
-      const shouldRelease = !conn;
-      console.log("Connection aquired: insert");
+    insert: (data: T): number | undefined => {
       const columns = Object.keys(data).join(",");
       const placeholders = Object.keys(data)
         .map(() => "?")
@@ -25,20 +26,15 @@ export function createModel<
         `INSERT INTO ${table} (${columns}) VALUES (${placeholders})`,
         values,
       );
-      if (shouldRelease) releaseConnection(connection);
       return connection.lastInsertRowId
         ? connection.lastInsertRowId
         : undefined;
     },
 
-    findAll: async (
+    findAll: (
       where: WhereClause<T> = {},
       operator: Operator = "AND",
-      conn?: DB,
-    ): Promise<T[] | undefined> => {
-      const connection = conn || (await aquireConnection());
-      const shouldRelease = !conn;
-      console.log("Connection aquired: findall");
+    ): T[] | undefined => {
       const whereClause = Object.keys(where)
         .map((key) => `${key} = ?`)
         .join(`${operator}`);
@@ -48,13 +44,9 @@ export function createModel<
         queryString,
         Object.values(where) as QueryParameterSet,
       );
-
       if (!result || result.length === 0) {
-        if (shouldRelease) releaseConnection(connection);
         return undefined;
       }
-
-      if (shouldRelease) releaseConnection(connection);
       return row2Object(result, columns);
     },
 
@@ -63,42 +55,32 @@ export function createModel<
      * parameter allows for a collection of records to be returned,
      * the function will just return the first matching entry
      */
-    findOne: async (
+    findOne: (
       where: WhereClause<T> = {},
       operator: Operator = "AND",
-      conn?: DB,
-    ): Promise<T | undefined> => {
-      const connection = conn || (await aquireConnection());
-      const shouldRelease = !conn;
-      console.log("Connection aquired: findone");
+    ): T | undefined => {
       const whereClause = Object.keys(where)
         .map((key) => `${key} = ?`)
         .join(`${operator}`);
       const queryString = `SELECT * FROM ${table} ` +
-        (whereClause ? `WHERE ${whereClause}` : "");
+        (whereClause ? `WHERE ${whereClause}` : "") + "LIMIT 1";
       const result = connection.query<RowTuple<T>>(
         queryString,
         Object.values(where) as QueryParameterSet,
       );
 
       if (!result || result.length === 0) {
-        if (shouldRelease) releaseConnection(connection);
         return undefined;
       }
-
-      if (shouldRelease) releaseConnection(connection);
       return row2Object(result, columns)[0];
     },
 
-    update: async (
+    update: (
       where: WhereClause<T> = {},
       data: Partial<T>,
       operator: Operator = "AND",
-      conn?: DB,
-    ): Promise<T | undefined> => {
-      const connection = conn || (await aquireConnection());
-      const shouldRelease = !conn;
-      console.log("Connection aquired: update");
+    ): T | undefined => {
+      connection.query("BEGIN TRANSACTION");
       const setString = Object.keys(data)
         .map((key) => `${key} = ?`)
         .join(", ");
@@ -111,22 +93,17 @@ export function createModel<
         `UPDATE ${table} SET ${setString} WHERE ${whereString}`,
         values,
       );
-      console.log("update query executed");
-      const updatedRow = await model.findOne(where, operator, connection);
-      if (shouldRelease) releaseConnection(connection);
-
+      const updatedRow = model.findOne(where, operator);
+      connection.query("COMMIT");
       return updatedRow;
     },
 
-    delete: async (
+    delete: (
       where: WhereClause<T>,
       operator: Operator = "AND",
-      conn?: DB,
-    ): Promise<T | undefined> => {
-      const connection = conn || (await aquireConnection());
-      const shouldRelease = !conn;
-      console.log("Connection aquired: delete");
-      const deletedRow = await model.findOne(where, operator, connection);
+    ): T | undefined => {
+      connection.query("BEGIN TRANSACTION");
+      const deletedRow = model.findOne(where, operator);
 
       const whereClause = Object.keys(where)
         .map((key) => `${key} = ?`)
@@ -137,12 +114,11 @@ export function createModel<
         queryString,
         Object.values(where) as QueryParameterSet,
       );
-
-      if (shouldRelease) releaseConnection(connection);
+      connection.query("COMMIT");
       return deletedRow;
     },
 
-    findWithJoin: async (
+    findWithJoin: (
       joinTable: string,
       primaryKey: keyof T,
       foreignKey: keyof U,
@@ -152,11 +128,7 @@ export function createModel<
       },
       where: Partial<T> = {},
       operator: Operator = "AND",
-      conn?: DB,
-    ): Promise<(T & { [K in keyof U[]]: U[] })[]> => {
-      const connection = conn || (await aquireConnection());
-      const shouldRelease = !conn;
-      console.log("Connection aquired: findwithjoin");
+    ): (T & { [K in keyof U[]]: U[] })[] => {
       const primaryColumns = selectColumns.primary
         .map((col) => `${table}.${String(col)}`)
         .join(", ");
@@ -181,7 +153,6 @@ export function createModel<
                 ${whereClause ? `WHERE ${whereClause}` : ""}`;
 
       const result = connection.query(query, whereValues);
-      if (shouldRelease) releaseConnection(connection);
 
       const primaryMap: Record<
         string | number,

@@ -28,7 +28,6 @@ const $defaultApi = axios.create({
 $defaultApi.interceptors.response.use(
   (response) => response,
   async (error: AxiosError<ApiErrorResponse>) => {
-    console.log(error);
     const config = error.config as CustomAxiosRequestConfig;
     if (!config || config.retryCount === undefined) {
       config.retryCount = 0;

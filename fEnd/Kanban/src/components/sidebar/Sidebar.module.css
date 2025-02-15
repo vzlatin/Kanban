@@ -11,23 +11,45 @@
 }
 
 .add-section {
-  margin-top: 1rem;
-  margin-left: 1rem;
   display: flex;
   flex-direction: row;
   align-items: center;
+  border-radius: 1rem;
+  margin: 0 auto;
+  padding: 0.4rem;
+  transform: scale(0.9);
+  transition: transform 0.1s ease;
+}
+.add-section:hover {
+  margin: 0 auto;
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: row;
+  box-shadow: var(--shadow-box-main);
+  align-items: center;
+  border-radius: 1rem;
+  transform: scale(1);
+  cursor: pointer;
+}
+.add-section:active {
+  margin: 0 auto;
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: row;
+  box-shadow: var(--shadow-input-inset);
+  align-items: center;
+  border-radius: 1rem;
+  transform: scale(1);
+  cursor: pointer;
 }
 .add-section button {
   color: var(--color-font);
   padding: 0.5rem;
   background: var(--color-background);
-  border: 1px solid var(--color-font);
+  border: none;
   font-family: "QuicksandMedium", sans-serif;
   font-size: 1.2rem;
   border-radius: 1rem;
-}
-.add-section svg {
-  fill: var(--color-font);
 }
 
 hr {

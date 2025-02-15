@@ -47,7 +47,10 @@ const Header = () => {
             {placeholder.map((_, i) => {
               return (
                 <div key={i} className={styles["member"]}>
-                  <img src="user-profile.svg" alt="user photo" />
+                  <img
+                    src="/user-profile.svg"
+                    alt="user photo"
+                  />
                 </div>
               );
             })}
@@ -55,7 +58,10 @@ const Header = () => {
         </div>
         <div className={styles["profile"]} ref={menuRef}>
           <div className={styles["profile-image"]} onClick={toggleMenu}>
-            <img className={styles["profile-icon"]} src="user-profile.svg" />
+            <img
+              className={styles["profile-icon"]}
+              src="/user-profile.svg"
+            />
           </div>
           {showMenu
             ? (

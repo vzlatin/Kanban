@@ -21,17 +21,12 @@
   appearance: none;
   font-family: "QuicksandMedium", sans-serif;
   background-color: var(--color-background);
-  background-image: url("search.svg");
+  background-image: url("/search.svg");
   background-repeat: no-repeat;
   background-position: 0.5rem;
   border: 0.063rem var(--color-accent-grey-light) solid;
   box-shadow: var(--shadow-input-inset);
 }
-
-/* .search-logo-image {
-	height: 2rem;
-	width: 2rem;
-} */
 
 .team {
   display: flex;

@@ -4,9 +4,6 @@
   align-items: center;
   gap: 0.3rem;
 }
-/*.section-title-container svg {*/
-/*  display: none;*/
-/*}*/
 .section-title-container:hover {
   cursor: pointer;
 }
@@ -48,13 +45,21 @@
   display: flex;
   align-items: center;
   border-radius: 1rem;
-  background-color: var(--color-font);
   cursor: pointer;
   opacity: 1;
+  box-shadow: var(--shadow-box-main);
+  border: 1px solid var(--color-accent-grey-light);
   transform: scale(1);
 }
-.active-section .ellipsis-section:hover svg {
-  fill: var(--color-background);
+.active-section .ellipsis-section:active {
+  display: flex;
+  align-items: center;
+  border-radius: 1rem;
+  cursor: pointer;
+  opacity: 1;
+  box-shadow: var(--shadow-input-inset);
+  border: 1px solid var(--color-accent-grey-light);
+  transform: scale(1);
 }
 .ellipsis-section:hover {
   cursor: pointer;
@@ -66,13 +71,11 @@
   margin-right: 0.4rem;
   border: none;
   border-radius: 1rem;
-  background-color: var(--color-font);
+  box-shadow: var(--shadow-box-main);
+  border: 1px solid var(--color-accent-grey-light);
   cursor: pointer;
   opacity: 1;
   transform: scale(1);
-}
-.ellipsis-section[data-active] svg {
-  fill: var(--color-background);
 }
 
 .board_list {
@@ -135,16 +138,15 @@
   background-color: var(--color-accent-grey-light);
   border-radius: 0.5rem;
 }
-.menu-item-wrap svg {
+.menu-item-wrap img {
   margin-left: auto;
   fill: var(--color-font);
 }
 
 .ellipsis {
   display: none;
-  opacity: 0;
   transform: scale(0.8);
-  transition: opacity 0.1s ease, transform 0.1s ease;
+  transition: transform 0.1s ease;
 }
 .active {
   background-color: var(--color-accent-blue);
@@ -153,27 +155,27 @@
   color: var(--color-background);
 }
 .active .ellipsis {
-  opacity: 1;
   display: flex;
   align-items: center;
   border: none;
   background-color: transparent;
   cursor: pointer;
 }
-.active .ellipsis svg {
-  fill: var(--color-background);
-}
 .active .ellipsis:hover {
   display: flex;
   align-items: center;
   border-radius: 1rem;
-  background-color: var(--color-background);
+  box-shadow: 5px 5px 10px #2047ca, -5px -5px 10px #2c5fff;
   cursor: pointer;
-  opacity: 1;
   transform: scale(1);
 }
-.active .ellipsis:hover svg {
-  fill: var(--color-accent-blue);
+.active .ellipsis:active {
+  display: flex;
+  align-items: center;
+  border-radius: 1rem;
+  box-shadow: inset 5px 5px 10px #2047ca, inset -5px -5px 10px #2c5fff;
+  cursor: pointer;
+  transform: scale(1);
 }
 .ellipsis:hover {
   cursor: pointer;
@@ -182,26 +184,7 @@
   display: flex;
   align-items: center;
   border-radius: 1rem;
-  background-color: var(--color-background);
+  box-shadow: 5px 5px 10px #2047ca, -5px -5px 10px #2c5fff;
   cursor: pointer;
-  opacity: 1;
   transform: scale(1);
-}
-.ellipsis[data-active] svg {
-  fill: var(--color-accent-blue);
-}
-
-.add-section {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.add-section button {
-  color: var(--color-background);
-  background: var(--color-accent-blue);
-  font-family: "QuicksandMedium", sans-serif;
-  border-radius: 1rem;
-}
-.add-section svg {
-  fill: color-font;
 }

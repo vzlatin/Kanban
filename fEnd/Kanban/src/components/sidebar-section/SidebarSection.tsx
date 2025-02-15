@@ -55,9 +55,7 @@ const SidebarSection: React.FC<SidebarSectionProps> = (
 
         <Menu>
           <MenuButton className={styles["ellipsis-section"]}>
-            <svg width="24" height="24">
-              <use xlinkHref="svg-sprites.svg#ellipsis" />
-            </svg>
+            <img src="/ellipsis-dark.svg" />
           </MenuButton>
           <MenuItems
             transition
@@ -69,9 +67,7 @@ const SidebarSection: React.FC<SidebarSectionProps> = (
                 <button>
                   Add Board
                 </button>
-                <svg width="24" height="24">
-                  <use xlinkHref="svg-sprites.svg#plus" />
-                </svg>
+                <img src="/plus.svg" />
               </div>
             </MenuItem>
             <MenuItem>
@@ -79,9 +75,7 @@ const SidebarSection: React.FC<SidebarSectionProps> = (
                 <button>
                   Delete Section
                 </button>
-                <svg>
-                  <use xlinkHref="svg-sprites.svg#trashcan" />
-                </svg>
+                <img src="/trashcan.svg" />
               </div>
             </MenuItem>
             <MenuItem>
@@ -89,9 +83,7 @@ const SidebarSection: React.FC<SidebarSectionProps> = (
                 <button>
                   Edit Section
                 </button>
-                <svg>
-                  <use xlinkHref="svg-sprites.svg#pencil" />
-                </svg>
+                <img src="/pencil.svg" />
               </div>
             </MenuItem>
           </MenuItems>
@@ -116,9 +108,7 @@ const SidebarSection: React.FC<SidebarSectionProps> = (
               >
                 <Menu>
                   <MenuButton className={styles["ellipsis"]}>
-                    <svg height="24" width="24">
-                      <use xlinkHref="svg-sprites.svg#ellipsis" />
-                    </svg>
+                    <img src="/ellipsis-light.svg" />
                   </MenuButton>
                   <MenuItems
                     transition
@@ -130,9 +120,7 @@ const SidebarSection: React.FC<SidebarSectionProps> = (
                         <button>
                           Delete Board
                         </button>
-                        <svg>
-                          <use xlinkHref="svg-sprites.svg#trashcan" />
-                        </svg>
+                        <img src="/trashcan.svg" />
                       </div>
                     </MenuItem>
                     <MenuItem>
@@ -140,9 +128,7 @@ const SidebarSection: React.FC<SidebarSectionProps> = (
                         <button>
                           Edit Board
                         </button>
-                        <svg>
-                          <use xlinkHref="svg-sprites.svg#pencil" />
-                        </svg>
+                        <img src="/pencil.svg" />
                       </div>
                     </MenuItem>
                   </MenuItems>

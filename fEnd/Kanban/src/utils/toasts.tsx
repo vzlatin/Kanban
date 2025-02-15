@@ -21,7 +21,7 @@ export const renderInfoToast = (content: string | React.ReactNode) => {
 
 export const renderErrorToast = (content: string | React.ReactNode) => {
   toast.error(content, {
-    icon: <img src="error.svg" />,
+    icon: <img src="/error.svg" />,
     className: "error-toast",
     bodyClassName: "error-toast-body",
     position: "top-center",

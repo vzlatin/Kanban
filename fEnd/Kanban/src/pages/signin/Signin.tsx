@@ -37,7 +37,7 @@ const Signin = () => {
                   <h1>Kooking Board</h1>
                   <img
                     className={styles["logo-image"]}
-                    src="src/assets/images/logo.svg"
+                    src="/logo.svg"
                     alt="Logo Image"
                   />
                 </div>

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { AuthStore } from "./types";
-import { UserRole } from "../../interfaces/data-interfaces";
+import { UserRole } from "../../http/interfaces/data-interfaces";
 import { signin, signup } from "../../services/auth.service";
 import { refreshAccessToken } from "../../services/token.service";
 import { ApiError } from "../../http/errors";

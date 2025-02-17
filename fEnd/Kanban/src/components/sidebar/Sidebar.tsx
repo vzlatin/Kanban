@@ -1,7 +1,7 @@
 import styles from "./Sidebar.module.css";
 
 import SidebarSection from "../sidebar-section/SidebarSection";
-import { Board } from "../../interfaces/data-interfaces";
+import { Board } from "../../http/interfaces/data-interfaces";
 
 type SidebarProps = {
   sections: {

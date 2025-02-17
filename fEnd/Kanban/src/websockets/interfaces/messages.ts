@@ -1,16 +1,15 @@
-import { Payload } from "jwt";
+import { TaskStatus } from "../../http/interfaces/data-interfaces";
 import {
   Board,
   Column,
   Comment,
+  ConnectedUser,
   Section,
   Task,
-  TaskStatus,
   TaskToDo,
-} from "./entities.ts";
-import { ApiError } from "../../errors/apiErrors.ts";
+} from "./standalone-data-interfaces";
 
-export enum OutboundMessageType {
+export enum InboundMessageType {
   UserConnected = "UserConnected",
   Error = "Error",
   BoardCreated = "BoardCreated",
@@ -32,7 +31,7 @@ export enum OutboundMessageType {
   SectionDeleted = "SectionDeleted",
 }
 
-export enum InboundMessageType {
+export enum OutboundMessageType {
   CreateBoard = "CreateBoard",
   DeleteBoard = "DeleteBoard",
   UpdateBoard = "UpdateBoard",
@@ -56,21 +55,15 @@ export interface EntityDeletedPayload {
   id: number;
 }
 
-// FIX: This is unused. Either edit the conroller or remove.
-export interface ErrorPayload {
-  error: ApiError;
-  code: number;
-}
+// --------------------------------- Outbound Messages ----------------------------------
 
-// --------------------------------- Inbound Messages ----------------------------------
-
-// --- Sections ----
+// ---- Sections ----
 export interface CreateSectionPayload {
   title: string;
 }
 
 export interface UpdateSectionPayload {
-  title?: string;
+  title: string;
 }
 
 export interface DeleteSectionPayload extends EntityDeletedPayload {}
@@ -82,7 +75,7 @@ export interface CreateBoardPayload {
 }
 
 export interface UpdateBoardPayload {
-  title?: string;
+  title: string;
 }
 
 export interface DeleteBoardPaylod extends EntityDeletedPayload {}
@@ -102,6 +95,7 @@ export interface UpdateColumnPayload {
 export interface DeleteColumnPaylod extends EntityDeletedPayload {}
 
 // ---- Tasks ----
+
 export interface CreateTaskPayload {
   userId?: number;
   columnId: number;
@@ -137,6 +131,7 @@ export interface CreateCommentPayload {
 export interface DeleteCommentPayload extends EntityDeletedPayload {}
 
 // ---- TaskToDos ----
+
 export interface CreateTaskToDoPayload {
   taskId: number;
   title: string;
@@ -154,14 +149,14 @@ export interface DeleteTaskToDoPayload extends EntityDeletedPayload {}
 
 // --------------------------------- Inbound Messages ----------------------------------
 
-// --- Sections ----
+// ---- Sections ----
 export interface SectionCreatedPayload extends Section {}
 export interface SectionUpdatedPayload extends Section {}
 export interface SectionDeletedPayload extends EntityDeletedPayload {}
 
 // ---- Boards ----
 export interface BoardCreatedPayload extends Board {}
-export interface BoardUpdatedPayload extends UpdateBoardPayload {}
+export interface BoardUpdatedPayload extends Board {}
 export interface BoardDeletedPayload extends EntityDeletedPayload {}
 
 // ---- Columns ----
@@ -178,158 +173,159 @@ export interface TaskDeletedPayload extends EntityDeletedPayload {}
 export interface CommentCreatedPayload extends Comment {}
 export interface CommentDeletedPayload extends EntityDeletedPayload {}
 
-// ---- TaskToDos ----
+// ---- TasksToDo ----
 export interface TaskToDoCreatedPayload extends TaskToDo {}
 export interface TaskToDoUpdatedPayload extends TaskToDo {}
 export interface TaskToDoDeletedPayload extends EntityDeletedPayload {}
 
 // ---- Users ----
 export interface UserConnectedPayload {
-  users: Omit<Payload, "exp">[];
+  users: ConnectedUser[];
 }
 
 export type Message =
   | {
-    type: InboundMessageType.CreateBoard;
+    type: OutboundMessageType.CreateBoard;
     payload: CreateBoardPayload;
   }
   | {
-    type: InboundMessageType.DeleteBoard;
+    type: OutboundMessageType.DeleteBoard;
     payload: DeleteBoardPaylod;
   }
   | {
-    type: InboundMessageType.UpdateBoard;
+    type: OutboundMessageType.UpdateBoard;
     payload: UpdateBoardPayload;
   }
   | {
-    type: InboundMessageType.CreateColumn;
+    type: OutboundMessageType.CreateColumn;
     payload: CreateColumnPayload;
   }
   | {
-    type: InboundMessageType.UpdateColumn;
+    type: OutboundMessageType.UpdateColumn;
     payload: UpdateColumnPayload;
   }
   | {
-    type: InboundMessageType.DeleteColumn;
+    type: OutboundMessageType.DeleteColumn;
     payload: DeleteColumnPaylod;
   }
   | {
-    type: InboundMessageType.CreateTask;
+    type: OutboundMessageType.CreateTask;
     payload: CreateTaskPayload;
   }
   | {
-    type: InboundMessageType.UpdateTask;
+    type: OutboundMessageType.UpdateTask;
     payload: UpdateTaskPayload;
   }
   | {
-    type: InboundMessageType.DeleteTask;
+    type: OutboundMessageType.DeleteTask;
     payload: DeleteTaskPayload;
   }
   | {
-    type: InboundMessageType.CreateTaskToDo;
+    type: OutboundMessageType.CreateTaskToDo;
     payload: CreateTaskToDoPayload;
   }
   | {
-    type: InboundMessageType.UpdateTaskToDo;
+    type: OutboundMessageType.UpdateTaskToDo;
     payload: UpdateTaskToDoPayload;
   }
   | {
-    type: InboundMessageType.DeleteTaskToDo;
+    type: OutboundMessageType.DeleteTaskToDo;
     payload: DeleteTaskToDoPayload;
   }
   | {
-    type: InboundMessageType.CreateComment;
+    type: OutboundMessageType.CreateComment;
     payload: CreateCommentPayload;
   }
   | {
-    type: InboundMessageType.DeleteComment;
+    type: OutboundMessageType.DeleteComment;
     payload: DeleteCommentPayload;
   }
   | {
-    type: InboundMessageType.CreateSection;
+    type: OutboundMessageType.CreateSection;
     payload: CreateSectionPayload;
   }
   | {
-    type: InboundMessageType.UpdateSection;
+    type: OutboundMessageType.UpdateSection;
     payload: UpdateSectionPayload;
   }
   | {
-    type: InboundMessageType.DeleteSection;
+    type: OutboundMessageType.DeleteSection;
     payload: DeleteSectionPayload;
   }
   | {
-    type: OutboundMessageType.UserConnected;
+    type: InboundMessageType.UserConnected;
     payload: UserConnectedPayload;
   }
+  // FIX: Check this after fixing the backend error message type
+  //| {
+  //  type: InboundMessageType.Error;
+  //  payload: ErrorPayload;
+  //}
   | {
-    type: OutboundMessageType.Error;
-    payload: ErrorPayload;
-  }
-  | {
-    type: OutboundMessageType.BoardCreated;
+    type: InboundMessageType.BoardCreated;
     payload: BoardCreatedPayload;
   }
   | {
-    type: OutboundMessageType.BoardUpdated;
+    type: InboundMessageType.BoardUpdated;
     payload: BoardUpdatedPayload;
   }
   | {
-    type: OutboundMessageType.BoardDeleted;
+    type: InboundMessageType.BoardDeleted;
     payload: BoardDeletedPayload;
   }
   | {
-    type: OutboundMessageType.ColumnCreated;
+    type: InboundMessageType.ColumnCreated;
     payload: ColumnCreatedPayload;
   }
   | {
-    type: OutboundMessageType.ColumnUpdated;
+    type: InboundMessageType.ColumnUpdated;
     payload: ColumnUpdatedPayload;
   }
   | {
-    type: OutboundMessageType.ColumnDeleted;
+    type: InboundMessageType.ColumnDeleted;
     payload: ColumnDeletedPayload;
   }
   | {
-    type: OutboundMessageType.TaskCreated;
+    type: InboundMessageType.TaskCreated;
     payload: TaskCreatedPayload;
   }
   | {
-    type: OutboundMessageType.TaskUpdated;
+    type: InboundMessageType.TaskUpdated;
     payload: TaskUpdatedPayload;
   }
   | {
-    type: OutboundMessageType.TaskDeleted;
+    type: InboundMessageType.TaskDeleted;
     payload: TaskDeletedPayload;
   }
   | {
-    type: OutboundMessageType.CommentCreated;
+    type: InboundMessageType.CommentCreated;
     payload: CommentCreatedPayload;
   }
   | {
-    type: OutboundMessageType.CommentDeleted;
+    type: InboundMessageType.CommentDeleted;
     payload: CommentDeletedPayload;
   }
   | {
-    type: OutboundMessageType.TaskToDoCreated;
+    type: InboundMessageType.TaskToDoCreated;
     payload: TaskToDoCreatedPayload;
   }
   | {
-    type: OutboundMessageType.TaskToDoUpdated;
+    type: InboundMessageType.TaskToDoUpdated;
     payload: TaskToDoUpdatedPayload;
   }
   | {
-    type: OutboundMessageType.TaskToDoDeleted;
+    type: InboundMessageType.TaskToDoDeleted;
     payload: TaskToDoDeletedPayload;
   }
   | {
-    type: OutboundMessageType.SectionCreated;
+    type: InboundMessageType.SectionCreated;
     payload: SectionCreatedPayload;
   }
   | {
-    type: OutboundMessageType.SectionUpdated;
+    type: InboundMessageType.SectionUpdated;
     payload: SectionUpdatedPayload;
   }
   | {
-    type: OutboundMessageType.SectionDeleted;
+    type: InboundMessageType.SectionDeleted;
     payload: SectionDeletedPayload;
   };

@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
 import styles from "./SidebarSection.module.css";
-import { Board } from "../../interfaces/data-interfaces";
+import { Board } from "../../http/interfaces/data-interfaces";
 import { useEffect, useRef } from "react";
 
 type SidebarSectionProps = {

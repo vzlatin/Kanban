@@ -1,20 +1,19 @@
 import { Router } from "@oak/oak";
 
 import {
-    getUsers,
-    loginUser,
-    logoutUser,
-    refreshUser,
-    registerUser,
-} from "./https/controllers/user.controller.ts";
+  getUsers,
+  loginUser,
+  logoutUser,
+  refreshUser,
+  registerUser,
+} from "./src/https/controllers/user.controller.ts";
 import {
-    getColumns,
-    getSections,
-} from "./https/controllers/data.controller.ts";
-import { validateUser } from "./https/validators/userValidator.ts";
-import { authHandler } from "./https/middleware/authHandler.ts";
-import websocketHandler from "./websockets/controllers/broadcasterController.ts";
-import { FileUploader } from "./https/middleware/fileUploadHandler.ts";
+  getEntityCollection,
+} from "./src/https/controllers/data.controller.ts";
+import { validateUser } from "./src/https/validators/userValidator.ts";
+import { authHandler } from "./src/https/middleware/authHandler.ts";
+import websocketHandler from "./src/websockets/controllers/broadcasterController.ts";
+import { FileUploader } from "./src/https/middleware/fileUploadHandler.ts";
 
 const router = new Router();
 
@@ -27,8 +26,7 @@ router.post("/logout", logoutUser);
 router.get("/refresh", refreshUser);
 
 // Data retrieval routes
-router.get("/sections", authHandler, getSections);
-router.get("/columns/:boardId", authHandler, getColumns);
+router.get("/entity-collection", authHandler, getEntityCollection);
 router.get("/users", authHandler, getUsers);
 
 // File upload

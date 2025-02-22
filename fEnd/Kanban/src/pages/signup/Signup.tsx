@@ -6,7 +6,7 @@ import { useSignupStore } from "./store";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../signin/store";
 import { renderErrorToast, renderInfoToast } from "../../utils/toasts";
-import { UserRole } from "../../http/interfaces/data-interfaces";
+import { UserRole } from "../../state/types";
 import { checkAuth } from "../../services/user.service";
 import { useEffect, useState } from "react";
 import ErrorNotification from "../../components/error/ErrorNotification";

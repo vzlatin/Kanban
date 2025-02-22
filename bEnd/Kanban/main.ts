@@ -1,13 +1,8 @@
-import { Application } from "@oak/oak";
 import { oakCors } from "x/cors";
-
-import { config } from "./https/utils/config.ts";
 import router from "./routes.ts";
-import { closePool } from "./storage/database/connectionPool.ts";
-import { initializeDatabase } from "./storage/database/dbSetup.ts";
-import { errorHandler } from "./https/middleware/errorHandler.ts";
-
-initializeDatabase();
+import { Application } from "@oak/oak";
+import { config } from "./src/https/utils/config.ts";
+import { errorHandler } from "./src/https/middleware/errorHandler.ts";
 
 const app = new Application();
 
@@ -20,10 +15,6 @@ app.use(
 app.use(errorHandler);
 app.use(router.routes());
 app.use(router.allowedMethods());
-
-app.addEventListener("close", () => {
-  closePool();
-});
 
 const port = parseInt(config.port!);
 const hostname = config.hostname;
@@ -39,5 +30,4 @@ try {
   });
 } catch (e) {
   console.log(e);
-  closePool();
 }

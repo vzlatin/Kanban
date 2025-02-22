@@ -3,25 +3,25 @@ import Header from "../../components/header/Header";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
-import { useKanbanStore } from "./store";
+import { useKanbanStore } from "../../state/global.store";
 
 const Home = () => {
-	const getSections = useKanbanStore((state) => state.getSections);
-	const sections = useKanbanStore((state) => state.sections);
+  const getEntities = useKanbanStore((state) => state.getEntityCollection);
+  const sections = useKanbanStore((state) => state.sections);
 
-	useEffect(() => {
-		getSections();
-	}, []);
+  useEffect(() => {
+    getEntities();
+  }, []);
 
-	return (
-		<>
-			<Header />
-			<div className={styles.content}>
-				<Sidebar sections={sections} />
-				<Outlet />
-			</div>
-		</>
-	);
+  return (
+    <>
+      <Header />
+      <div className={styles.content}>
+        <Sidebar sections={sections} />
+        <Outlet />
+      </div>
+    </>
+  );
 };
 
 export default Home;

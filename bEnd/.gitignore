@@ -1,6 +1,7 @@
 .env
-
-kanban.db
-
 localhost.crt
 localhost.key
+temp_uploads/
+path/
+node_modules/
+drizzle/

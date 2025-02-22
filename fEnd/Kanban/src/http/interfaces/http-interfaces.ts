@@ -1,29 +1,29 @@
 import { AxiosRequestConfig } from "axios";
-import { Column, Section, User } from "./data-interfaces";
+import { EntityCollection, User } from "../../state/types";
 
 export interface AuthResponse {
-	user: User;
-	accessToken: string;
+  user: User;
+  accessToken: string;
 }
 
-export interface SectionResponse extends Section {}
-export interface ColumnResponse extends Column {}
+export interface EntityCollectionResponse extends EntityCollection {}
+
 export interface UserReponse extends User {}
 
 export interface ApiErrorResponse {
-	success: boolean;
-	name: string;
-	message: string;
-	errors?: ApiValidationError[];
+  success: boolean;
+  name: string;
+  message: string;
+  errors?: ApiValidationError[];
 }
 
 export interface ApiValidationError {
-	error?: {
-		path: (string | number)[];
-		message: string;
-	};
+  error?: {
+    path: (string | number)[];
+    message: string;
+  };
 }
 
 export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
-	retryCount?: number;
+  retryCount?: number;
 }

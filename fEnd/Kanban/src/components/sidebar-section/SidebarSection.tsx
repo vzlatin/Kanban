@@ -1,20 +1,24 @@
+import styles from "./SidebarSection.module.css";
+
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
-import styles from "./SidebarSection.module.css";
-import { Board } from "../../http/interfaces/data-interfaces";
+import { useKanbanStore } from "../../state/global.store";
 import { useEffect, useRef } from "react";
 
 type SidebarSectionProps = {
-  data: Board[];
+  id: number;
   title: string;
 };
 
 const SidebarSection: React.FC<SidebarSectionProps> = (
-  { data, title },
+  { title, id },
 ) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const boards = useKanbanStore((state) => state.boards).filter((board) =>
+    board.section === id
+  );
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -90,7 +94,7 @@ const SidebarSection: React.FC<SidebarSectionProps> = (
         </Menu>
       </div>
       <ul className={styles.board_list}>
-        {data.map((board, index) => {
+        {boards.map((board, index) => {
           const isActive = location.pathname.includes(`/board/${board.id}`);
           return (
             <li

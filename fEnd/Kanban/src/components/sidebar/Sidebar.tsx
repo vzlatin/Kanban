@@ -1,14 +1,10 @@
 import styles from "./Sidebar.module.css";
 
 import SidebarSection from "../sidebar-section/SidebarSection";
-import { Board } from "../../http/interfaces/data-interfaces";
+import { Section } from "../../state/types";
 
 type SidebarProps = {
-  sections: {
-    id: number;
-    title: string;
-    boards: Board[];
-  }[];
+  sections: Section[];
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
@@ -19,8 +15,8 @@ const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
           {sections.map((section) => (
             <SidebarSection
               key={section.id}
+              id={section.id}
               title={section.title}
-              data={section.boards}
             />
           ))}
         </div>

@@ -2,8 +2,7 @@ import styles from "./Board.module.css";
 
 import Column from "../column/Column";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { useKanbanStore } from "../../pages/home/store";
+import { useKanbanStore } from "../../state/global.store";
 
 const Board = () => {
   const { boardID } = useParams<{ boardID: string }>();
@@ -11,12 +10,9 @@ const Board = () => {
 
   const id = parseInt(boardID);
 
-  const getColumns = useKanbanStore((state) => state.getColumns);
-  const columns = useKanbanStore((state) => state.columns);
-
-  useEffect(() => {
-    getColumns(id);
-  }, [boardID]);
+  const columns = useKanbanStore((state) => state.columns).filter((column) =>
+    column.boardId === id
+  );
 
   return (
     <>

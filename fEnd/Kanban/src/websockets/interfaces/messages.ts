@@ -7,7 +7,7 @@ import {
   Section,
   Task,
   TaskToDo,
-} from "./standalone-data-interfaces";
+} from "../../state/types";
 
 export enum InboundMessageType {
   UserConnected = "UserConnected",

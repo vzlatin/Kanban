@@ -1,10 +1,10 @@
 import type { Payload } from "jwt";
 import { config } from "../../https/utils/config.ts";
 import { ApiError } from "../../errors/apiErrors.ts";
-import type { User } from "../../https/types/userTypes.ts";
+import type { User } from "../../types/entities.ts";
 import { DatabaseError } from "../../errors/databaseErrors.ts";
 import { createJWT, verifyJWT } from "../../https/utils/jsonWebToken.ts";
-import { Token, type TokenType } from "../../https/types/tokenTypes.ts";
+import { Token, type TokenType } from "../../types/entities.ts";
 
 import {
   deleteTokenByItself,

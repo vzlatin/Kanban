@@ -8,7 +8,7 @@ import {
   TaskStatus,
   TaskToDo,
 } from "./entities.ts";
-import { ApiError } from "../../errors/apiErrors.ts";
+import { ApiError } from "../errors/apiErrors.ts";
 
 export enum OutboundMessageType {
   UserConnected = "UserConnected",
@@ -52,9 +52,7 @@ export enum InboundMessageType {
   DeleteSection = "DeleteSection",
 }
 
-export interface EntityDeletedPayload {
-  id: number;
-}
+export type EntityDeletedPayload = { id: number };
 
 // FIX: This is unused. Either edit the conroller or remove.
 export interface ErrorPayload {
@@ -65,94 +63,37 @@ export interface ErrorPayload {
 // --------------------------------- Inbound Messages ----------------------------------
 
 // --- Sections ----
-export interface CreateSectionPayload {
-  title: string;
-}
-
-export interface UpdateSectionPayload {
-  title?: string;
-}
-
-export interface DeleteSectionPayload extends EntityDeletedPayload {}
+export type CreateSectionPayload = Omit<Section, "id">;
+export type UpdateSectionPayload = Omit<Section, "id">;
+export type DeleteSectionPayload = EntityDeletedPayload;
 
 // ---- Boards ----
-export interface CreateBoardPayload {
-  title: string;
-  section: number;
-}
-
-export interface UpdateBoardPayload {
-  title?: string;
-}
-
-export interface DeleteBoardPaylod extends EntityDeletedPayload {}
+export type CreateBoardPayload = Omit<Board, "id">;
+export type UpdateBoardPayload = Partial<Omit<Board, "id">>;
+export type DeleteBoardPayload = EntityDeletedPayload;
 
 // ---- Columns ----
-export interface CreateColumnPayload {
-  title: string;
-  boardId: number;
-}
-
-export interface UpdateColumnPayload {
-  id: number;
-  title?: string;
-  columnOrder?: number;
-}
-
-export interface DeleteColumnPaylod extends EntityDeletedPayload {}
+export type CreateColumnPayload = Partial<Omit<Column, "id">>;
+export type UpdateColumnPayload = Partial<Omit<Column, "id">>;
+export type DeleteColumnPaylod = EntityDeletedPayload;
 
 // ---- Tasks ----
-export interface CreateTaskPayload {
-  userId?: number;
-  columnId: number;
-  boardId: number;
-  title: string;
-  description?: string;
-  taskOrder: number;
-  status: TaskStatus;
-  tag?: string;
-  createdOn: Date;
-}
-
-export interface UpdateTaskPayload {
-  userId?: number;
-  title?: string;
-  description?: string;
-  status?: TaskStatus;
-  taskOrder?: number;
-  tag?: string;
-  completedOn?: Date;
-}
-
-export interface DeleteTaskPayload extends EntityDeletedPayload {}
+export type CreateTaskPayload = Omit<Task, "id" | "completedOn">;
+export type UpdateTaskPayload = Partial<
+  Omit<Task, "id" | "boardId" | "createdOn">
+>;
+export type DeleteTaskPayload = EntityDeletedPayload;
 
 // ---- Comments ----
-export interface CreateCommentPayload {
-  taskId: number;
-  userId: number;
-  content: string;
-  createdOn: Date;
-}
-
-export interface DeleteCommentPayload extends EntityDeletedPayload {}
+export type CreateCommentPayload = Omit<Comment, "id">;
+export type DeleteCommentPayload = EntityDeletedPayload;
 
 // ---- TaskToDos ----
-export interface CreateTaskToDoPayload {
-  taskId: number;
-  title: string;
-  completed: boolean;
-}
+export type CreateTaskToDoPayload = Omit<TaskToDo, "id">;
+export type UpdateTaskToDoPayload = Partial<Omit<TaskToDo, "id" | "taskId">>;
+export type DeleteTaskToDoPayload = EntityDeletedPayload;
 
-export interface UpdateTaskToDoPayload {
-  id: number;
-  taskId: number;
-  title?: string;
-  completed?: boolean;
-}
-
-export interface DeleteTaskToDoPayload extends EntityDeletedPayload {}
-
-// --------------------------------- Inbound Messages ----------------------------------
+// --------------------------------- Outbound Messages ----------------------------------
 
 // --- Sections ----
 export interface SectionCreatedPayload extends Section {}
@@ -195,7 +136,7 @@ export type Message =
   }
   | {
     type: InboundMessageType.DeleteBoard;
-    payload: DeleteBoardPaylod;
+    payload: DeleteBoardPayload;
   }
   | {
     type: InboundMessageType.UpdateBoard;

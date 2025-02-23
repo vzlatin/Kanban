@@ -1,3 +1,4 @@
+//import "@std/dotenv/load";
 import pg from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
 import {
@@ -38,8 +39,8 @@ export const db = drizzle({
 
 // ================= User Helpers =================
 
-import { User } from "../https/types/userTypes.ts";
-import { Token } from "../https/types/tokenTypes.ts";
+import { User } from "../types/entities.ts";
+import { Token } from "../types/entities.ts";
 import {
   Board,
   Column,
@@ -47,7 +48,7 @@ import {
   Section,
   Task,
   TaskToDo,
-} from "../websockets/types/entities.ts";
+} from "../types/entities.ts";
 
 export async function insertUser(
   user: typeof userTable.$inferInsert,

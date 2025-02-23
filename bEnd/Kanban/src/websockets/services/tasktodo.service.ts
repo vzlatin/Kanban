@@ -1,6 +1,6 @@
-import { TaskToDo } from "../types/entities.ts";
-import { MessageMap } from "../types/zod/inbound.ts";
+import { TaskToDo } from "../../types/entities.ts";
 import { ApiError } from "../../errors/apiErrors.ts";
+import { MessageMap } from "../../types/validation.ts";
 import { DatabaseError } from "../../errors/databaseErrors.ts";
 import {
   _deleteTaskToDo,

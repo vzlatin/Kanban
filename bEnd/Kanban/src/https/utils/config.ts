@@ -1,4 +1,4 @@
-import "@std/dotenv/load";
+//import "@std/dotenv/load";
 
 export const config = {
   hostname: Deno.env.get("H") ?? "localhost",

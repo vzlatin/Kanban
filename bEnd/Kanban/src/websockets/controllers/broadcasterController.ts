@@ -6,10 +6,10 @@ import {
   InboundMessage,
   InboundMessageSchema,
   InboundMessageT,
-} from "../types/zod/inbound.ts";
+} from "../../types/validation.ts";
 import { validateToken } from "../../shared/services/token.service.ts";
 import { sendErrorMessage } from "../utils/wsUtils.ts";
-import { Message, OutboundMessageType } from "../types/messages.ts";
+import { Message, OutboundMessageType } from "../../types/messages.ts";
 import {
   createBoard,
   deleteBoard,

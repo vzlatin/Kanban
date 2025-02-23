@@ -1,14 +1,6 @@
 import { Payload } from "jwt";
-import {
-  Board,
-  Column,
-  Comment,
-  Section,
-  Task,
-  TaskStatus,
-  TaskToDo,
-} from "./entities.ts";
 import { ApiError } from "../errors/apiErrors.ts";
+import { Board, Column, Comment, Section, Task, TaskToDo } from "./entities.ts";
 
 export enum OutboundMessageType {
   UserConnected = "UserConnected",

@@ -72,7 +72,7 @@ export const tasks = pgTable("tasks", {
   title: text().notNull(),
   description: text(),
   taskOrder: integer().notNull().unique(),
-  status: taskStatus(),
+  status: taskStatus().notNull(),
   tag: text(),
   createdOn: timestamp({ precision: 6, withTimezone: true }).notNull()
     .defaultNow(),

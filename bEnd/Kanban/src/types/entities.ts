@@ -1,9 +1,9 @@
 export type TokenType = "refresh" | "access";
-export type TaskStatus = "New" | "InProgress" | "Testing" | "Done" | null;
+export type TaskStatus = "New" | "InProgress" | "Testing" | "Done";
 export type UserRole = "admin" | "manager" | "employee" | null;
 
 export type User = {
-  id?: number;
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -12,7 +12,7 @@ export type User = {
 };
 
 export type Token = {
-  id?: number;
+  id: number;
   userId: number;
   refreshToken: string;
 };
@@ -24,21 +24,26 @@ export type TokenJWTPayload = {
   isActivated: boolean;
 };
 
+export type Section = {
+  id: number;
+  title: string;
+};
+
 export type Board = {
-  id?: number;
+  id: number;
   title: string;
   section: number;
 };
 
 export type Column = {
-  id?: number;
+  id: number;
   boardId: number;
   title: string;
   columnOrder: number;
 };
 
 export type Task = {
-  id?: number;
+  id: number;
   userId: number | null;
   columnId: number;
   boardId: number;
@@ -48,27 +53,22 @@ export type Task = {
   status: TaskStatus;
   tag: string | null;
   createdOn: Date;
-  completedOn?: Date | null;
+  completedOn: Date | null;
 };
 
 export type TaskToDo = {
-  id?: number;
+  id: number;
   taskId: number;
   title: string;
   completed: boolean;
 };
 
 export type Comment = {
-  id?: number;
+  id: number;
   taskId: number;
   userId: number;
   content: string;
   createdOn: Date;
-};
-
-export type Section = {
-  id?: number;
-  title: string;
 };
 
 export type EntityCollection = {

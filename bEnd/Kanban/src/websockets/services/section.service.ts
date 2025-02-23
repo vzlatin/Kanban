@@ -1,7 +1,7 @@
-import { Section } from "../types/entities.ts";
-import { MessageMap } from "../types/zod/inbound.ts";
-import { DatabaseError } from "../../errors/databaseErrors.ts";
+import { Section } from "../../types/entities.ts";
 import { ApiError } from "../../errors/apiErrors.ts";
+import { MessageMap } from "../../types/validation.ts";
+import { DatabaseError } from "../../errors/databaseErrors.ts";
 import {
   _deleteSection,
   _insertSection,

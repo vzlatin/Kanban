@@ -1,6 +1,6 @@
 import { compare, hash } from "bcrypt";
 import { userDto } from "../utils/dtos.ts";
-import { User } from "../types/userTypes.ts";
+import { User } from "../../types/entities.ts";
 import { ApiError } from "../../errors/apiErrors.ts";
 import { DatabaseError } from "../../errors/databaseErrors.ts";
 import {

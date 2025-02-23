@@ -1,5 +1,5 @@
 import { Context } from "@oak/oak/context";
-import { EntityCollection } from "../types/data-types.ts";
+import { EntityCollection } from "../../types/entities.ts";
 import {
   findAllBoards,
   findAllColumns,

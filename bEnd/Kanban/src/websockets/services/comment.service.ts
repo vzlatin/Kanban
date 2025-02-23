@@ -1,7 +1,7 @@
-import { Comment } from "../types/entities.ts";
-import { MessageMap } from "../types/zod/inbound.ts";
-import { DatabaseError } from "../../errors/databaseErrors.ts";
+import { Comment } from "../../types/entities.ts";
 import { ApiError } from "../../errors/apiErrors.ts";
+import { MessageMap } from "../../types/validation.ts";
+import { DatabaseError } from "../../errors/databaseErrors.ts";
 import { _deleteComment, _insertComment } from "../../database/db.ts";
 
 export async function createComment(

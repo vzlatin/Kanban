@@ -1,7 +1,7 @@
-import { DatabaseError } from "../../errors/databaseErrors.ts";
-import { Board } from "../types/entities.ts";
-import { MessageMap } from "../types/zod/inbound.ts";
+import { Board } from "../../types/entities.ts";
 import { ApiError } from "../../errors/apiErrors.ts";
+import { MessageMap } from "../../types/validation.ts";
+import { DatabaseError } from "../../errors/databaseErrors.ts";
 import { _deleteBoard, _insertBoard, _updateBoard } from "../../database/db.ts";
 
 export async function createBoard(

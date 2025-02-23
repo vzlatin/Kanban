@@ -1,8 +1,9 @@
 import { create } from "zustand";
 import { KanbanStore } from "./types";
-import { ApiError } from "../http/errors";
-import { getUsers } from "../services/user.service";
-import { getEntityCollection } from "../services/entity-collection.service";
+import { getUsers } from "../../../services/user.service";
+import { ApiError } from "../../../miscellaneous/utils/errors";
+import { renderInfoToast } from "../../../miscellaneous/utils/toasts";
+import { getEntityCollection } from "../../../services/entity.service";
 
 const initialState = {
   sections: [],
@@ -51,10 +52,13 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
 
       const socket = new WebSocket(url);
 
-      socket.onopen = () => console.log("WebSocket connected");
+      socket.onopen = () => renderInfoToast("You have connected via WS");
 
-      socket.onmessage = (event) => {
-        //const _data = JSON.parse(event.data);
+      socket.onmessage = async (message: MessageEvent<string>) => {
+        const _data = JSON.parse(message.data);
+        console.log(_data);
+        // TODO: Add parsing
+        // TODO: build and add the controller
       };
 
       socket.onerror = (error) => console.error("WebSocket error:", error);

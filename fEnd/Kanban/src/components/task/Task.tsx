@@ -1,5 +1,5 @@
 import styles from "./Task.module.css";
-import { Task as T } from "../../http/interfaces/data-interfaces";
+import { Task as T } from "../../types/entities";
 
 type TaskProps = {
   task: T;

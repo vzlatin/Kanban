@@ -94,7 +94,7 @@ export interface SectionDeletedPayload extends EntityDeletedPayload {}
 
 // ---- Boards ----
 export interface BoardCreatedPayload extends Board {}
-export interface BoardUpdatedPayload extends UpdateBoardPayload {}
+export interface BoardUpdatedPayload extends Board {}
 export interface BoardDeletedPayload extends EntityDeletedPayload {}
 
 // ---- Columns ----

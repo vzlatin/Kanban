@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
-import { AuthResponse } from "../interfaces/http-interfaces";
-import $defaultApi from "../http/index";
-import { Credentials } from "../pages/signup/types";
+import { AuthResponse } from "../types/responses";
+import { Credentials } from "../state/stores/signup/types";
+import $defaultApi from "../miscellaneous/config/axios.default";
 
 export const signin = async (
   email: string,

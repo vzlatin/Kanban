@@ -1,15 +1,15 @@
-import { DragDropContext, DropResult } from "@hello-pangea/dnd";
-
 import styles from "./Signup.module.css";
-import SignupColumn from "./signup-helper-components/signup-column/SignupColumn";
-import { useSignupStore } from "./store";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useAuthStore } from "../signin/store";
-import { renderErrorToast, renderInfoToast } from "../../utils/toasts";
-import { UserRole } from "../../state/types";
-import { checkAuth } from "../../services/user.service";
+
 import { useEffect, useState } from "react";
+import { UserRole } from "../../types/entities";
+import { checkAuth } from "../../services/user.service";
+import { DragDropContext, DropResult } from "@hello-pangea/dnd";
+import { useSignupStore } from "../../state/stores/signup/store";
+import { useSigninStore } from "../../state/stores/signin/store";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import ErrorNotification from "../../components/error/ErrorNotification";
+import SignupColumn from "./signup-helper-components/signup-column/SignupColumn";
+import { renderErrorToast, renderInfoToast } from "../../miscellaneous/utils/toasts";
 
 const Signup = () => {
   const [loading, setLoading] = useState(false);
@@ -18,8 +18,8 @@ const Signup = () => {
   const moveTask = useSignupStore((state) => state.moveTask);
   const tasks = useSignupStore((state) => state.tasks);
 
-  const signup = useAuthStore((state) => state.signup);
-  const error = useAuthStore((state) => state.error);
+  const signup = useSigninStore((state) => state.signup);
+  const error = useSigninStore((state) => state.error);
 
   const location = useLocation();
   const navigate = useNavigate();

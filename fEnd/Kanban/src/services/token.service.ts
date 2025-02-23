@@ -1,16 +1,16 @@
 import { AxiosResponse } from "axios";
-import { useAuthStore } from "../pages/signin/store";
-import { AuthResponse } from "../interfaces/http-interfaces";
-import $defaultApi from "../http";
+import { AuthResponse } from "../types/responses";
+import { useSigninStore } from "../state/stores/signin/store";
+import $defaultApi from "../miscellaneous/config/axios.default";
 
-export const getToken = () => useAuthStore.getState().accessToken;
+export const getToken = () => useSigninStore.getState().accessToken;
 
 export const refreshAccessToken = async (): Promise<
-	AxiosResponse<AuthResponse>
+  AxiosResponse<AuthResponse>
 > => {
-	return await $defaultApi.get<AuthResponse>("/refresh", {
-		headers: {
-			"Content-Type": "application/json; charser=utf-8",
-		},
-	});
+  return await $defaultApi.get<AuthResponse>("/refresh", {
+    headers: {
+      "Content-Type": "application/json; charser=utf-8",
+    },
+  });
 };

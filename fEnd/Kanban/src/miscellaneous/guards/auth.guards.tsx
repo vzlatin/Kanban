@@ -1,13 +1,13 @@
 import { Navigate } from "react-router-dom";
-import { useAuthStore } from "../pages/signin/store";
 import { useState, useEffect } from "react";
+import { useSigninStore } from "../../state/stores/signin/store";
 
 interface ProtectedRoutesProps {
 	children: React.ReactNode;
 }
 
 const AuthProtectedRoute: React.FC<ProtectedRoutesProps> = ({ children }) => {
-	const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+	const isAuthenticated = useSigninStore((state) => state.isAuthenticated);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {

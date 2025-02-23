@@ -1,8 +1,8 @@
-import { ApiError } from "../../http/errors";
-import { User } from "../../http/interfaces/data-interfaces";
 import { Credentials } from "../signup/types";
+import { User } from "../../../types/entities";
+import { ApiError } from "../../../miscellaneous/utils/errors";
 
-export interface AuthStore {
+export interface SigninStore {
   user: User;
   accessToken: string;
   isAuthenticated: boolean;

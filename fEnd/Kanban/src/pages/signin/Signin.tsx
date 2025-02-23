@@ -1,20 +1,21 @@
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styles from "./Signin.module.css";
+
 import { useEffect, useState } from "react";
-import { useAuthStore } from "./store";
 import { checkAuth } from "../../services/user.service";
+import { useSigninStore } from "../../state/stores/signin/store";
+import { renderErrorToast } from "../../miscellaneous/utils/toasts";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import ErrorNotification from "../../components/error/ErrorNotification";
-import { renderErrorToast } from "../../utils/toasts";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const signin = useAuthStore((state) => state.signin);
-  const error = useAuthStore((state) => state.error);
-  const trustDevice = useAuthStore((state) => state.trustDevice);
-  const setTrustDevice = useAuthStore((state) => state.setTrustDevice);
+  const signin = useSigninStore((state) => state.signin);
+  const error = useSigninStore((state) => state.error);
+  const trustDevice = useSigninStore((state) => state.trustDevice);
+  const setTrustDevice = useSigninStore((state) => state.setTrustDevice);
 
   const navigate = useNavigate();
   const location = useLocation();

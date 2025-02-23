@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { AuthStore } from "./types";
-import { UserRole } from "../../state/types";
-import { signin, signup } from "../../services/auth.service";
-import { refreshAccessToken } from "../../services/token.service";
-import { ApiError } from "../../http/errors";
+import { SigninStore } from "./types";
+import { UserRole } from "../../../types/entities";
+import { ApiError } from "../../../miscellaneous/utils/errors";
+import { signin, signup } from "../../../services/auth.service";
+import { refreshAccessToken } from "../../../services/token.service";
 
 const initialState = {
   user: {
@@ -19,7 +19,7 @@ const initialState = {
   accessToken: "",
 };
 
-export const useAuthStore = create<AuthStore>((set) => ({
+export const useSigninStore = create<SigninStore>((set) => ({
   ...initialState,
   signin: async (email, password) => {
     try {

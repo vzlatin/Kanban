@@ -1,7 +1,7 @@
 import styles from "./Sidebar.module.css";
 
+import { Section } from "../../types/entities";
 import SidebarSection from "../sidebar-section/SidebarSection";
-import { Section } from "../../state/types";
 
 type SidebarProps = {
   sections: Section[];

@@ -1,4 +1,4 @@
-import { ApiValidationError } from "../interfaces/http-interfaces";
+import { ApiValidationError } from "../../types/repsponses";
 
 export class ApiError extends Error {
 	name: string;

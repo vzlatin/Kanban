@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
 import styles from "./Header.module.css";
+
+import { useEffect, useRef, useState } from "react";
 
 const Header = () => {
   const placeholder = Array.from({ length: 6 }, (_, i) => i);

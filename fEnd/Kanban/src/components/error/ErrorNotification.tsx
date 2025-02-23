@@ -4,7 +4,7 @@ import {
 	NetworkError,
 	ServerError,
 	UnauthorizedError,
-} from "../../http/errors";
+} from "../../miscellaneous/utils/errors";
 
 interface ErrorNotificationProps {
 	error: ApiError | null;

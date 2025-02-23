@@ -3,9 +3,10 @@ import Home from "./pages/home/Home";
 import Board from "./components/board/Board";
 import Signup from "./pages/signup/Signup";
 import Signin from "./pages/signin/Signin";
-import AuthProtectedRoute from "./utils/auth.guards";
+import AuthProtectedRoute from "./miscellaneous/auth.guards";
 import PersistentLogin from "./components/peristent-login/PeristentLogin";
 import EmptyBoard from "./components/empty-board/EmptyBoard";
+import WebsocketInitializer from "./components/ws-initializer/ws-initializer";
 
 const router = createBrowserRouter(
   [
@@ -14,6 +15,7 @@ const router = createBrowserRouter(
       element: (
         <PersistentLogin>
           <AuthProtectedRoute>
+            <WebsocketInitializer />
             <Home />
           </AuthProtectedRoute>
         </PersistentLogin>

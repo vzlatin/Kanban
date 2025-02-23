@@ -1,14 +1,14 @@
 import { AxiosResponse } from "axios";
-import { $api } from "../http";
-import { useAuthStore } from "../pages/signin/store";
-import { UserReponse } from "../interfaces/http-interfaces";
+import { User } from "../types/entities";
+import $api from "../miscellaneous/config/axios.working";
+import { useSigninStore } from "../state/stores/signin/store";
 
-export const checkAuth = () => useAuthStore.getState().isAuthenticated;
+export const checkAuth = () => useSigninStore.getState().isAuthenticated;
 
-export const getUsers = async (): Promise<AxiosResponse<UserReponse[]>> => {
-	return $api.get<UserReponse[]>("/users", {
-		headers: {
-			"Content-Type": "application/json; charser=utf-8",
-		},
-	});
+export const getUsers = async (): Promise<AxiosResponse<User[]>> => {
+  return $api.get<User[]>("/users", {
+    headers: {
+      "Content-Type": "application/json; charser=utf-8",
+    },
+  });
 };

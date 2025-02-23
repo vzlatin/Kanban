@@ -1,63 +1,43 @@
-import { ApiError } from "../http/errors";
-
-export interface KanbanStore {
-  sections: Section[];
-  boards: Board[];
-  columns: Column[];
-  tasks: Task[];
-  taskToDos: TaskToDo[];
-  comments: Comment[];
-  users: User[];
-
-  socket: WebSocket | null;
-  connect: (url: string) => void;
-  send: (message: string) => void;
-
-  error: ApiError | null;
-  getEntityCollection: () => Promise<void>;
-  getUsers: () => Promise<void>;
-}
-
-export interface Section {
+export type Section = {
   id: number;
   title: string;
 }
 
-export interface Board {
+export type Board = {
   id: number;
   title: string;
   section: number;
 }
 
-export interface Column {
+export type Column = {
   id: number;
   boardId: number;
   title: string;
   columnOrder: number;
 }
 
-export interface Task {
+export type Task = {
   id: number;
-  userId: number;
+  userId: number | null;
   columnId: number;
   boardId: number;
   title: string;
-  description?: string;
+  description: string | null;
   taskOrder: number;
   status: TaskStatus;
-  tag?: string;
+  tag: string | null;
   createdOn: Date;
-  completedOn?: Date;
+  completedOn: Date | null;
 }
 
-export interface TaskToDo {
+export type TaskToDo = {
   id: number;
   taskId: number;
   title: string;
   completed: boolean;
 }
 
-export interface Comment {
+export type Comment = {
   id: number;
   taskId: number;
   userId: number;
@@ -65,14 +45,14 @@ export interface Comment {
   createdOn: Date;
 }
 
-export interface ConnectedUser {
+export type ConnectedUser = {
   id: number;
   email: string;
   fName: string;
   lName: string;
 }
 
-export interface User {
+export type User = {
   id: number;
   firstName: string;
   lastName: string;

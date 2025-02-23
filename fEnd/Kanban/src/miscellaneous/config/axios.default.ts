@@ -1,9 +1,6 @@
 import axios, { AxiosError } from "axios";
-import { getToken } from "../services/token.service";
-import {
-  ApiErrorResponse,
-  CustomAxiosRequestConfig,
-} from "../interfaces/http-interfaces";
+import { AxiosRequestConfig } from "axios";
+import { ApiErrorResponse } from "../../types/repsponses";
 import {
   ApiError,
   BadRequestError,
@@ -11,11 +8,15 @@ import {
   ServerError,
   UnauthorizedError,
   UnsuportedMediaTypeError,
-} from "./errors";
+} from "../utils/errors";
 
 const baseURL: string = import.meta.env.VITE_BASE_URL;
 const maxRetries: number = import.meta.env.VITE_MAX_RETRIES;
 const timeout: number = import.meta.env.VITE_TIMEOUT;
+
+interface CustomAxiosRequestConfig extends AxiosRequestConfig {
+  retryCount?: number;
+}
 
 const $defaultApi = axios.create({
   baseURL,
@@ -48,22 +49,6 @@ $defaultApi.interceptors.response.use(
   },
 );
 
-export const $api = axios.create({
-  baseURL,
-  timeout,
-  withCredentials: true,
-});
-
-$api.interceptors.request.use(
-  (config) => {
-    config.headers.Authorization = `Bearer ${getToken()}`;
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
-
-export default $defaultApi;
-
 const isNetworkError = (error: AxiosError<ApiErrorResponse>): boolean => {
   return !error.response || error.code === "ECONNABORTED";
 };
@@ -94,3 +79,5 @@ const normalizeError = (error: AxiosError<ApiErrorResponse>): ApiError => {
     0,
   );
 };
+
+export default $defaultApi;

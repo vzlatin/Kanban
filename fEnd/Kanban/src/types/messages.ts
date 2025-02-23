@@ -1,4 +1,3 @@
-import { TaskStatus } from "../../http/interfaces/data-interfaces";
 import {
   Board,
   Column,
@@ -7,7 +6,7 @@ import {
   Section,
   Task,
   TaskToDo,
-} from "../../state/types";
+} from "./entities";
 
 export enum InboundMessageType {
   UserConnected = "UserConnected",
@@ -51,101 +50,40 @@ export enum OutboundMessageType {
   DeleteSection = "DeleteSection",
 }
 
-export interface EntityDeletedPayload {
-  id: number;
-}
+export type EntityDeletedPayload = { id: number };
 
 // --------------------------------- Outbound Messages ----------------------------------
 
-// ---- Sections ----
-export interface CreateSectionPayload {
-  title: string;
-}
-
-export interface UpdateSectionPayload {
-  title: string;
-}
-
-export interface DeleteSectionPayload extends EntityDeletedPayload {}
+// --- Sections ----
+export type CreateSectionPayload = Omit<Section, "id">;
+export type UpdateSectionPayload = Omit<Section, "id">;
+export type DeleteSectionPayload = EntityDeletedPayload;
 
 // ---- Boards ----
-export interface CreateBoardPayload {
-  title: string;
-  section: number;
-}
-
-export interface UpdateBoardPayload {
-  title: string;
-}
-
-export interface DeleteBoardPaylod extends EntityDeletedPayload {}
+export type CreateBoardPayload = Omit<Board, "id">;
+export type UpdateBoardPayload = Partial<Omit<Board, "id">>;
+export type DeleteBoardPayload = EntityDeletedPayload;
 
 // ---- Columns ----
-export interface CreateColumnPayload {
-  title: string;
-  boardId: number;
-}
-
-export interface UpdateColumnPayload {
-  id: number;
-  title?: string;
-  columnOrder?: number;
-}
-
-export interface DeleteColumnPaylod extends EntityDeletedPayload {}
+export type CreateColumnPayload = Partial<Omit<Column, "id">>;
+export type UpdateColumnPayload = Partial<Omit<Column, "id">>;
+export type DeleteColumnPaylod = EntityDeletedPayload;
 
 // ---- Tasks ----
-
-export interface CreateTaskPayload {
-  userId?: number;
-  columnId: number;
-  boardId: number;
-  title: string;
-  description?: string;
-  taskOrder: number;
-  status: TaskStatus;
-  tag?: string;
-  createdOn: Date;
-}
-
-export interface UpdateTaskPayload {
-  userId?: number;
-  title?: string;
-  description?: string;
-  status?: TaskStatus;
-  taskOrder?: number;
-  tag?: string;
-  completedOn?: Date;
-}
-
-export interface DeleteTaskPayload extends EntityDeletedPayload {}
+export type CreateTaskPayload = Omit<Task, "id" | "completedOn">;
+export type UpdateTaskPayload = Partial<
+  Omit<Task, "id" | "boardId" | "createdOn">
+>;
+export type DeleteTaskPayload = EntityDeletedPayload;
 
 // ---- Comments ----
-export interface CreateCommentPayload {
-  taskId: number;
-  userId: number;
-  content: string;
-  createdOn: Date;
-}
-
-export interface DeleteCommentPayload extends EntityDeletedPayload {}
+export type CreateCommentPayload = Omit<Comment, "id">;
+export type DeleteCommentPayload = EntityDeletedPayload;
 
 // ---- TaskToDos ----
-
-export interface CreateTaskToDoPayload {
-  taskId: number;
-  title: string;
-  completed: boolean;
-}
-
-export interface UpdateTaskToDoPayload {
-  id: number;
-  taskId: number;
-  title?: string;
-  completed?: boolean;
-}
-
-export interface DeleteTaskToDoPayload extends EntityDeletedPayload {}
+export type CreateTaskToDoPayload = Omit<TaskToDo, "id">;
+export type UpdateTaskToDoPayload = Partial<Omit<TaskToDo, "id" | "taskId">>;
+export type DeleteTaskToDoPayload = EntityDeletedPayload;
 
 // --------------------------------- Inbound Messages ----------------------------------
 
@@ -179,9 +117,7 @@ export interface TaskToDoUpdatedPayload extends TaskToDo {}
 export interface TaskToDoDeletedPayload extends EntityDeletedPayload {}
 
 // ---- Users ----
-export interface UserConnectedPayload {
-  users: ConnectedUser[];
-}
+export type UserConnectedPayload = { users: ConnectedUser[] };
 
 export type Message =
   | {
@@ -190,7 +126,7 @@ export type Message =
   }
   | {
     type: OutboundMessageType.DeleteBoard;
-    payload: DeleteBoardPaylod;
+    payload: DeleteBoardPayload;
   }
   | {
     type: OutboundMessageType.UpdateBoard;

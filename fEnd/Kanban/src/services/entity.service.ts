@@ -1,6 +1,6 @@
-import { EntityCollection } from "../state/types";
 import { AxiosResponse } from "axios";
-import { $api } from "../http";
+import { EntityCollection } from "../types/entities";
+import $api from "../miscellaneous/config/axios.working";
 
 export const getEntityCollection = async (): Promise<
   AxiosResponse<EntityCollection>

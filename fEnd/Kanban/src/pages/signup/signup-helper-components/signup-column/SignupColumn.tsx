@@ -1,6 +1,7 @@
-import SignupTask from "../signup-task/SignupTask";
 import styles from "./SignupColumn.module.css";
-import { ColumnProps } from "../../types";
+
+import SignupTask from "../signup-task/SignupTask";
+import { ColumnProps } from "../../../../state/stores/signup/types";
 import {
 	Droppable,
 	DroppableProvided,

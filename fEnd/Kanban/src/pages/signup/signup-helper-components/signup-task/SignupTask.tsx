@@ -1,10 +1,11 @@
-import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
-import { TaskProps } from "../../types";
 import styles from "./SignupTask.module.css";
-import { useSignupStore } from "../../store";
+
 import { useState } from "react";
-import { useDebounce, useEfectAfterMount } from "../../../../utils/hooks";
 import { validate } from "../../validators";
+import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
+import { TaskProps } from "../../../../state/stores/signup/types";
+import { useSignupStore } from "../../../../state/stores/signup/store";
+import { useDebounce, useEfectAfterMount } from "../../../../miscellaneous/hooks/hooks";
 
 const SignupTask: React.FC<TaskProps> = ({ taskId, index }) => {
 	const task = useSignupStore((state) => state.tasks[taskId]);

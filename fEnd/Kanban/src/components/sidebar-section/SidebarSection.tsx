@@ -1,10 +1,9 @@
 import styles from "./SidebarSection.module.css";
 
+import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-
-import { useKanbanStore } from "../../state/global.store";
-import { useEffect, useRef } from "react";
+import { useKanbanStore } from "../../state/stores/global/global.store";
 
 type SidebarSectionProps = {
   id: number;

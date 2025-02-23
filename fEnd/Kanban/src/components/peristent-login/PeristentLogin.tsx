@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
-import { useAuthStore } from "../../pages/signin/store";
 import { checkAuth } from "../../services/user.service";
+import { useSigninStore } from "../../state/stores/signin/store";
 
 interface PersistentLoginProps {
   children: ReactNode;
@@ -9,8 +9,8 @@ interface PersistentLoginProps {
 const PersistentLogin: React.FC<PersistentLoginProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
-  const refreshAccessToken = useAuthStore((state) => state.refreshAccessToken);
-  const trustDevice = useAuthStore((state) => state.trustDevice);
+  const refreshAccessToken = useSigninStore((state) => state.refreshAccessToken);
+  const trustDevice = useSigninStore((state) => state.trustDevice);
 
   useEffect(() => {
     const refresh = async () => {

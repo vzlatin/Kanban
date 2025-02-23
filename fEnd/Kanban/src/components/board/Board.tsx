@@ -2,7 +2,7 @@ import styles from "./Board.module.css";
 
 import Column from "../column/Column";
 import { useParams } from "react-router-dom";
-import { useKanbanStore } from "../../state/global.store";
+import { useKanbanStore } from "../../state/stores/global/global.store";
 
 const Board = () => {
   const { boardID } = useParams<{ boardID: string }>();

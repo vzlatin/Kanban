@@ -1,7 +1,8 @@
-import { Column as Col } from "../../state/types";
-import Task from "../task/Task";
 import styles from "./Column.module.css";
-import { useKanbanStore } from "../../state/global.store";
+
+import Task from "../task/Task";
+import { Column as Col } from "../../types/entities";
+import { useKanbanStore } from "../../state/stores/global/global.store";
 
 type ColumnProps = {
   column: Col;

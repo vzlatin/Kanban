@@ -32,31 +32,32 @@ export const InboundMessageT = z.enum([
 ]);
 
 export const _CreateSectionPayload = _Section.omit({ id: true });
-export const _UpdateSectionPayload = _Section.omit({ id: true });
+export const _UpdateSectionPayload = _Section.partial().required({ id: true });
 export const _DeleteSectionPayload = z.object({ id: z.number() });
 
 export const _CreateBoardPayload = _Board.omit({ id: true });
-export const _UpdateBoardPayload = _Board.omit({ id: true }).partial();
+// export const _UpdateBoardPayload = _Board.omit({ id: true }).partial();
+export const _UpdateBoardPayload = _Board.partial().required({ id: true });
 export const _DeleteBoardPayload = z.object({ id: z.number() });
 
 export const _CreateColumnPayload = _Column.omit({ id: true });
-export const _UpdateColumnPayload = _Column.omit({ id: true }).partial();
+export const _UpdateColumnPayload = _Column.partial().required({ id: true });
 export const _DeleteColumnPayload = z.object({ id: z.number() });
 
 export const _CreateTaskPayload = _Task.omit({ id: true, completedOn: true });
 export const _UpdateTaskPayload = _Task.omit({
-  id: true,
   boardId: true,
   createdOn: true,
-}).partial();
+}).partial().required({ id: true });
+
 export const _DeleteTaskPayload = z.object({ id: z.number() });
 
 export const _CreateCommentPayload = _Comment.omit({ id: true });
 export const _DeleteCommentPayload = z.object({ id: z.number() });
 
 export const _CreateTaskToDoPayload = _TaskToDo.omit({ id: true });
-export const _UpdateTaskToDoPayload = _TaskToDo.omit({ id: true, taskId: true })
-  .partial();
+export const _UpdateTaskToDoPayload = _TaskToDo.omit({ taskId: true })
+  .partial().required({ id: true });
 export const _DeleteTaskToDoPayload = z.object({ id: z.number() });
 
 export const InboundMessageSchema = z.discriminatedUnion("type", [

@@ -28,36 +28,28 @@ export const InboundMessageT = z.enum([
   "SectionDeleted",
 ]);
 
-export const _SectionCreatedPayload = _Section.omit({ id: true });
-export const _SectionUpdatedPayload = _Section.omit({ id: true });
-export const _SectionDeletedPayload = z.object({ id: z.number() });
+export const _SectionCreatedPayload = _Section;
+export const _SectionUpdatedPayload = _Section;
+export const _SectionDeletedPayload = _Section;
 
-export const _BoardCreatedPayload = _Board.omit({ id: true });
-export const _BoardUpdatedPayload = _Board.omit({ id: true }).partial();
-export const _BoardDeletedPayload = z.object({ id: z.number() });
+export const _BoardCreatedPayload = _Board
+export const _BoardUpdatedPayload = _Board
+export const _BoardDeletedPayload = _Board
 
-export const _ColumnCreatedPayload = _Column.omit({ id: true });
-export const _ColumnUpdatedPayload = _Column.omit({ id: true }).partial();
-export const _ColumnDeletedPayload = z.object({ id: z.number() });
+export const _ColumnCreatedPayload = _Column
+export const _ColumnUpdatedPayload = _Column
+export const _ColumnDeletedPayload = _Column
 
-export const _TaskCreatedPayload = _Task.omit({ id: true, completedOn: true });
-export const _TaskUpdatedPayload = _Task.omit({
-  id: true,
-  boardId: true,
-  createdOn: true,
-}).partial();
-export const _TaskDeletedPayload = z.object({ id: z.number() });
+export const _TaskCreatedPayload = _Task
+export const _TaskUpdatedPayload = _Task
+export const _TaskDeletedPayload = _Task
 
-export const _CommentCreatedPayload = _Comment.omit({ id: true });
-export const _CommentDeletedPayload = z.object({ id: z.number() });
+export const _CommentCreatedPayload = _Comment
+export const _CommentDeletedPayload = _Comment
 
-export const _TaskToDoCreatedPayload = _TaskToDo.omit({ id: true });
-export const _TaskToDoUpdatedPayload = _TaskToDo.omit({
-  id: true,
-  taskId: true,
-})
-  .partial();
-export const _TaskToDoDeletedPayload = z.object({ id: z.number() });
+export const _TaskToDoCreatedPayload = _TaskToDo
+export const _TaskToDoUpdatedPayload = _TaskToDo
+export const _TaskToDoDeletedPayload = _TaskToDo
 
 export const InboundMessageSchema = z.discriminatedUnion("type", [
   z.object({

@@ -90,31 +90,31 @@ export type DeleteTaskToDoPayload = EntityDeletedPayload;
 // --- Sections ----
 export interface SectionCreatedPayload extends Section {}
 export interface SectionUpdatedPayload extends Section {}
-export interface SectionDeletedPayload extends EntityDeletedPayload {}
+export interface SectionDeletedPayload extends Section {}
 
 // ---- Boards ----
 export interface BoardCreatedPayload extends Board {}
 export interface BoardUpdatedPayload extends Board {}
-export interface BoardDeletedPayload extends EntityDeletedPayload {}
+export interface BoardDeletedPayload extends Board {}
 
 // ---- Columns ----
 export interface ColumnCreatedPayload extends Column {}
 export interface ColumnUpdatedPayload extends Column {}
-export interface ColumnDeletedPayload extends EntityDeletedPayload {}
+export interface ColumnDeletedPayload extends Column {}
 
 // ---- Tasks ----
 export interface TaskCreatedPayload extends Task {}
 export interface TaskUpdatedPayload extends Task {}
-export interface TaskDeletedPayload extends EntityDeletedPayload {}
+export interface TaskDeletedPayload extends Task {}
 
 // ---- Comments ----
 export interface CommentCreatedPayload extends Comment {}
-export interface CommentDeletedPayload extends EntityDeletedPayload {}
+export interface CommentDeletedPayload extends Comment {}
 
 // ---- TaskToDos ----
 export interface TaskToDoCreatedPayload extends TaskToDo {}
 export interface TaskToDoUpdatedPayload extends TaskToDo {}
-export interface TaskToDoDeletedPayload extends EntityDeletedPayload {}
+export interface TaskToDoDeletedPayload extends TaskToDo {}
 
 // ---- Users ----
 export interface UserConnectedPayload {

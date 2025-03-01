@@ -56,6 +56,7 @@ class Broadcaster {
     socket.onopen = this.broadcastUsers.bind(this);
 
     socket.onmessage = async (message: MessageEvent<string>) => {
+      console.log(message);
       const result = InboundMessageSchema.safeParse(
         JSON.parse(message.data),
       );
@@ -103,6 +104,30 @@ class Broadcaster {
   // returned from the database.
   private async handleMessage(message: InboundMessage) {
     switch (message.type) {
+      case InboundMessageT.Enum.CreateSection: {
+        const section = await createSection(message.payload);
+        this.broadcast({
+          type: OutboundMessageType.SectionCreated,
+          payload: section,
+        });
+        break;
+      }
+      case InboundMessageT.Enum.UpdateSection: {
+        const section = await updateSection(message.payload);
+        this.broadcast({
+          type: OutboundMessageType.SectionUpdated,
+          payload: section,
+        });
+        break;
+      }
+      case InboundMessageT.Enum.DeleteSection: {
+        const section = await deleteSection(message.payload);
+        this.broadcast({
+          type: OutboundMessageType.SectionDeleted,
+          payload: section,
+        });
+        break;
+      }
       case InboundMessageT.Enum.CreateBoard: {
         const board = await createBoard(message.payload);
         this.broadcast({
@@ -123,7 +148,7 @@ class Broadcaster {
         const board = await deleteBoard(message.payload);
         this.broadcast({
           type: OutboundMessageType.BoardDeleted,
-          payload: { id: board.id! },
+          payload: board,
         });
         break;
       }
@@ -147,7 +172,7 @@ class Broadcaster {
         const column = await deleteColumn(message.payload);
         this.broadcast({
           type: OutboundMessageType.ColumnDeleted,
-          payload: { id: column.id! },
+          payload: column,
         });
         break;
       }
@@ -163,7 +188,7 @@ class Broadcaster {
         const task = await deleteTask(message.payload);
         this.broadcast({
           type: OutboundMessageType.TaskDeleted,
-          payload: { id: task.id! },
+          payload: task,
         });
         break;
       }
@@ -187,7 +212,7 @@ class Broadcaster {
         const comment = await deleteComment(message.payload);
         this.broadcast({
           type: OutboundMessageType.CommentDeleted,
-          payload: { id: comment.id! },
+          payload: comment,
         });
         break;
       }
@@ -211,32 +236,9 @@ class Broadcaster {
         const tasktodo = await deleteTaskToDo(message.payload);
         this.broadcast({
           type: OutboundMessageType.TaskToDoDeleted,
-          payload: { id: tasktodo.id! },
+          payload: tasktodo,
         });
         break;
-      }
-      case InboundMessageT.Enum.CreateSection: {
-        const section = await createSection(message.payload);
-        this.broadcast({
-          type: OutboundMessageType.SectionCreated,
-          payload: section,
-        });
-        break;
-      }
-      case InboundMessageT.Enum.UpdateSection: {
-        const section = await updateSection(message.payload);
-        this.broadcast({
-          type: OutboundMessageType.SectionUpdated,
-          payload: section,
-        });
-        break;
-      }
-      case InboundMessageT.Enum.DeleteSection: {
-        const section = await deleteSection(message.payload);
-        this.broadcast({
-          type: OutboundMessageType.SectionDeleted,
-          payload: { id: section.id! },
-        });
       }
     }
   }

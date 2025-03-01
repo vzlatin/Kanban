@@ -2,8 +2,14 @@ import { create } from "zustand";
 import { KanbanStore } from "./types";
 import { getUsers } from "../../../services/user.service";
 import { ApiError } from "../../../miscellaneous/utils/errors";
-import { renderInfoToast } from "../../../miscellaneous/utils/toasts";
 import { getEntityCollection } from "../../../services/entity.service";
+import { Message } from "../../../types/messages";
+import {
+  InboundMessage,
+  InboundMessageSchema,
+  InboundMessageT,
+} from "../../../types/zod/validation";
+import { renderErrorToast } from "../../../miscellaneous/utils/toasts";
 
 const initialState = {
   sections: [],
@@ -12,6 +18,7 @@ const initialState = {
   tasks: [],
   taskToDos: [],
   comments: [],
+  connectedUsers: [],
   users: [],
   socket: null,
   error: null,
@@ -48,17 +55,55 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
 
   connect: (url) => {
     set((state) => {
-      if (state.socket) state;
+      if (state.socket) return state;
 
       const socket = new WebSocket(url);
 
-      socket.onopen = () => renderInfoToast("You have connected via WS");
+      socket.onopen = () => console.log("Connected via WS");
 
       socket.onmessage = async (message: MessageEvent<string>) => {
-        const _data = JSON.parse(message.data);
-        console.log(_data);
-        // TODO: Add parsing
-        // TODO: build and add the controller
+        //console.log(message.data);
+        const result = InboundMessageSchema.safeParse(
+          JSON.parse(message.data),
+        );
+        if (!result.success) {
+          renderErrorToast("Invalid message");
+          return state;
+        }
+        const m = result.data as InboundMessage;
+        set((state) => {
+          switch (m.type) {
+            case InboundMessageT.Enum.UserConnected: {
+              return { ...state, connectedUsers: m.payload.users };
+            }
+            case InboundMessageT.Enum.SectionCreated: {
+              return {
+                ...state,
+                sections: [...state.sections, m.payload],
+              };
+            }
+            case InboundMessageT.Enum.SectionUpdated: {
+              return {
+                ...state,
+                sections: state.sections.map((section) =>
+                  section.id === m.payload.id
+                    ? { ...section, ...m.payload }
+                    : section
+                ),
+              };
+            }
+            case InboundMessageT.Enum.SectionDeleted: {
+              return {
+                ...state,
+                sections: state.sections.filter((section) =>
+                  section.id !== m.payload.id
+                ),
+              };
+            }
+            default:
+              return state;
+          }
+        });
       };
 
       socket.onerror = (error) => console.error("WebSocket error:", error);
@@ -72,11 +117,12 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
     });
   },
 
-  send: (message) => {
+  send: (message: Message) => {
     set((state) => {
       if (state.socket && state.socket.readyState === WebSocket.OPEN) {
         state.socket.send(JSON.stringify(message));
       } else {
+        // TODO: Handle the error propperly
         console.error("WebSocket is not open");
       }
       return state;

@@ -1,24 +1,36 @@
 import styles from "./SidebarSection.module.css";
 
-import { useEffect, useRef } from "react";
+import PopUpMenu from "../menu/PopUpMenu";
+import { Section } from "../../types/entities";
+import CustomDialog from "../dialog/CustomDialog";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { Message, OutboundMessageType } from "../../types/messages";
 import { useKanbanStore } from "../../state/stores/global/global.store";
 
-type SidebarSectionProps = {
-  id: number;
-  title: string;
-};
+enum DialogType {
+  None = "",
+  AddBoard = "addBoard",
+  EditSection = "editSection",
+  DeleteSection = "deleteSection",
+}
 
-const SidebarSection: React.FC<SidebarSectionProps> = (
-  { title, id },
+const SidebarSection: React.FC<Section> = (
+  section,
 ) => {
   const location = useLocation();
   const navigate = useNavigate();
+
   const boards = useKanbanStore((state) => state.boards).filter((board) =>
-    board.section === id
+    board.section === section.id
   );
+  const send = useKanbanStore((state) => state.send);
+
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [openDialog, setIsOpenDialog] = useState<DialogType>(DialogType.None);
+  const [sectionTitle, setSectionTitle] = useState(section.title);
+
+  const closeDialog = () => setIsOpenDialog(DialogType.None);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -53,45 +65,103 @@ const SidebarSection: React.FC<SidebarSectionProps> = (
         <h2
           className={styles["section-title"]}
         >
-          {title}
+          {section.title}
         </h2>
 
-        <Menu>
-          <MenuButton className={styles["ellipsis-section"]}>
-            <img src="/ellipsis-dark.svg" />
-          </MenuButton>
-          <MenuItems
-            transition
-            anchor="top end"
-            className={styles["menu-items"]}
-          >
-            <MenuItem>
-              <div className={styles["menu-item-wrap"]}>
-                <button>
-                  Add Board
-                </button>
-                <img src="/plus.svg" />
-              </div>
-            </MenuItem>
-            <MenuItem>
-              <div className={styles["menu-item-wrap"]}>
-                <button>
-                  Delete Section
-                </button>
-                <img src="/trashcan.svg" />
-              </div>
-            </MenuItem>
-            <MenuItem>
-              <div className={styles["menu-item-wrap"]}>
-                <button>
-                  Edit Section
-                </button>
-                <img src="/pencil.svg" />
-              </div>
-            </MenuItem>
-          </MenuItems>
-        </Menu>
+        <PopUpMenu
+          buttonClassName={styles["ellipsis-section"]}
+          menuClassName={styles["menu-items"]}
+          buttonContent={<img src="/ellipsis-dark.svg" />}
+          menuItems={[
+            {
+              label: "Add Board",
+              icon: "/plus.svg",
+              onClick: () => console.log("Add Board clicked"),
+            },
+            {
+              label: "Delete Section",
+              icon: "/trashcan.svg",
+              onClick: () => setIsOpenDialog(DialogType.DeleteSection),
+            },
+            {
+              label: "Edit Section",
+              icon: "/pencil.svg",
+              onClick: () => setIsOpenDialog(DialogType.EditSection),
+            },
+          ]}
+        >
+        </PopUpMenu>
       </div>
+
+      {/* ------- Edit Section Dialog -------*/}
+      <CustomDialog
+        isOpen={openDialog === DialogType.EditSection}
+        onClose={closeDialog}
+        title="Edit Section"
+      >
+        <input
+          className={styles["dialog-description-input"]}
+          type="text"
+          placeholder="Section Title"
+          onChange={(e) => setSectionTitle(e.target.value)}
+          value={sectionTitle}
+        />
+        <div className={styles["buttons"]}>
+          <button
+            className={`${
+              sectionTitle === section.title || sectionTitle === ""
+                ? styles["button-disabled"]
+                : styles["buttons-ok"]
+            }`}
+            disabled={sectionTitle === section.title || sectionTitle === ""}
+            onClick={() => {
+              updateSection({
+                ...section,
+                title: sectionTitle,
+              });
+              closeDialog();
+            }}
+          >
+            Edit
+          </button>
+          <button
+            className={styles["buttons-nok"]}
+            onClick={closeDialog}
+          >
+            Cancel
+          </button>
+        </div>
+      </CustomDialog>
+
+      {/* ------- Delete Section Dialog -------*/}
+      <CustomDialog
+        isOpen={openDialog === DialogType.DeleteSection}
+        onClose={closeDialog}
+        title="Delete Section"
+      >
+        <p className={styles["dialog-warning"]}>
+          Deleting a Section will result in the deletion of all of its
+          associated data (Board, Columns, Tasks, etc.) Do you want to proceed?
+        </p>
+        <div className={styles["buttons"]}>
+          <button
+            className={styles["buttons-ok-delete"]}
+            onClick={() => {
+              deleteSection(section);
+              closeDialog();
+            }}
+          >
+            Delete
+          </button>
+          <button
+            className={styles["buttons-nok-delete"]}
+            onClick={closeDialog}
+          >
+            Cancel
+          </button>
+        </div>
+      </CustomDialog>
+
       <ul className={styles.board_list}>
         {boards.map((board, index) => {
           const isActive = location.pathname.includes(`/board/${board.id}`);
@@ -109,33 +179,24 @@ const SidebarSection: React.FC<SidebarSectionProps> = (
               <div
                 className={styles["menu-container"]}
               >
-                <Menu>
-                  <MenuButton className={styles["ellipsis"]}>
-                    <img src="/ellipsis-light.svg" />
-                  </MenuButton>
-                  <MenuItems
-                    transition
-                    anchor="top end"
-                    className={styles["menu-items"]}
-                  >
-                    <MenuItem>
-                      <div className={styles["menu-item-wrap"]}>
-                        <button>
-                          Delete Board
-                        </button>
-                        <img src="/trashcan.svg" />
-                      </div>
-                    </MenuItem>
-                    <MenuItem>
-                      <div className={styles["menu-item-wrap"]}>
-                        <button>
-                          Edit Board
-                        </button>
-                        <img src="/pencil.svg" />
-                      </div>
-                    </MenuItem>
-                  </MenuItems>
-                </Menu>
+                <PopUpMenu
+                  buttonClassName={styles["ellipsis"]}
+                  menuClassName={styles["menu-items"]}
+                  buttonContent={<img src="/ellipsis-light.svg" />}
+                  menuItems={[
+                    {
+                      label: "Delete Board",
+                      icon: "/trashcan.svg",
+                      onClick: () => console.log("Delete Board clicked"),
+                    },
+                    {
+                      label: "Edit Board",
+                      icon: "/pencil.svg",
+                      onClick: () => console.log("Edit Board Clicked"),
+                    },
+                  ]}
+                >
+                </PopUpMenu>
               </div>
             </li>
           );
@@ -143,6 +204,22 @@ const SidebarSection: React.FC<SidebarSectionProps> = (
       </ul>
     </div>
   );
+
+  function updateSection(section: Section): void {
+    const message: Message = {
+      type: OutboundMessageType.UpdateSection,
+      payload: section,
+    };
+    send(message);
+  }
+
+  function deleteSection(section: Section): void {
+    const message: Message = {
+      type: OutboundMessageType.DeleteSection,
+      payload: section,
+    };
+    send(message);
+  }
 };
 
 export default SidebarSection;

@@ -7,8 +7,12 @@ import {
   Task,
   TaskToDo,
 } from "./entities";
+import { PartiallyRequired } from "./helpers";
 
 export enum InboundMessageType {
+  SectionCreated = "SectionCreated",
+  SectionUpdated = "SectionUpdated",
+  SectionDeleted = "SectionDeleted",
   UserConnected = "UserConnected",
   Error = "Error",
   BoardCreated = "BoardCreated",
@@ -25,12 +29,12 @@ export enum InboundMessageType {
   TaskToDoCreated = "TaskToDoCreated",
   TaskToDoUpdated = "TaskToDoUpdated",
   TaskToDoDeleted = "TaskToDoDeleted",
-  SectionCreated = "SectionCreated",
-  SectionUpdated = "SectionUpdated",
-  SectionDeleted = "SectionDeleted",
 }
 
 export enum OutboundMessageType {
+  CreateSection = "CreateSection",
+  UpdateSection = "UpdateSection",
+  DeleteSection = "DeleteSection",
   CreateBoard = "CreateBoard",
   DeleteBoard = "DeleteBoard",
   UpdateBoard = "UpdateBoard",
@@ -45,9 +49,6 @@ export enum OutboundMessageType {
   CreateTaskToDo = "CreateTaskToDo",
   DeleteTaskToDo = "DeleteTaskToDo",
   UpdateTaskToDo = "UpdateTaskToDo",
-  CreateSection = "CreateSection",
-  UpdateSection = "UpdateSection",
-  DeleteSection = "DeleteSection",
 }
 
 export type EntityDeletedPayload = { id: number };
@@ -56,23 +57,24 @@ export type EntityDeletedPayload = { id: number };
 
 // --- Sections ----
 export type CreateSectionPayload = Omit<Section, "id">;
-export type UpdateSectionPayload = Omit<Section, "id">;
+export type UpdateSectionPayload = PartiallyRequired<Section, "id">;
 export type DeleteSectionPayload = EntityDeletedPayload;
 
 // ---- Boards ----
 export type CreateBoardPayload = Omit<Board, "id">;
-export type UpdateBoardPayload = Partial<Omit<Board, "id">>;
+export type UpdateBoardPayload = PartiallyRequired<Board, "id">;
 export type DeleteBoardPayload = EntityDeletedPayload;
 
 // ---- Columns ----
-export type CreateColumnPayload = Partial<Omit<Column, "id">>;
-export type UpdateColumnPayload = Partial<Omit<Column, "id">>;
+export type CreateColumnPayload = Omit<Partial<Column>, "id">;
+export type UpdateColumnPayload = PartiallyRequired<Column, "id">;
 export type DeleteColumnPaylod = EntityDeletedPayload;
 
 // ---- Tasks ----
 export type CreateTaskPayload = Omit<Task, "id" | "completedOn">;
-export type UpdateTaskPayload = Partial<
-  Omit<Task, "id" | "boardId" | "createdOn">
+export type UpdateTaskPayload = PartiallyRequired<
+  Omit<Task, "boardId" | "createdOn">,
+  "id"
 >;
 export type DeleteTaskPayload = EntityDeletedPayload;
 
@@ -82,7 +84,10 @@ export type DeleteCommentPayload = EntityDeletedPayload;
 
 // ---- TaskToDos ----
 export type CreateTaskToDoPayload = Omit<TaskToDo, "id">;
-export type UpdateTaskToDoPayload = Partial<Omit<TaskToDo, "id" | "taskId">>;
+export type UpdateTaskToDoPayload = PartiallyRequired<
+  Omit<TaskToDo, "taskId">,
+  "id"
+>;
 export type DeleteTaskToDoPayload = EntityDeletedPayload;
 
 // --------------------------------- Inbound Messages ----------------------------------
@@ -120,6 +125,18 @@ export interface TaskToDoDeletedPayload extends EntityDeletedPayload {}
 export type UserConnectedPayload = { users: ConnectedUser[] };
 
 export type Message =
+  | {
+    type: OutboundMessageType.CreateSection;
+    payload: CreateSectionPayload;
+  }
+  | {
+    type: OutboundMessageType.UpdateSection;
+    payload: UpdateSectionPayload;
+  }
+  | {
+    type: OutboundMessageType.DeleteSection;
+    payload: DeleteSectionPayload;
+  }
   | {
     type: OutboundMessageType.CreateBoard;
     payload: CreateBoardPayload;
@@ -175,18 +192,6 @@ export type Message =
   | {
     type: OutboundMessageType.DeleteComment;
     payload: DeleteCommentPayload;
-  }
-  | {
-    type: OutboundMessageType.CreateSection;
-    payload: CreateSectionPayload;
-  }
-  | {
-    type: OutboundMessageType.UpdateSection;
-    payload: UpdateSectionPayload;
-  }
-  | {
-    type: OutboundMessageType.DeleteSection;
-    payload: DeleteSectionPayload;
   }
   | {
     type: InboundMessageType.UserConnected;

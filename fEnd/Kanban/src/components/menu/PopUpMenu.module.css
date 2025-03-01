@@ -1,0 +1,17 @@
+.menu-item-wrap {
+  display: flex;
+  align-items: center;
+  padding: 0.2rem;
+}
+.menu-item-wrap:hover {
+  box-shadow: var(--shadow-box-main);
+  border-radius: 0.5rem;
+}
+.menu-item-wrap:active {
+  box-shadow: var(--shadow-input-inset);
+  border-radius: 0.5rem;
+}
+.menu-item-wrap img {
+  margin-left: auto;
+  fill: var(--color-font);
+}

@@ -1,5 +1,15 @@
 import { ApiError } from "../../../miscellaneous/utils/errors";
-import { Board, Column, Section, Task, TaskToDo, User, Comment } from "../../../types/entities";
+import {
+  Board,
+  Column,
+  Comment,
+  ConnectedUser,
+  Section,
+  Task,
+  TaskToDo,
+  User,
+} from "../../../types/entities";
+import { Message } from "../../../types/messages";
 
 export interface KanbanStore {
   sections: Section[];
@@ -8,14 +18,13 @@ export interface KanbanStore {
   tasks: Task[];
   taskToDos: TaskToDo[];
   comments: Comment[];
+  connectedUsers: ConnectedUser[];
   users: User[];
-
   socket: WebSocket | null;
   connect: (url: string) => void;
-  send: (message: string) => void;
+  send: (message: Message) => void;
 
   error: ApiError | null;
   getEntityCollection: () => Promise<void>;
   getUsers: () => Promise<void>;
 }
-

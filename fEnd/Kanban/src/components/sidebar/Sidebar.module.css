@@ -51,14 +51,71 @@
   font-size: 1.2rem;
   border-radius: 1rem;
 }
+.add-section button:hover {
+  cursor: pointer;
+}
 
 hr {
   color: var(--color-font);
   width: 90%;
 }
 
-@media only screen and (max-width: 1920px) {
-  .sidebar {
-    width: 20rem;
-  }
+.dialog-description-input {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  color: var(--color-font);
+  appearance: none;
+  width: 70%;
+  font-family: "QuicksandMedium", sans-serif;
+  background-color: var(--color-background);
+  box-shadow: var(--shadow-input-inset);
+  border: 0.063rem var(--color-accent-grey-light) solid;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.buttons * {
+  width: 5rem;
+  color: var(--color-font);
+  padding: 0.5rem;
+  background: var(--color-background);
+  font-family: "QuicksandMedium", sans-serif;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  transform: scale(0.9);
+  transition: transform 0.1s ease;
+}
+
+.buttons-ok {
+  height: 3rem;
+  border: 0.063rem var(--color-accent-blue) solid;
+}
+.buttons-nok {
+  height: 3rem;
+  border: 0.063rem var(--color-error) solid;
+}
+
+.buttons *:hover {
+  box-shadow: var(--shadow-box-main);
+  transform: scale(1);
+  cursor: pointer;
+}
+
+.buttons *:active {
+  box-shadow: var(--shadow-input-inset);
+  transform: scale(1);
+  cursor: pointer;
+}
+
+.buttons .button-disabled {
+  pointer-events: none;
+}
+
+.button-disabled {
+  height: 3rem;
+  border: 0.063rem var(--color-accent-grey-light) solid;
 }

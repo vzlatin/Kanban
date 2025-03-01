@@ -130,19 +130,6 @@
   cursor: pointer;
 }
 
-.menu-item-wrap {
-  display: flex;
-  align-items: center;
-}
-.menu-item-wrap:hover {
-  background-color: var(--color-accent-grey-light);
-  border-radius: 0.5rem;
-}
-.menu-item-wrap img {
-  margin-left: auto;
-  fill: var(--color-font);
-}
-
 .ellipsis {
   display: none;
   transform: scale(0.8);
@@ -187,4 +174,81 @@
   box-shadow: 5px 5px 10px #2047ca, -5px -5px 10px #2c5fff;
   cursor: pointer;
   transform: scale(1);
+}
+
+.dialog-description-input {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  color: var(--color-font);
+  appearance: none;
+  width: 70%;
+  font-family: "QuicksandMedium", sans-serif;
+  background-color: var(--color-background);
+  box-shadow: var(--shadow-input-inset);
+  border: 0.063rem var(--color-accent-grey-light) solid;
+}
+
+.dialog-warning {
+  font-family: "QuicksandMedium", sans-serif;
+  font-size: 0.8rem;
+  color: var(--color-font);
+  padding: 0.5rem;
+  border: 1px var(--color-error) solid;
+  border-radius: 0.5rem;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.buttons * {
+  width: 5rem;
+  color: var(--color-font);
+  padding: 0.5rem;
+  background: var(--color-background);
+  font-family: "QuicksandMedium", sans-serif;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  transform: scale(0.9);
+  transition: transform 0.1s ease;
+}
+
+.buttons-ok {
+  height: 3rem;
+  border: 0.063rem var(--color-accent-blue) solid;
+}
+.buttons-nok {
+  height: 3rem;
+  border: 0.063rem var(--color-error) solid;
+}
+.buttons-ok-delete {
+  height: 3rem;
+  border: 0.063rem var(--color-error) solid;
+}
+.buttons-nok-delete {
+  height: 3rem;
+  border: 0.063rem var(--color-accent-blue) solid;
+}
+
+.buttons *:hover {
+  box-shadow: var(--shadow-box-main);
+  transform: scale(1);
+  cursor: pointer;
+}
+
+.buttons *:active {
+  box-shadow: var(--shadow-input-inset);
+  transform: scale(1);
+  cursor: pointer;
+}
+
+.buttons .button-disabled {
+  pointer-events: none;
+}
+
+.button-disabled {
+  height: 3rem;
+  border: 0.063rem var(--color-accent-grey-light) solid;
 }

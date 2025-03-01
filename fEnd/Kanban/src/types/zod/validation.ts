@@ -3,12 +3,16 @@ import {
   _Board,
   _Column,
   _Comment,
+  _ConnectedUser,
   _Section,
   _Task,
   _TaskToDo,
 } from "./entities.zod";
 
 export const InboundMessageT = z.enum([
+  "SectionCreated",
+  "SectionUpdated",
+  "SectionDeleted",
   "BoardCreated",
   "BoardUpdated",
   "BoardDeleted",
@@ -23,33 +27,33 @@ export const InboundMessageT = z.enum([
   "TaskToDoCreated",
   "TaskToDoUpdated",
   "TaskToDoDeleted",
-  "SectionCreated",
-  "SectionUpdated",
-  "SectionDeleted",
+  "UserConnected",
 ]);
 
 export const _SectionCreatedPayload = _Section;
 export const _SectionUpdatedPayload = _Section;
 export const _SectionDeletedPayload = _Section;
 
-export const _BoardCreatedPayload = _Board
-export const _BoardUpdatedPayload = _Board
-export const _BoardDeletedPayload = _Board
+export const _BoardCreatedPayload = _Board;
+export const _BoardUpdatedPayload = _Board;
+export const _BoardDeletedPayload = _Board;
 
-export const _ColumnCreatedPayload = _Column
-export const _ColumnUpdatedPayload = _Column
-export const _ColumnDeletedPayload = _Column
+export const _ColumnCreatedPayload = _Column;
+export const _ColumnUpdatedPayload = _Column;
+export const _ColumnDeletedPayload = _Column;
 
-export const _TaskCreatedPayload = _Task
-export const _TaskUpdatedPayload = _Task
-export const _TaskDeletedPayload = _Task
+export const _TaskCreatedPayload = _Task;
+export const _TaskUpdatedPayload = _Task;
+export const _TaskDeletedPayload = _Task;
 
-export const _CommentCreatedPayload = _Comment
-export const _CommentDeletedPayload = _Comment
+export const _CommentCreatedPayload = _Comment;
+export const _CommentDeletedPayload = _Comment;
 
-export const _TaskToDoCreatedPayload = _TaskToDo
-export const _TaskToDoUpdatedPayload = _TaskToDo
-export const _TaskToDoDeletedPayload = _TaskToDo
+export const _TaskToDoCreatedPayload = _TaskToDo;
+export const _TaskToDoUpdatedPayload = _TaskToDo;
+export const _TaskToDoDeletedPayload = _TaskToDo;
+
+export const _ConnectedUserPayload = _ConnectedUser;
 
 export const InboundMessageSchema = z.discriminatedUnion("type", [
   z.object({
@@ -120,6 +124,10 @@ export const InboundMessageSchema = z.discriminatedUnion("type", [
     type: z.literal("TaskToDoDeleted"),
     payload: _TaskToDoDeletedPayload,
   }),
+  z.object({
+    type: z.literal("UserConnected"),
+    payload: _ConnectedUserPayload,
+  }),
 ]);
 
 export type InboundMessage = z.infer<typeof InboundMessageSchema>;
@@ -131,7 +139,7 @@ export type MessageMap = {
   [InboundMessageT.Enum.BoardCreated]: z.infer<typeof _BoardCreatedPayload>;
   [InboundMessageT.Enum.BoardUpdated]: z.infer<typeof _BoardUpdatedPayload>;
   [InboundMessageT.Enum.BoardDeleted]: z.infer<typeof _BoardDeletedPayload>;
-  [InboundMessageT.Enum.ColumnCreated]: z.infer<typeof _CommentCreatedPayload>;
+  [InboundMessageT.Enum.ColumnCreated]: z.infer<typeof _ColumnCreatedPayload>;
   [InboundMessageT.Enum.ColumnUpdated]: z.infer<typeof _ColumnUpdatedPayload>;
   [InboundMessageT.Enum.ColumnDeleted]: z.infer<typeof _ColumnDeletedPayload>;
   [InboundMessageT.Enum.TaskCreated]: z.infer<typeof _TaskCreatedPayload>;
@@ -150,4 +158,5 @@ export type MessageMap = {
   [InboundMessageT.Enum.TaskToDoDeleted]: z.infer<
     typeof _TaskDeletedPayload
   >;
+  [InboundMessageT.Enum.UserConnected]: z.infer<typeof _ConnectedUserPayload>;
 };

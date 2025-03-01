@@ -12,6 +12,9 @@ import {
 //export type OutboundMessageT = z.infer<typeof OutboundMessage>;
 
 export const InboundMessageT = z.enum([
+  "CreateSection",
+  "UpdateSection",
+  "DeleteSection",
   "CreateBoard",
   "DeleteBoard",
   "UpdateBoard",
@@ -26,9 +29,6 @@ export const InboundMessageT = z.enum([
   "CreateTaskToDo",
   "DeleteTaskToDo",
   "UpdateTaskToDo",
-  "CreateSection",
-  "UpdateSection",
-  "DeleteSection",
 ]);
 
 export const _CreateSectionPayload = _Section.omit({ id: true });

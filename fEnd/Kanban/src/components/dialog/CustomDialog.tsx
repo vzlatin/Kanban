@@ -6,6 +6,7 @@ type CustomDialogProps = {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  //onChange?: (value: string) => void;
 };
 
 const CustomDialog: React.FC<CustomDialogProps> = (

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-//import { refreshAccessToken } from "../services/token.service";
 
 type Procedure = (...args: any[]) => void;
 

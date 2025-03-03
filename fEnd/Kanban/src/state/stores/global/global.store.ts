@@ -62,11 +62,11 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
       socket.onopen = () => console.log("Connected via WS");
 
       socket.onmessage = async (message: MessageEvent<string>) => {
-        //console.log(message.data);
         const result = InboundMessageSchema.safeParse(
           JSON.parse(message.data),
         );
         if (!result.success) {
+          console.log(result);
           renderErrorToast("Invalid message");
           return state;
         }
@@ -97,6 +97,28 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
                 ...state,
                 sections: state.sections.filter((section) =>
                   section.id !== m.payload.id
+                ),
+              };
+            }
+            case InboundMessageT.Enum.BoardCreated: {
+              return {
+                ...state,
+                boards: [...state.boards, m.payload],
+              };
+            }
+            case InboundMessageT.Enum.BoardUpdated: {
+              return {
+                ...state,
+                boards: state.boards.map((board) =>
+                  board.id === m.payload.id ? { ...board, ...m.payload } : board
+                ),
+              };
+            }
+            case InboundMessageT.Enum.BoardDeleted: {
+              return {
+                ...state,
+                boards: state.boards.filter((board) =>
+                  board.id !== m.payload.id
                 ),
               };
             }

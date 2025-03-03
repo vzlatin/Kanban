@@ -1,7 +1,7 @@
 import styles from "./SidebarSection.module.css";
 
 import PopUpMenu from "../menu/PopUpMenu";
-import { Section } from "../../types/entities";
+import { Board, Section } from "../../types/entities";
 import CustomDialog from "../dialog/CustomDialog";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -32,6 +32,7 @@ const SidebarSection: React.FC<Section> = (
   const [openDialog, setIsOpenDialog] = useState<DialogType>(DialogType.None);
   const [sectionTitle, setSectionTitle] = useState(section.title);
   const [boardTitle, setBoardTitle] = useState("");
+  const [trackedBoard, setTrackedBoard] = useState<Board | null>(null);
 
   const closeDialog = () => setIsOpenDialog(DialogType.None);
 
@@ -56,6 +57,22 @@ const SidebarSection: React.FC<Section> = (
         title,
         section: section.id,
       },
+    };
+    send(message);
+  };
+
+  const updateBoard = (board: Board): void => {
+    const message: Message = {
+      type: OutboundMessageType.UpdateBoard,
+      payload: board,
+    };
+    send(message);
+  };
+
+  const deleteBoard = (board: Board): void => {
+    const message: Message = {
+      type: OutboundMessageType.DeleteBoard,
+      payload: board,
     };
     send(message);
   };
@@ -106,7 +123,10 @@ const SidebarSection: React.FC<Section> = (
             {
               label: "Add Board",
               icon: "/plus.svg",
-              onClick: () => setIsOpenDialog(DialogType.AddBoard),
+              onClick: () => {
+                setBoardTitle("");
+                setIsOpenDialog(DialogType.AddBoard);
+              },
             },
             {
               label: "Delete Section",
@@ -160,6 +180,79 @@ const SidebarSection: React.FC<Section> = (
         </div>
       </CustomDialog>
 
+      {/* ------- Edit Board Dialog -------*/}
+      <CustomDialog
+        isOpen={openDialog === DialogType.EditBoard}
+        onClose={closeDialog}
+        title="Update Board"
+      >
+        <input
+          className={styles["dialog-description-input"]}
+          type="text"
+          placeholder="Board Title"
+          onChange={(e) => setBoardTitle(e.target.value)}
+          value={boardTitle}
+        />
+        <div className={styles["buttons"]}>
+          <button
+            className={`${
+              boardTitle === trackedBoard?.title || boardTitle === ""
+                ? styles["button-disabled"]
+                : styles["buttons-ok"]
+            }`}
+            disabled={boardTitle === trackedBoard?.title || boardTitle === ""}
+            onClick={() => {
+              if (trackedBoard) {
+                updateBoard({
+                  ...trackedBoard,
+                  title: boardTitle,
+                });
+              }
+              closeDialog();
+            }}
+          >
+            Update
+          </button>
+          <button
+            className={styles["buttons-nok"]}
+            onClick={closeDialog}
+          >
+            Cancel
+          </button>
+        </div>
+      </CustomDialog>
+
+      {/* ------- Delete Board Dialog -------*/}
+      <CustomDialog
+        isOpen={openDialog === DialogType.DeleteBoard}
+        onClose={closeDialog}
+        title="Delete Board"
+      >
+        <p className={styles["dialog-warning"]}>
+          Deleting a Board will result in the deletion of all of its associated
+          data (Columns, Tasks, Comments etc.) Do you want to proceed?
+        </p>
+        <div className={styles["buttons"]}>
+          <button
+            className={styles["buttons-ok-delete"]}
+            onClick={() => {
+              if (trackedBoard) {
+                deleteBoard(trackedBoard);
+              }
+              closeDialog();
+            }}
+          >
+            Delete
+          </button>
+          <button
+            className={styles["buttons-nok-delete"]}
+            onClick={closeDialog}
+          >
+            Cancel
+          </button>
+        </div>
+      </CustomDialog>
+
       {/* ------- Edit Section Dialog -------*/}
       <CustomDialog
         isOpen={openDialog === DialogType.EditSection}
@@ -189,7 +282,7 @@ const SidebarSection: React.FC<Section> = (
               closeDialog();
             }}
           >
-            Edit
+            Update
           </button>
           <button
             className={styles["buttons-nok"]}
@@ -252,14 +345,21 @@ const SidebarSection: React.FC<Section> = (
                   buttonContent={<img src="/ellipsis-light.svg" />}
                   menuItems={[
                     {
-                      label: "Delete Board",
-                      icon: "/trashcan.svg",
-                      onClick: () => console.log("Delete Board clicked"),
-                    },
-                    {
                       label: "Edit Board",
                       icon: "/pencil.svg",
-                      onClick: () => console.log("Edit Board Clicked"),
+                      onClick: () => {
+                        setTrackedBoard(board);
+                        setBoardTitle(board.title);
+                        setIsOpenDialog(DialogType.EditBoard);
+                      },
+                    },
+                    {
+                      label: "Delete Board",
+                      icon: "/trashcan.svg",
+                      onClick: () => {
+                        setTrackedBoard(board);
+                        setIsOpenDialog(DialogType.DeleteBoard);
+                      },
                     },
                   ]}
                 >

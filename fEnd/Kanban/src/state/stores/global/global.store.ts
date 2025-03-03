@@ -66,6 +66,7 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
           JSON.parse(message.data),
         );
         if (!result.success) {
+          console.log(result);
           renderErrorToast("Invalid message");
           return state;
         }

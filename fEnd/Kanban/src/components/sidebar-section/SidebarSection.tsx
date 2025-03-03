@@ -11,6 +11,8 @@ import { useKanbanStore } from "../../state/stores/global/global.store";
 enum DialogType {
   None = "",
   AddBoard = "addBoard",
+  EditBoard = "editBoard",
+  DeleteBoard = "deleteBoard",
   EditSection = "editSection",
   DeleteSection = "deleteSection",
 }
@@ -29,6 +31,7 @@ const SidebarSection: React.FC<Section> = (
   const sectionRef = useRef<HTMLDivElement>(null);
   const [openDialog, setIsOpenDialog] = useState<DialogType>(DialogType.None);
   const [sectionTitle, setSectionTitle] = useState(section.title);
+  const [boardTitle, setBoardTitle] = useState("");
 
   const closeDialog = () => setIsOpenDialog(DialogType.None);
 
@@ -45,6 +48,33 @@ const SidebarSection: React.FC<Section> = (
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const addBoard = (title: string): void => {
+    const message: Message = {
+      type: OutboundMessageType.CreateBoard,
+      payload: {
+        title,
+        section: section.id,
+      },
+    };
+    send(message);
+  };
+
+  const updateSection = (section: Section): void => {
+    const message: Message = {
+      type: OutboundMessageType.UpdateSection,
+      payload: section,
+    };
+    send(message);
+  };
+
+  const deleteSection = (section: Section): void => {
+    const message: Message = {
+      type: OutboundMessageType.DeleteSection,
+      payload: section,
+    };
+    send(message);
+  };
 
   return (
     <div ref={sectionRef} className={styles.section}>
@@ -76,7 +106,7 @@ const SidebarSection: React.FC<Section> = (
             {
               label: "Add Board",
               icon: "/plus.svg",
-              onClick: () => console.log("Add Board clicked"),
+              onClick: () => setIsOpenDialog(DialogType.AddBoard),
             },
             {
               label: "Delete Section",
@@ -92,6 +122,43 @@ const SidebarSection: React.FC<Section> = (
         >
         </PopUpMenu>
       </div>
+
+      {/* ------- Add Board Dialog -------*/}
+      <CustomDialog
+        isOpen={openDialog === DialogType.AddBoard}
+        onClose={closeDialog}
+        title="Add Board"
+      >
+        <input
+          className={styles["dialog-description-input"]}
+          type="text"
+          placeholder="Board Title"
+          onChange={(e) => setBoardTitle(e.target.value)}
+          value={boardTitle}
+        />
+        <div className={styles["buttons"]}>
+          <button
+            className={`${
+              boardTitle === ""
+                ? styles["button-disabled"]
+                : styles["buttons-ok"]
+            }`}
+            disabled={boardTitle === ""}
+            onClick={() => {
+              addBoard(boardTitle);
+              closeDialog();
+            }}
+          >
+            Add
+          </button>
+          <button
+            className={styles["buttons-nok"]}
+            onClick={closeDialog}
+          >
+            Cancel
+          </button>
+        </div>
+      </CustomDialog>
 
       {/* ------- Edit Section Dialog -------*/}
       <CustomDialog
@@ -204,22 +271,6 @@ const SidebarSection: React.FC<Section> = (
       </ul>
     </div>
   );
-
-  function updateSection(section: Section): void {
-    const message: Message = {
-      type: OutboundMessageType.UpdateSection,
-      payload: section,
-    };
-    send(message);
-  }
-
-  function deleteSection(section: Section): void {
-    const message: Message = {
-      type: OutboundMessageType.DeleteSection,
-      payload: section,
-    };
-    send(message);
-  }
 };
 
 export default SidebarSection;

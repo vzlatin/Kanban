@@ -6,6 +6,7 @@ import CustomDialog from "../dialog/CustomDialog";
 import SidebarSection from "../sidebar-section/SidebarSection";
 import { Message, OutboundMessageType } from "../../types/messages";
 import { useKanbanStore } from "../../state/stores/global/global.store";
+import AddSectionDialog from "../dialog/section/add/AddSectionDialog";
 
 type SidebarProps = {
   sections: Section[];
@@ -14,7 +15,7 @@ type SidebarProps = {
 const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
   const send = useKanbanStore((state) => state.send);
   const [isOpen, setIsOpen] = useState(false);
-  const [title, setTitle] = useState("");
+  const [sectionTitle, setSectionTitle] = useState("");
   const addSection = (title: string): void => {
     const message: Message = {
       type: OutboundMessageType.CreateSection,
@@ -50,37 +51,14 @@ const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
           >
             Add a new Section
           </button>
-          <CustomDialog
+          <AddSectionDialog
             isOpen={isOpen}
             onClose={close}
-            title="Add a new Section"
+            onChange={(e) => setSectionTitle(e.target.value)}
+            sectionTitle={sectionTitle}
+            messageHandler={addSection}
           >
-            <input
-              className={styles["dialog-description-input"]}
-              type="text"
-              placeholder="Section Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <div className={styles["buttons"]}>
-              <button
-                className={`${
-                  title === ""
-                    ? styles["button-disabled"]
-                    : styles["buttons-ok"]
-                }`}
-                onClick={() => {
-                  addSection(title);
-                  close();
-                }}
-              >
-                Add
-              </button>
-              <button className={styles["buttons-nok"]} onClick={close}>
-                Cancel
-              </button>
-            </div>
-          </CustomDialog>
+          </AddSectionDialog>
           <img src="/board.svg" />
         </div>
       </div>

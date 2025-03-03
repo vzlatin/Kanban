@@ -10,6 +10,8 @@ import { useKanbanStore } from "../../state/stores/global/global.store";
 import AddBoardDialog from "../dialog/board/add/AddBoardDialog";
 import UpdateBoardDialog from "../dialog/board/update/UpdateBoardDialog";
 import DeleteBoardDialog from "../dialog/board/delete/DeleteBoardDialog";
+import UpdateSectionDialog from "../dialog/section/update/UpdateSectionDialog";
+import DeleteSectionDialog from "../dialog/section/delete/DeleteSectionDialog";
 
 enum DialogType {
   None = "",
@@ -175,73 +177,22 @@ const SidebarSection: React.FC<Section> = (
       </DeleteBoardDialog>
 
       {/* ------- Edit Section Dialog -------*/}
-      <CustomDialog
+      <UpdateSectionDialog
         isOpen={openDialog === DialogType.UpdateSection}
         onClose={closeDialog}
-        title="Edit Section"
+        section={section}
+        messageHandler={updateSection}
       >
-        <input
-          className={styles["dialog-description-input"]}
-          type="text"
-          placeholder="Section Title"
-          onChange={(e) => setSectionTitle(e.target.value)}
-          value={sectionTitle}
-        />
-        <div className={styles["buttons"]}>
-          <button
-            className={`${
-              sectionTitle === section.title || sectionTitle === ""
-                ? styles["button-disabled"]
-                : styles["buttons-ok"]
-            }`}
-            disabled={sectionTitle === section.title || sectionTitle === ""}
-            onClick={() => {
-              updateSection({
-                ...section,
-                title: sectionTitle,
-              });
-              closeDialog();
-            }}
-          >
-            Update
-          </button>
-          <button
-            className={styles["buttons-nok"]}
-            onClick={closeDialog}
-          >
-            Cancel
-          </button>
-        </div>
-      </CustomDialog>
+      </UpdateSectionDialog>
 
       {/* ------- Delete Section Dialog -------*/}
-      <CustomDialog
+      <DeleteSectionDialog
         isOpen={openDialog === DialogType.DeleteSection}
         onClose={closeDialog}
-        title="Delete Section"
+        section={section}
+        messageHandler={deleteSection}
       >
-        <p className={styles["dialog-warning"]}>
-          Deleting a Section will result in the deletion of all of its
-          associated data (Board, Columns, Tasks, etc.) Do you want to proceed?
-        </p>
-        <div className={styles["buttons"]}>
-          <button
-            className={styles["buttons-ok-delete"]}
-            onClick={() => {
-              deleteSection(section);
-              closeDialog();
-            }}
-          >
-            Delete
-          </button>
-          <button
-            className={styles["buttons-nok-delete"]}
-            onClick={closeDialog}
-          >
-            Cancel
-          </button>
-        </div>
-      </CustomDialog>
+      </DeleteSectionDialog>
 
       <ul className={styles.board_list}>
         {boards.map((board, index) => {

@@ -10,15 +10,6 @@
   border: 0.063rem var(--color-accent-grey-light) solid;
 }
 
-.dialog-warning {
-  font-family: "QuicksandMedium", sans-serif;
-  font-size: 0.8rem;
-  color: var(--color-font);
-  padding: 0.5rem;
-  border: 1px var(--color-error) solid;
-  border-radius: 0.5rem;
-}
-
 .buttons {
   display: flex;
   flex-direction: row;

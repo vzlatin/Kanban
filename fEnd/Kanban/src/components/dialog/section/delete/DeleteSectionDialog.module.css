@@ -1,13 +1,10 @@
-.dialog-description-input {
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  color: var(--color-font);
-  appearance: none;
-  width: 70%;
+.dialog-warning {
   font-family: "QuicksandMedium", sans-serif;
-  background-color: var(--color-background);
-  box-shadow: var(--shadow-input-inset);
-  border: 0.063rem var(--color-accent-grey-light) solid;
+  font-size: 0.8rem;
+  color: var(--color-font);
+  padding: 0.5rem;
+  border: 1px var(--color-error) solid;
+  border-radius: 0.5rem;
 }
 
 .buttons {
@@ -28,13 +25,13 @@
   transition: transform 0.1s ease;
 }
 
-.buttons-ok {
-  height: 3rem;
-  border: 0.063rem var(--color-accent-blue) solid;
-}
-.buttons-nok {
+.buttons-ok-delete {
   height: 3rem;
   border: 0.063rem var(--color-error) solid;
+}
+.buttons-nok-delete {
+  height: 3rem;
+  border: 0.063rem var(--color-accent-blue) solid;
 }
 
 .buttons *:hover {
@@ -47,13 +44,4 @@
   box-shadow: var(--shadow-input-inset);
   transform: scale(1);
   cursor: pointer;
-}
-
-.buttons .button-disabled {
-  pointer-events: none;
-}
-
-.button-disabled {
-  height: 3rem;
-  border: 0.063rem var(--color-accent-grey-light) solid;
 }

@@ -26,7 +26,7 @@ const UpdateBoardDialog: React.FC<UpdateBoardDialogProps> = (
         <div className={styles["dialog-panel-wrapper"]}>
           <DialogPanel transition className={styles["dialog-panel"]}>
             <DialogTitle className={styles["dialog-title"]}>
-              Update Board: {boardTitle}
+              Update Board: {board?.title}
             </DialogTitle>
             <div className={styles["dialog-description"]}>
               <input

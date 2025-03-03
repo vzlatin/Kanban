@@ -2,7 +2,6 @@ import styles from "./SidebarSection.module.css";
 
 import PopUpMenu from "../menu/PopUpMenu";
 import { Board, Section } from "../../types/entities";
-import CustomDialog from "../dialog/CustomDialog";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Message, OutboundMessageType } from "../../types/messages";
@@ -35,7 +34,6 @@ const SidebarSection: React.FC<Section> = (
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const [openDialog, setIsOpenDialog] = useState<DialogType>(DialogType.None);
-  const [sectionTitle, setSectionTitle] = useState(section.title);
   const [boardTitle, setBoardTitle] = useState("");
   const [trackedBoard, setTrackedBoard] = useState<Board | null>(null);
 
@@ -221,7 +219,7 @@ const SidebarSection: React.FC<Section> = (
                       icon: "/pencil.svg",
                       onClick: () => {
                         setTrackedBoard(board);
-                        setBoardTitle(board.title);
+                        //setBoardTitle(board.title);
                         setIsOpenDialog(DialogType.UpdateBoard);
                       },
                     },

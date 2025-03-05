@@ -122,6 +122,12 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
                 ),
               };
             }
+            case InboundMessageT.Enum.ColumnCreated: {
+              return {
+                ...state,
+                columns: [...state.columns, m.payload],
+              };
+            }
             default:
               return state;
           }

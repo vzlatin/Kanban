@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { useKanbanStore } from "../../state/stores/global/global.store";
 import AddColumnDialog from "../dialog/column/add/AddColumnDialog";
 import { useState } from "react";
+import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import { Message, OutboundMessageType } from "../../types/messages";
 
 const Board = () => {
@@ -17,6 +18,7 @@ const Board = () => {
     column.boardId === id
   );
   const numberOfTasks = useKanbanStore((state) => state.tasks).length;
+  const moveColumn = useKanbanStore((state) => state.moveColumn);
   const send = useKanbanStore((state) => state.send);
   const [isOpen, setIsOpen] = useState(false);
   const [columnTitle, setColumnTitle] = useState("");
@@ -33,9 +35,22 @@ const Board = () => {
     <>
       {/* <h1>Board: {boardID.boardID}</h1> */}
       <div className={styles["board"]}>
-        <div className={styles["columns"]}>
-          {columns.map((column) => <Column column={column} key={column.id} />)}
-        </div>
+        <DragDropContext onDragEnd={dragHandler}>
+          <Droppable droppableId="columns" direction="horizontal">
+            {(provided) => (
+              <div
+                className={styles["columns"]}
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {columns.map((column, index) => (
+                  <Column column={column} index={index} />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
         <div className={styles["stats"]}>
           <div className={styles["col-number"]}>{columns.length} Columns.</div>
           <div className={styles["task-number"]}>{numberOfTasks} Tasks.</div>
@@ -73,6 +88,14 @@ const Board = () => {
       </div>
     </>
   );
+
+  function dragHandler(result: DropResult): void {
+    const { destination, source } = result;
+    if (!destination) {
+      return;
+    }
+    moveColumn(source, destination);
+  }
 };
 
 export default Board;

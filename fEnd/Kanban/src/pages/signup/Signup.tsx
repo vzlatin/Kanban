@@ -9,7 +9,10 @@ import { useSigninStore } from "../../state/stores/signin/store";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import ErrorNotification from "../../components/error/ErrorNotification";
 import SignupColumn from "./signup-helper-components/signup-column/SignupColumn";
-import { renderErrorToast, renderInfoToast } from "../../miscellaneous/utils/toasts";
+import {
+  renderErrorToast,
+  renderInfoToast,
+} from "../../miscellaneous/utils/toasts";
 
 const Signup = () => {
   const [loading, setLoading] = useState(false);
@@ -30,6 +33,7 @@ const Signup = () => {
     }
   }, [error]);
 
+  //TODO: Make a better spinner here
   return (
     <>
       {loading

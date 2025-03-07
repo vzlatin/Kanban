@@ -174,4 +174,21 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
       }
     }
   },
+
+  moveColumn: (source, destination) => {
+    set((state) => {
+      const copy = [...state.columns];
+      if (
+        destination.droppableId === source.droppableId &&
+        destination.index === source.index
+      ) {
+        return state;
+      }
+
+      const [movedColumn] = copy.splice(source.index, 1);
+      copy.splice(destination.index, 0, movedColumn);
+
+      return { ...state, columns: copy };
+    });
+  },
 }));

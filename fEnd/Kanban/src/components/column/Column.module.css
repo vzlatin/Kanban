@@ -26,6 +26,7 @@
   box-shadow: var(--shadow-input-inset);
 }
 .ellipsis[data-active] {
+  transform: scale(1);
   box-shadow: var(--shadow-input-inset);
 }
 

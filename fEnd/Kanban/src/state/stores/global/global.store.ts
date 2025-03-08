@@ -128,6 +128,16 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
                 columns: [...state.columns, m.payload],
               };
             }
+            case InboundMessageT.Enum.ColumnUpdated: {
+              return {
+                ...state,
+                columns: state.columns.map((column) =>
+                  column.id === m.payload.id
+                    ? { ...column, ...m.payload }
+                    : column
+                ),
+              };
+            }
             default:
               return state;
           }

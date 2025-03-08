@@ -44,7 +44,7 @@ const Board = () => {
                 {...provided.droppableProps}
               >
                 {columns.map((column, index) => (
-                  <Column column={column} index={index} />
+                  <Column column={column} index={index} key={index} />
                 ))}
                 {provided.placeholder}
               </div>

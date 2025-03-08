@@ -5,8 +5,10 @@
 }
 
 .columns {
-  height: 37.5rem;
-  border: 0.063rem solid black;
+  max-height: 37.5rem;
+  min-height: 37.5rem;
+  overflow-y: scroll;
+  /*border: 0.063rem solid black;*/
   margin-top: 0.625rem;
   margin-left: 0.625rem;
   margin-right: 0.625rem;

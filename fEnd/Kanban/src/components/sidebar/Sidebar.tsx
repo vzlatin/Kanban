@@ -2,7 +2,6 @@ import styles from "./Sidebar.module.css";
 
 import { useState } from "react";
 import { Section } from "../../types/entities";
-import CustomDialog from "../dialog/CustomDialog";
 import SidebarSection from "../sidebar-section/SidebarSection";
 import { Message, OutboundMessageType } from "../../types/messages";
 import { useKanbanStore } from "../../state/stores/global/global.store";
@@ -43,7 +42,6 @@ const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
             />
           ))}
         </div>
-
         <hr />
         <div className={styles["add-section"]}>
           <button
@@ -51,17 +49,18 @@ const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
           >
             Add a new Section
           </button>
-          <AddSectionDialog
-            isOpen={isOpen}
-            onClose={close}
-            onChange={(e) => setSectionTitle(e.target.value)}
-            sectionTitle={sectionTitle}
-            messageHandler={addSection}
-          >
-          </AddSectionDialog>
           <img src="/board.svg" />
         </div>
       </div>
+
+      <AddSectionDialog
+        isOpen={isOpen}
+        onClose={close}
+        onChange={(e) => setSectionTitle(e.target.value)}
+        sectionTitle={sectionTitle}
+        messageHandler={addSection}
+      >
+      </AddSectionDialog>
     </>
   );
 };

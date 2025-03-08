@@ -1,13 +1,65 @@
 .board {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  height: 37.5rem;
-  border: 0.063rem solid black;
+}
+
+.columns {
+  max-height: 37.5rem;
+  min-height: 37.5rem;
+  overflow-y: scroll;
+  /*border: 0.063rem solid black;*/
   margin-top: 0.625rem;
   margin-left: 0.625rem;
+  margin-right: 0.625rem;
   display: flex;
   flex-direction: row;
   gap: 0.625rem;
   overflow-x: auto;
   padding-left: 0.625rem;
   padding-right: 0.625rem;
+}
+
+.stats {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+  margin-left: 0.625rem;
+  margin-top: 0.8rem;
+  font-family: "QuicksandMedium", sans-serif;
+  font-size: 1.2rem;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transform: scale(0.9);
+  transition: transform 0.1s ease;
+  padding: 0.4rem;
+  border-radius: 1rem;
+  margin-left: 1.5rem;
+  border: 1px solid var(--color-accent-blue);
+}
+.buttons:hover {
+  box-shadow: var(--shadow-box-main);
+  transform: scale(1);
+  cursor: pointer;
+}
+.buttons:active {
+  box-shadow: var(--shadow-input-inset);
+  cursor: pointer;
+}
+
+.add-column {
+  color: var(--color-font);
+  background: var(--color-background);
+  border: none;
+  font-family: "QuicksandMedium", sans-serif;
+  font-size: 1.2rem;
+  border-radius: 1rem;
+}
+.add-column:hover {
+  cursor: inherit;
 }

@@ -1,3 +1,4 @@
+import { DraggableLocation } from "@hello-pangea/dnd";
 import { ApiError } from "../../../miscellaneous/utils/errors";
 import {
   Board,
@@ -27,4 +28,9 @@ export interface KanbanStore {
   error: ApiError | null;
   getEntityCollection: () => Promise<void>;
   getUsers: () => Promise<void>;
+
+  moveColumn: (
+    source: DraggableLocation<string>,
+    destination: DraggableLocation<string>,
+  ) => void;
 }

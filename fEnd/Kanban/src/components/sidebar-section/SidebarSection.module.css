@@ -26,6 +26,9 @@
   transform: scale(0.8);
   transition: opacity 0.1s ease, transform 0.1s ease;
 }
+.ellipsis-section:hover {
+  cursor: pointer;
+}
 
 .active-section h2 {
   color: var(--color-font);
@@ -38,44 +41,32 @@
   align-items: center;
   border: none;
   background-color: transparent;
-  cursor: pointer;
+  border-radius: 0.5rem;
 }
 
 .active-section .ellipsis-section:hover {
-  display: flex;
-  align-items: center;
-  border-radius: 1rem;
   cursor: pointer;
-  opacity: 1;
   box-shadow: var(--shadow-box-main);
   border: 1px solid var(--color-accent-grey-light);
   transform: scale(1);
 }
 .active-section .ellipsis-section:active {
-  display: flex;
-  align-items: center;
-  border-radius: 1rem;
   cursor: pointer;
-  opacity: 1;
   box-shadow: var(--shadow-input-inset);
   border: 1px solid var(--color-accent-grey-light);
   transform: scale(1);
-}
-.ellipsis-section:hover {
-  cursor: pointer;
 }
 .ellipsis-section[data-active] {
   display: flex;
   align-items: center;
   margin-left: auto;
   margin-right: 0.4rem;
-  border: none;
-  border-radius: 1rem;
-  box-shadow: var(--shadow-box-main);
+  box-shadow: var(--shadow-input-inset);
   border: 1px solid var(--color-accent-grey-light);
-  cursor: pointer;
-  opacity: 1;
   transform: scale(1);
+}
+.ellipsis-section[data-active]:hover {
+  box-shadow: var(--shadow-input-inset);
 }
 
 .board_list {
@@ -134,6 +125,7 @@
   display: none;
   transform: scale(0.8);
   transition: transform 0.1s ease;
+  border-radius: 0.5rem;
 }
 .active {
   background-color: var(--color-accent-blue);
@@ -149,29 +141,21 @@
   cursor: pointer;
 }
 .active .ellipsis:hover {
-  display: flex;
-  align-items: center;
-  border-radius: 1rem;
   box-shadow: 5px 5px 10px #2047ca, -5px -5px 10px #2c5fff;
   cursor: pointer;
   transform: scale(1);
 }
 .active .ellipsis:active {
-  display: flex;
-  align-items: center;
-  border-radius: 1rem;
   box-shadow: inset 5px 5px 10px #2047ca, inset -5px -5px 10px #2c5fff;
-  cursor: pointer;
-  transform: scale(1);
 }
 .ellipsis:hover {
   cursor: pointer;
 }
 .ellipsis[data-active] {
-  display: flex;
-  align-items: center;
-  border-radius: 1rem;
-  box-shadow: 5px 5px 10px #2047ca, -5px -5px 10px #2c5fff;
-  cursor: pointer;
+  box-shadow: inset 5px 5px 10px #2047ca, inset -5px -5px 10px #2c5fff;
+  transform: scale(1);
+}
+.ellipsis[data-active]:hover {
+  box-shadow: inset 5px 5px 10px #2047ca, inset -5px -5px 10px #2c5fff;
   transform: scale(1);
 }

@@ -11,7 +11,7 @@ import {
   tokens as tokenTable,
   users as userTable,
 } from "./schema.ts";
-import { eq } from "drizzle-orm/expressions";
+import { eq, inArray } from "drizzle-orm/expressions";
 
 const { Pool } = pg;
 const connectionString = Deno.env.get("DATABASE_URL");
@@ -49,6 +49,7 @@ import {
   Task,
   TaskToDo,
 } from "../types/entities.ts";
+import { sql } from "drizzle-orm";
 
 export async function insertUser(
   user: typeof userTable.$inferInsert,
@@ -167,6 +168,27 @@ export async function _updateColumn(
   return await db.update(columnTable).set({ ...payload }).where(
     eq(columnTable.id, id),
   ).returning();
+}
+
+export function _updateColumnsOrder(payload: Column[]): Promise<Column[]> {
+  return db.transaction(async (tx) => {
+    await Promise.all(
+      payload.map((col) =>
+        tx.update(columnTable)
+          .set({ columnOrder: sql`${col.columnOrder + 1000}` })
+          .where(eq(columnTable.id, col.id))
+      ),
+    );
+    await Promise.all(
+      payload.map((col) =>
+        tx.update(columnTable)
+          .set({ columnOrder: col.columnOrder })
+          .where(eq(columnTable.id, col.id))
+      ),
+    );
+    const updatedColumns = await tx.query.columnTable.findMany();
+    return updatedColumns;
+  });
 }
 
 export async function _deleteColumn(id: number): Promise<Column[]> {

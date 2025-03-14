@@ -20,6 +20,7 @@ export enum InboundMessageType {
   BoardDeleted = "BoardDeleted",
   ColumnCreated = "ColumnCreated",
   ColumnUpdated = "ColumnUpdated",
+  ColumnsOrderUpdated = "ColumnsOrderUpdated",
   ColumnDeleted = "ColumnDeleted",
   TaskCreated = "TaskCreated",
   TaskUpdated = "TaskUpdated",
@@ -41,6 +42,7 @@ export enum OutboundMessageType {
   CreateColumn = "CreateColumn",
   DeleteColumn = "DeleteColumn",
   UpdateColumn = "UpdateColumn",
+  UpdateColumnsOrder = "UpdateColumnsOrder",
   CreateTask = "CreateTask",
   DeleteTask = "DeleteTask",
   UpdateTask = "UpdateTask",
@@ -51,24 +53,23 @@ export enum OutboundMessageType {
   UpdateTaskToDo = "UpdateTaskToDo",
 }
 
-export type EntityDeletedPayload = { id: number };
-
 // --------------------------------- Outbound Messages ----------------------------------
 
 // --- Sections ----
 export type CreateSectionPayload = Omit<Section, "id">;
 export type UpdateSectionPayload = PartiallyRequired<Section, "id">;
-export type DeleteSectionPayload = EntityDeletedPayload;
+export type DeleteSectionPayload = Section;
 
 // ---- Boards ----
 export type CreateBoardPayload = Omit<Board, "id">;
 export type UpdateBoardPayload = PartiallyRequired<Board, "id">;
-export type DeleteBoardPayload = EntityDeletedPayload;
+export type DeleteBoardPayload = Board;
 
 // ---- Columns ----
 export type CreateColumnPayload = Omit<Partial<Column>, "id">;
 export type UpdateColumnPayload = PartiallyRequired<Column, "id">;
-export type DeleteColumnPaylod = EntityDeletedPayload;
+export type UpdateColumnsOrderPayload = Column[];
+export type DeleteColumnPaylod = Column;
 
 // ---- Tasks ----
 export type CreateTaskPayload = Omit<Task, "id" | "completedOn">;
@@ -76,11 +77,11 @@ export type UpdateTaskPayload = PartiallyRequired<
   Omit<Task, "boardId" | "createdOn">,
   "id"
 >;
-export type DeleteTaskPayload = EntityDeletedPayload;
+export type DeleteTaskPayload = Task;
 
 // ---- Comments ----
 export type CreateCommentPayload = Omit<Comment, "id">;
-export type DeleteCommentPayload = EntityDeletedPayload;
+export type DeleteCommentPayload = Comment;
 
 // ---- TaskToDos ----
 export type CreateTaskToDoPayload = Omit<TaskToDo, "id">;
@@ -88,38 +89,39 @@ export type UpdateTaskToDoPayload = PartiallyRequired<
   Omit<TaskToDo, "taskId">,
   "id"
 >;
-export type DeleteTaskToDoPayload = EntityDeletedPayload;
+export type DeleteTaskToDoPayload = TaskToDo;
 
 // --------------------------------- Inbound Messages ----------------------------------
 
 // ---- Sections ----
-export interface SectionCreatedPayload extends Section {}
-export interface SectionUpdatedPayload extends Section {}
-export interface SectionDeletedPayload extends EntityDeletedPayload {}
+export type SectionCreatedPayload = Section;
+export type SectionUpdatedPayload = Section;
+export type SectionDeletedPayload = Section;
 
 // ---- Boards ----
-export interface BoardCreatedPayload extends Board {}
-export interface BoardUpdatedPayload extends Board {}
-export interface BoardDeletedPayload extends EntityDeletedPayload {}
+export type BoardCreatedPayload = Board;
+export type BoardUpdatedPayload = Board;
+export type BoardDeletedPayload = Board;
 
 // ---- Columns ----
-export interface ColumnCreatedPayload extends Column {}
-export interface ColumnUpdatedPayload extends Column {}
-export interface ColumnDeletedPayload extends EntityDeletedPayload {}
+export type ColumnCreatedPayload = Column;
+export type ColumnUpdatedPayload = Column;
+export type ColumnsOrderUpdatedPayload = Column[];
+export type ColumnDeletedPayload = Column;
 
 // ---- Tasks ----
-export interface TaskCreatedPayload extends Task {}
-export interface TaskUpdatedPayload extends Task {}
-export interface TaskDeletedPayload extends EntityDeletedPayload {}
+export type TaskCreatedPayload = Task;
+export type TaskUpdatedPayload = Task;
+export type TaskDeletedPayload = Task;
 
 // ---- Comments ----
-export interface CommentCreatedPayload extends Comment {}
-export interface CommentDeletedPayload extends EntityDeletedPayload {}
+export type CommentCreatedPayload = Comment;
+export type CommentDeletedPayload = Comment;
 
 // ---- TasksToDo ----
-export interface TaskToDoCreatedPayload extends TaskToDo {}
-export interface TaskToDoUpdatedPayload extends TaskToDo {}
-export interface TaskToDoDeletedPayload extends EntityDeletedPayload {}
+export type TaskToDoCreatedPayload = TaskToDo;
+export type TaskToDoUpdatedPayload = TaskToDo;
+export type TaskToDoDeletedPayload = TaskToDo;
 
 // ---- Users ----
 export type UserConnectedPayload = { users: ConnectedUser[] };
@@ -156,6 +158,10 @@ export type Message =
   | {
     type: OutboundMessageType.UpdateColumn;
     payload: UpdateColumnPayload;
+  }
+  | {
+    type: OutboundMessageType.UpdateColumnsOrder;
+    payload: UpdateColumnsOrderPayload;
   }
   | {
     type: OutboundMessageType.DeleteColumn;
@@ -221,6 +227,10 @@ export type Message =
   | {
     type: InboundMessageType.ColumnUpdated;
     payload: ColumnUpdatedPayload;
+  }
+  | {
+    type: InboundMessageType.ColumnsOrderUpdated;
+    payload: ColumnsOrderUpdatedPayload;
   }
   | {
     type: InboundMessageType.ColumnDeleted;

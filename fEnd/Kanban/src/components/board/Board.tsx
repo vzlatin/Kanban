@@ -16,7 +16,7 @@ const Board = () => {
 
   const columns = useKanbanStore((state) => state.columns).filter((column) =>
     column.boardId === id
-  );
+  ).sort((a, b) => a.columnOrder - b.columnOrder);
   const numberOfTasks = useKanbanStore((state) => state.tasks).length;
   const moveColumn = useKanbanStore((state) => state.moveColumn);
   const send = useKanbanStore((state) => state.send);
@@ -44,7 +44,7 @@ const Board = () => {
                 {...provided.droppableProps}
               >
                 {columns.map((column, index) => (
-                  <Column column={column} index={index} />
+                  <Column column={column} index={index} key={index} />
                 ))}
                 {provided.placeholder}
               </div>
@@ -94,7 +94,7 @@ const Board = () => {
     if (!destination) {
       return;
     }
-    moveColumn(source, destination);
+    moveColumn(source, destination, id);
   }
 };
 

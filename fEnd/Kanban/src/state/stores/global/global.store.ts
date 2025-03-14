@@ -3,7 +3,7 @@ import { KanbanStore } from "./types";
 import { getUsers } from "../../../services/user.service";
 import { ApiError } from "../../../miscellaneous/utils/errors";
 import { getEntityCollection } from "../../../services/entity.service";
-import { Message } from "../../../types/messages";
+import { Message, OutboundMessageType } from "../../../types/messages";
 import {
   InboundMessage,
   InboundMessageSchema,
@@ -138,6 +138,20 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
                 ),
               };
             }
+            case InboundMessageT.Enum.ColumnsOrderUpdated: {
+              return {
+                ...state,
+                columns: m.payload,
+              };
+            }
+            case InboundMessageT.Enum.ColumnDeleted: {
+              return {
+                ...state,
+                columns: state.columns.filter((column) =>
+                  column.id !== m.payload.id
+                ),
+              };
+            }
             default:
               return state;
           }
@@ -185,9 +199,8 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
     }
   },
 
-  moveColumn: (source, destination) => {
+  moveColumn: (source, destination, boardId) => {
     set((state) => {
-      const copy = [...state.columns];
       if (
         destination.droppableId === source.droppableId &&
         destination.index === source.index
@@ -195,10 +208,33 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
         return state;
       }
 
-      const [movedColumn] = copy.splice(source.index, 1);
-      copy.splice(destination.index, 0, movedColumn);
+      // INFO: Only update the columns which belong to the current board
+      // and not the other columns
+      const boardColumns = state.columns
+        .filter((column) => column.boardId === boardId)
+        .sort((a, b) => a.columnOrder - b.columnOrder);
 
-      return { ...state, columns: copy };
+      const [movedColumn] = boardColumns.splice(source.index, 1);
+      boardColumns.splice(destination.index, 0, movedColumn);
+
+      const updatedBoardColumns = boardColumns.map((column, index) => ({
+        ...column,
+        columnOrder: index,
+      }));
+
+      const updatedColumns = state.columns.map((column) =>
+        column.boardId
+          ? updatedBoardColumns.find((c) => c.id === column.id) || column
+          : column
+      );
+      console.log(updatedBoardColumns);
+
+      state.send({
+        type: OutboundMessageType.UpdateColumnsOrder,
+        payload: updatedBoardColumns,
+      });
+
+      return { ...state, columns: updatedColumns };
     });
   },
 }));

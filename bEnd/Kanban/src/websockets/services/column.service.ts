@@ -6,6 +6,7 @@ import {
   _deleteColumn,
   _insertColumn,
   _updateColumn,
+  _updateColumnsOrder,
 } from "../../database/db.ts";
 
 export async function createColumn(
@@ -29,6 +30,12 @@ export async function updateColumn(
     );
   }
   return column;
+}
+
+export async function updateColumnsOrder(
+  payload: MessageMap["UpdateColumnsOrder"],
+): Promise<Column[]> {
+  return await _updateColumnsOrder(payload);
 }
 
 export async function deleteColumn(

@@ -8,6 +8,7 @@ import { Draggable } from "@hello-pangea/dnd";
 import { useState } from "react";
 import UpdateColumnDialog from "../dialog/column/update/UpdateColumnDialog";
 import { Message, OutboundMessageType } from "../../types/messages";
+import DeleteColumnDialog from "../dialog/column/delete/DeleteColumnDialog";
 
 type ColumnProps = {
   column: Col;
@@ -33,6 +34,14 @@ const Column: React.FC<ColumnProps> = ({ column, index }) => {
   const updateColumn = (column: Col): void => {
     const message: Message = {
       type: OutboundMessageType.UpdateColumn,
+      payload: column,
+    };
+    send(message);
+  };
+
+  const deleteColumn = (column: Col): void => {
+    const message: Message = {
+      type: OutboundMessageType.DeleteColumn,
       payload: column,
     };
     send(message);
@@ -72,7 +81,7 @@ const Column: React.FC<ColumnProps> = ({ column, index }) => {
                       {
                         label: "Delete Column",
                         icon: "/trashcan.svg",
-                        onClick: () => console.log("poop"),
+                        onClick: () => setIsOpenDialog(DialogType.DeleteColumn),
                       },
                     ]}
                   >
@@ -94,6 +103,14 @@ const Column: React.FC<ColumnProps> = ({ column, index }) => {
         messageHandler={updateColumn}
       >
       </UpdateColumnDialog>
+
+      <DeleteColumnDialog
+        isOpen={openDialog === DialogType.DeleteColumn}
+        onClose={closeDialog}
+        column={column}
+        messageHandler={deleteColumn}
+      >
+      </DeleteColumnDialog>
     </>
   );
 };

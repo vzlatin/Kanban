@@ -32,5 +32,6 @@ export interface KanbanStore {
   moveColumn: (
     source: DraggableLocation<string>,
     destination: DraggableLocation<string>,
+    boardId: number,
   ) => void;
 }

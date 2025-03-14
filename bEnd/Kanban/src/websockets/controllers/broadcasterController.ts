@@ -19,6 +19,7 @@ import {
   createColumn,
   deleteColumn,
   updateColumn,
+  updateColumnsOrder,
 } from "../services/column.service.ts";
 import {
   createTask,
@@ -56,7 +57,6 @@ class Broadcaster {
     socket.onopen = this.broadcastUsers.bind(this);
 
     socket.onmessage = async (message: MessageEvent<string>) => {
-      console.log(message);
       const result = InboundMessageSchema.safeParse(
         JSON.parse(message.data),
       );
@@ -165,6 +165,15 @@ class Broadcaster {
         this.broadcast({
           type: OutboundMessageType.ColumnUpdated,
           payload: column,
+        });
+        break;
+      }
+      case InboundMessageT.Enum.UpdateColumnsOrder: {
+        const columns = await updateColumnsOrder(message.payload);
+        console.log(columns);
+        this.broadcast({
+          type: OutboundMessageType.ColumnsOrderUpdated,
+          payload: columns,
         });
         break;
       }

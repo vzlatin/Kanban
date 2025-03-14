@@ -18,6 +18,7 @@ export const InboundMessageT = z.enum([
   "BoardDeleted",
   "ColumnCreated",
   "ColumnUpdated",
+  "ColumnsOrderUpdated",
   "ColumnDeleted",
   "TaskCreated",
   "TaskUpdated",
@@ -40,6 +41,7 @@ export const _BoardDeletedPayload = _Board;
 
 export const _ColumnCreatedPayload = _Column;
 export const _ColumnUpdatedPayload = _Column;
+export const _ColumnsOrderUpdatedPayload = z.array(_Column);
 export const _ColumnDeletedPayload = _Column;
 
 export const _TaskCreatedPayload = _Task;
@@ -83,6 +85,10 @@ export const InboundMessageSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("ColumnCreated"),
     payload: _ColumnCreatedPayload,
+  }),
+  z.object({
+    type: z.literal("ColumnsOrderUpdated"),
+    payload: _ColumnsOrderUpdatedPayload,
   }),
   z.object({
     type: z.literal("ColumnUpdated"),
@@ -141,6 +147,9 @@ export type MessageMap = {
   [InboundMessageT.Enum.BoardDeleted]: z.infer<typeof _BoardDeletedPayload>;
   [InboundMessageT.Enum.ColumnCreated]: z.infer<typeof _ColumnCreatedPayload>;
   [InboundMessageT.Enum.ColumnUpdated]: z.infer<typeof _ColumnUpdatedPayload>;
+  [InboundMessageT.Enum.ColumnsOrderUpdated]: z.infer<
+    typeof _ColumnsOrderUpdatedPayload
+  >;
   [InboundMessageT.Enum.ColumnDeleted]: z.infer<typeof _ColumnDeletedPayload>;
   [InboundMessageT.Enum.TaskCreated]: z.infer<typeof _TaskCreatedPayload>;
   [InboundMessageT.Enum.TaskUpdated]: z.infer<typeof _TaskUpdatedPayload>;

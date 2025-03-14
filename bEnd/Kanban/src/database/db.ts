@@ -175,14 +175,14 @@ export function _updateColumnsOrder(payload: Column[]): Promise<Column[]> {
     await Promise.all(
       payload.map((col) =>
         tx.update(columnTable)
-          .set({ columnOrder: sql`${col.columnOrder + 1000}` }) // Shift orders temporarily
+          .set({ columnOrder: sql`${col.columnOrder + 1000}` })
           .where(eq(columnTable.id, col.id))
       ),
     );
     await Promise.all(
       payload.map((col) =>
         tx.update(columnTable)
-          .set({ columnOrder: col.columnOrder }) // Set correct order now
+          .set({ columnOrder: col.columnOrder })
           .where(eq(columnTable.id, col.id))
       ),
     );

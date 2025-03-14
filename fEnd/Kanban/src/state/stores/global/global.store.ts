@@ -38,6 +38,7 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
         tasks: entities.tasks,
         taskToDos: entities.taskToDos,
         comments: entities.comments,
+        users: entities.users,
       }));
     } catch (e) {
       if (e instanceof ApiError) set({ error: e });
@@ -179,24 +180,6 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
       }
       return state;
     });
-  },
-
-  getUsers: async () => {
-    try {
-      const users = await getUsers();
-      set((state) => ({ ...state, users: users.data }));
-    } catch (e) {
-      if (e instanceof ApiError) set({ error: e });
-      else {
-        set({
-          error: new ApiError(
-            "An unkown error has occured",
-            "Unknown Error",
-            0,
-          ),
-        });
-      }
-    }
   },
 
   moveColumn: (source, destination, boardId) => {

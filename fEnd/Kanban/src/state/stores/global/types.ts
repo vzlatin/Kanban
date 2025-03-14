@@ -27,7 +27,6 @@ export interface KanbanStore {
 
   error: ApiError | null;
   getEntityCollection: () => Promise<void>;
-  getUsers: () => Promise<void>;
 
   moveColumn: (
     source: DraggableLocation<string>,

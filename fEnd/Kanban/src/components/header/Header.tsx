@@ -1,9 +1,10 @@
+import { useKanbanStore } from "../../state/stores/global/global.store";
 import styles from "./Header.module.css";
 
 import { useEffect, useRef, useState } from "react";
 
 const Header = () => {
-  const placeholder = Array.from({ length: 6 }, (_, i) => i);
+  const users = useKanbanStore((state) => state.users);
   const [showMenu, setShowMenu] = useState(false);
 
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -45,9 +46,10 @@ const Header = () => {
         </div>
         <div className={styles["team"]}>
           <div className={styles["team-members"]}>
-            {placeholder.map((_, i) => {
+            {users.map((user, index) => {
               return (
-                <div key={i} className={styles["member"]}>
+                <div key={index} className={styles["member"]}>
+                  {user.firstName}
                   <img
                     src="/user-profile.svg"
                     alt="user photo"

@@ -1,20 +1,20 @@
 export type Section = {
   id: number;
   title: string;
-}
+};
 
 export type Board = {
   id: number;
   title: string;
   section: number;
-}
+};
 
 export type Column = {
   id: number;
   boardId: number;
   title: string;
   columnOrder: number;
-}
+};
 
 export type Task = {
   id: number;
@@ -28,14 +28,14 @@ export type Task = {
   tag: string | null;
   createdOn: Date;
   completedOn: Date | null;
-}
+};
 
 export type TaskToDo = {
   id: number;
   taskId: number;
   title: string;
   completed: boolean;
-}
+};
 
 export type Comment = {
   id: number;
@@ -43,14 +43,14 @@ export type Comment = {
   userId: number;
   content: string;
   createdOn: Date;
-}
+};
 
 export type ConnectedUser = {
   id: number;
   email: string;
   fName: string;
   lName: string;
-}
+};
 
 export type User = {
   id: number;
@@ -58,7 +58,7 @@ export type User = {
   lastName: string;
   email: string;
   role: UserRole;
-}
+};
 
 export enum TaskStatus {
   Review = "review",
@@ -81,4 +81,5 @@ export type EntityCollection = {
   tasks: Task[];
   taskToDos: TaskToDo[];
   comments: Comment[];
+  users: User[];
 };

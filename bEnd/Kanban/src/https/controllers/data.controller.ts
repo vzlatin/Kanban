@@ -8,6 +8,7 @@ import {
   findAllTasks,
   findAllTaskToDos,
 } from "../../database/db.ts";
+import { getAllUsers } from "../services/user.service.ts";
 
 export async function getEntityCollection(ctx: Context): Promise<void> {
   const { response } = ctx;
@@ -18,5 +19,6 @@ export async function getEntityCollection(ctx: Context): Promise<void> {
   body.tasks = await findAllTasks();
   body.taskToDos = await findAllTaskToDos();
   body.comments = await findAllComments();
+  body.users = await getAllUsers();
   response.body = body;
 }

@@ -6,10 +6,12 @@
 .menu-item-wrap:hover {
   box-shadow: var(--shadow-box-main);
   border-radius: 0.5rem;
+  cursor: pointer;
 }
 .menu-item-wrap:active {
   box-shadow: var(--shadow-input-inset);
   border-radius: 0.5rem;
+  cursor: pointer;
 }
 .menu-item-wrap img {
   margin-left: auto;

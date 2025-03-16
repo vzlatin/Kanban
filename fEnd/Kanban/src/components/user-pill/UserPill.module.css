@@ -1,0 +1,22 @@
+.member {
+  max-width: 7rem;
+  width: auto;
+  height: 2.5rem;
+  border: 1px solid black;
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.username {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.username p {
+  margin: 0;
+  font-size: 0.8rem;
+  font-family: "QuicksandMedium", sans-serif;
+  color: var(--color-font);
+}

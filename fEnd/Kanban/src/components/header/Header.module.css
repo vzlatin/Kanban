@@ -35,56 +35,30 @@
 .team-members {
   display: flex;
   flex-direction: row;
-  /*align-items: center;*/
   justify-content: center;
   gap: 1rem;
 }
 
-.member {
-  width: 5rem;
-  height: 2rem;
-  border: 1px solid black;
-  display: flex;
-  align-items: center;
-}
-
 .profile {
   margin-left: auto;
-  position: relative;
 }
 .profile:hover {
   cursor: pointer;
 }
 
-.profile-image {
-  border: 1px solid black;
-  border-radius: 50%;
-  padding: 0.4rem;
-}
-
 .profile-menu {
-  /*display: none;*/
+  margin-top: 0.6rem;
   width: 10rem;
   padding: 0.3rem;
-  position: absolute;
-  right: 0.2rem;
-  z-index: 1;
   border-radius: 0.5rem;
   box-shadow: var(--shadow-box-main);
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
 }
-
-.menu-item {
-  border-radius: 0.3rem;
-  text-decoration: none;
-  padding: 0.5rem;
-}
-.menu-item:hover {
-  background-color: var(--color-accent-grey-light);
-  cursor: pointer;
-}
-.menu-item:active {
-  box-shadow: var(--shadow-input-inset);
+.profile-menu button {
+  border: none;
+  background: transparent;
+  font-family: "QuicksandMedium", sans-serif;
+  padding: 0.4rem;
 }

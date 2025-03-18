@@ -1,106 +1,110 @@
 :root {
-	/* Colors */
-	--color-error: #860111;
-	--color-info: #f5c71a;
-	--color-font: #44476a;
-	--color-white: #ffffff;
-	--color-background: #e6e7ee;
-	--color-shadow: #9f9f9f;
-	--color-shadow-inset: #b8b9be;
-	--color-accent-blue: #2653ee;
-	--color-accent-grey-light: #dad7d7;
+  /* Colors */
+  --color-error: #860111;
+  --color-info: #f5c71a;
+  --color-font: #44476a;
+  --color-white: #ffffff;
+  --color-background: #e6e7ee;
+  --color-shadow: #9f9f9f;
+  --color-shadow-inset: #b8b9be;
+  --color-accent-blue: #2653ee;
+  --color-accent-grey-light: #dad7d7;
 
-	/* Shadows */
-	--shadow-input-inset: inset 2px 2px 5px var(--color-shadow-inset),
-		inset -3px -3px 7px var(--color-white);
-	--shadow-box-main: 6px 6px 12px var(--color-shadow),
-		-6px -6px 12px var(--color-white);
+  /* Shadows */
+  --shadow-input-inset:
+    inset 2px 2px 5px var(--color-shadow-inset), inset -3px -3px 7px var(
+    --color-white
+  );
+  --shadow-box-main:
+    6px 6px 12px var(--color-shadow), -6px -6px 12px var(--color-white);
+  --shadow-box-main-short:
+    5px 5px 10px var(--color-shadow), -5px -5px 10px var(--color-white);
 }
 
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* TEMPORARY */
 body {
-	overflow-y: scroll;
+  overflow-y: scroll;
 }
 
 html,
 body {
-	background-color: var(--color-background);
-	color: var(--color-font);
-	margin: 0;
-	padding: 0;
+  background-color: var(--color-background);
+  color: var(--color-font);
+  margin: 0;
+  padding: 0;
 }
 
 ul {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 /* --- react toastify styles start --- */
 
 .error-toast {
-	border: 0.08rem solid var(--color-error);
-	background-color: var(--color-background);
+  border: 0.08rem solid var(--color-error);
+  background-color: var(--color-background);
 }
 .error-toast-body {
-	font-size: 1rem;
-	color: var(--color-font);
+  font-size: 1rem;
+  color: var(--color-font);
 }
 
 .info-toast {
-	border: 0.08rem solid var(--color-info);
-	background-color: var(--color-background);
+  border: 0.08rem solid var(--color-info);
+  background-color: var(--color-background);
 }
 .info-toast-body {
-	font-size: 1rem;
-	color: var(--color-font);
+  font-size: 1rem;
+  color: var(--color-font);
 }
 
 .Toastify {
-	--toastify-color-progress-info: var(--color-info);
-	--toastify-color-progress-error: var(--color-error);
-	--toastify-toast-width: 31.25rem;
-	--toastify-toast-min-height: 4rem;
-	--toastify-toast-max-height: 50rem;
-	--toastify-font-family: "QuicksandRegular", sans-serif;
+  --toastify-color-progress-info: var(--color-info);
+  --toastify-color-progress-error: var(--color-error);
+  --toastify-toast-width: 31.25rem;
+  --toastify-toast-min-height: 4rem;
+  --toastify-toast-max-height: 50rem;
+  --toastify-font-family: "QuicksandRegular", sans-serif;
 }
 
 /* --- React Toastify styles end --- */
 
 @font-face {
-	font-family: "QuicksandLight";
-	src: url("./assets/fonts/Quicksand-Light.ttf") format("truetype");
-	font-weight: 300;
-	font-style: normal;
+  font-family: "QuicksandLight";
+  src: url("./assets/fonts/Quicksand-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
 }
 
 @font-face {
-	font-family: "QuicksandRegular";
-	src: url("./assets/fonts/Quicksand-Regular.ttf") format("truetype");
-	font-weight: 400;
-	font-style: normal;
+  font-family: "QuicksandRegular";
+  src: url("./assets/fonts/Quicksand-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
 }
 
 @font-face {
-	font-family: "QuicksandMedium";
-	src: url("./assets/fonts/Quicksand-Medium.ttf") format("truetype");
-	font-weight: 500;
-	font-style: normal;
+  font-family: "QuicksandMedium";
+  src: url("./assets/fonts/Quicksand-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
 }
 
 @font-face {
-	font-family: "QuicksandSemiBold";
-	src: url("./assets/fonts/Quicksand-Medium.ttf") format("truetype");
-	font-weight: 600;
-	font-style: normal;
+  font-family: "QuicksandSemiBold";
+  src: url("./assets/fonts/Quicksand-Medium.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
 }
 
 @font-face {
-	font-family: "QuicksandBold";
-	src: url("./assets/fonts/Quicksand-SemiBold.ttf") format("truetype");
-	font-weight: 700;
-	font-style: normal;
+  font-family: "QuicksandBold";
+  src: url("./assets/fonts/Quicksand-SemiBold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
 }

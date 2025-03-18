@@ -2,7 +2,9 @@
   max-width: 7rem;
   width: auto;
   height: 2.5rem;
-  border: 1px solid black;
+  /*border: 1px solid black;*/
+  box-shadow: var(--shadow-box-main-short);
+  border-radius: 0.5rem;
   display: flex;
   gap: 0.4rem;
   align-items: center;
@@ -10,13 +12,25 @@
 }
 
 .username {
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  overflow: hidden;
 }
 .username p {
+  text-overflow: ellipsis;
+  overflow: hidden;
   margin: 0;
   font-size: 0.8rem;
   font-family: "QuicksandMedium", sans-serif;
   color: var(--color-font);
+}
+
+.connected {
+  /*border: 1px solid green;*/
+}
+.connected::after {
+  content: "";
+  background-color: green;
+  width: 0.4rem;
+  height: 0.4rem;
+  clip-path: circle();
 }

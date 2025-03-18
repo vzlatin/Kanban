@@ -7,6 +7,7 @@ import AuthProtectedRoute from "./miscellaneous/guards/auth.guards";
 import PersistentLogin from "./components/peristent-login/PeristentLogin";
 import EmptyBoard from "./components/empty-board/EmptyBoard";
 import WebsocketInitializer from "./components/ws-initializer/ws-initializer";
+import DataLoader from "./components/data-loader/DataLoader";
 
 const router = createBrowserRouter(
   [
@@ -16,6 +17,7 @@ const router = createBrowserRouter(
         <PersistentLogin>
           <AuthProtectedRoute>
             <WebsocketInitializer />
+            <DataLoader />
             <Home />
           </AuthProtectedRoute>
         </PersistentLogin>

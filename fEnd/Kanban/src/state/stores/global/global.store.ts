@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { KanbanStore } from "./types";
-import { getUsers } from "../../../services/user.service";
 import { ApiError } from "../../../miscellaneous/utils/errors";
 import { getEntityCollection } from "../../../services/entity.service";
 import { Message, OutboundMessageType } from "../../../types/messages";
@@ -75,7 +74,13 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
         set((state) => {
           switch (m.type) {
             case InboundMessageT.Enum.UserConnected: {
-              return { ...state, connectedUsers: m.payload.users };
+              const newUsers = m.payload.users.filter((newUser) =>
+                !state.connectedUsers.some((user) => user.id === newUser.id)
+              );
+              return {
+                ...state,
+                connectedUsers: [...state.connectedUsers, ...newUsers],
+              };
             }
             case InboundMessageT.Enum.SectionCreated: {
               return {

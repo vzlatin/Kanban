@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { KanbanStore } from "./types";
-import { getUsers } from "../../../services/user.service";
 import { ApiError } from "../../../miscellaneous/utils/errors";
 import { getEntityCollection } from "../../../services/entity.service";
 import { Message, OutboundMessageType } from "../../../types/messages";
@@ -38,6 +37,7 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
         tasks: entities.tasks,
         taskToDos: entities.taskToDos,
         comments: entities.comments,
+        users: entities.users,
       }));
     } catch (e) {
       if (e instanceof ApiError) set({ error: e });
@@ -74,7 +74,13 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
         set((state) => {
           switch (m.type) {
             case InboundMessageT.Enum.UserConnected: {
-              return { ...state, connectedUsers: m.payload.users };
+              const newUsers = m.payload.users.filter((newUser) =>
+                !state.connectedUsers.some((user) => user.id === newUser.id)
+              );
+              return {
+                ...state,
+                connectedUsers: [...state.connectedUsers, ...newUsers],
+              };
             }
             case InboundMessageT.Enum.SectionCreated: {
               return {
@@ -179,24 +185,6 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
       }
       return state;
     });
-  },
-
-  getUsers: async () => {
-    try {
-      const users = await getUsers();
-      set((state) => ({ ...state, users: users.data }));
-    } catch (e) {
-      if (e instanceof ApiError) set({ error: e });
-      else {
-        set({
-          error: new ApiError(
-            "An unkown error has occured",
-            "Unknown Error",
-            0,
-          ),
-        });
-      }
-    }
   },
 
   moveColumn: (source, destination, boardId) => {

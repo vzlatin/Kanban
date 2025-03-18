@@ -8,13 +8,13 @@ interface MenuItemType {
 }
 
 interface DropdownMenuProps {
-  buttonClassName?: string; // Style for button
-  menuClassName?: string; // Style for menu items container
+  buttonClassName?: string;
+  menuClassName?: string;
   menuItems: MenuItemType[];
-  buttonContent: React.ReactNode; // Button content (icon, text, etc.)
+  buttonContent: React.ReactNode;
 }
 
-const DropdownMenu: React.FC<DropdownMenuProps> = ({
+const PopUpMenu: React.FC<DropdownMenuProps> = ({
   buttonClassName = "",
   menuClassName = "",
   menuItems,
@@ -32,7 +32,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
               <button onClick={item.onClick}>
                 {item.label}
               </button>
-              <img src={item.icon} alt={item.label} />
+              {item.icon ? <img src={item.icon} alt={item.label} /> : ""}
             </div>
           </MenuItem>
         ))}
@@ -41,4 +41,4 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   );
 };
 
-export default DropdownMenu;
+export default PopUpMenu;

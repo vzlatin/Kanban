@@ -78,4 +78,5 @@ export type EntityCollection = {
   tasks: Task[];
   taskToDos: TaskToDo[];
   comments: Comment[];
+  users: Partial<User>[];
 };

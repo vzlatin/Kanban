@@ -9,6 +9,17 @@
   gap: 0.4rem;
   align-items: center;
   padding: 0.5rem;
+  transition: box-shadow 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+.member:hover {
+  box-shadow: var(--shadow-box-main);
+  cursor: pointer;
+}
+.member *:hover {
+  cursor: inherit;
+}
+.member:active {
+  box-shadow: var(--shadow-input-inset);
 }
 
 .username {

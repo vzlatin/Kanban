@@ -8,6 +8,7 @@ import PersistentLogin from "./components/peristent-login/PeristentLogin";
 import EmptyBoard from "./components/empty-board/EmptyBoard";
 import WebsocketInitializer from "./components/ws-initializer/ws-initializer";
 import DataLoader from "./components/data-loader/DataLoader";
+import UserProfile from "./pages/user-profile/UserProfile";
 
 const router = createBrowserRouter(
   [
@@ -41,6 +42,16 @@ const router = createBrowserRouter(
     {
       path: "/signin",
       element: <Signin />,
+    },
+    {
+      path: "/profile",
+      element: (
+        <PersistentLogin>
+          <AuthProtectedRoute>
+            <UserProfile />
+          </AuthProtectedRoute>
+        </PersistentLogin>
+      ),
     },
   ],
   {

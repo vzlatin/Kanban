@@ -13,10 +13,13 @@ const UserPill: React.FC<UserPillProps> = ({ user }) => {
   );
   return (
     <div
+      title={`${user.firstName} ${user.lastName}`}
       className={`${styles["member"]}
        ${connectedUsers.includes(user.id) ? styles["connected"] : ""}`}
     >
-      <div className={styles["username"]}>
+      <div
+        className={styles["username"]}
+      >
         <p>{user.firstName} {user.lastName}</p>
       </div>
 

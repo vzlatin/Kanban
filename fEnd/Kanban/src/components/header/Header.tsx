@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useKanbanStore } from "../../state/stores/global/global.store";
 import PopUpMenu from "../menu/PopUpMenu";
 import UserPill from "../user-pill/UserPill";
@@ -5,6 +6,7 @@ import styles from "./Header.module.css";
 
 const Header = () => {
   const users = useKanbanStore((state) => state.users);
+  const navigate = useNavigate();
   console.log("Header Rendered");
   return (
     <>
@@ -32,7 +34,7 @@ const Header = () => {
               {
                 label: "Profile",
                 icon: "/user-profile-menu.svg",
-                onClick: () => console.log("poop"),
+                onClick: () => navigate("/profile"),
               },
               {
                 label: "Admin Panel",

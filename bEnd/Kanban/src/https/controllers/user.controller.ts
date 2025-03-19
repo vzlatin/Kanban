@@ -1,7 +1,7 @@
 import { Context } from "@oak/oak";
 import { userDto } from "../utils/dtos.ts";
-import type { User } from "../types/userTypes.ts";
 import { ApiError } from "../../errors/apiErrors.ts";
+import { User } from "../../types/entities.ts";
 import {
   getAllUsers,
   login,

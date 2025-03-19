@@ -12,7 +12,7 @@ export type User = {
 };
 
 export type Token = {
-  id: number;
+  id?: number;
   userId: number;
   refreshToken: string;
 };

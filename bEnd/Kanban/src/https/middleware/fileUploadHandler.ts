@@ -52,7 +52,7 @@ export class FileUploader {
   handler(): Middleware {
     ensureDirSync(join(Deno.cwd(), "temp_uploads"));
 
-    const middleware: Middleware = async (ctx, _next) => {
+    const middleware: Middleware = async (ctx, next) => {
       try {
         const { request } = ctx;
         if (!request.hasBody) {
@@ -65,7 +65,7 @@ export class FileUploader {
           throw ApiError.BadRequestError("Content length is 0");
         }
         if (!contentType) {
-          throw ApiError.BadRequestError("Content type is missingg");
+          throw ApiError.BadRequestError("Content type is missing");
         }
         if (parseInt(contentLength) > this.options.maxSizeBytes) {
           throw ApiError.BadRequestError(
@@ -159,8 +159,16 @@ export class FileUploader {
       }
 
       if (this.options.saveFile) {
-        processedFile.uri = await this.saveFileToDisk(file);
-        processedFile.url = encodeURI(processedFile.uri);
+        const savedFilePath = await this.saveFileToDisk(file);
+        processedFile.uri = savedFilePath;
+        processedFile.url = savedFilePath.replace(Deno.cwd(), "").replace(
+          /\\/g,
+          "/",
+        );
+        if (!processedFile.url.startsWith("/")) {
+          processedFile.url = "/" + processedFile.url;
+        }
+        processedFile.url = encodeURI(processedFile.url);
       } else {
         const tempUploadsDir = join(Deno.cwd(), "temp_uploads");
         const tempFilePath = join(

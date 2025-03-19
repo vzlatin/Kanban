@@ -9,6 +9,7 @@ import {
 } from "./src/https/controllers/user.controller.ts";
 import {
   getEntityCollection,
+  getProfilePic,
 } from "./src/https/controllers/data.controller.ts";
 import { validateUser } from "./src/https/validators/userValidator.ts";
 import { authHandler } from "./src/https/middleware/authHandler.ts";
@@ -30,8 +31,11 @@ router.get("/entity-collection", authHandler, getEntityCollection);
 router.get("/users", authHandler, getUsers);
 
 // File upload
-const fileUploadHandler = new FileUploader("uploads").handler();
-router.post("/profile_pic", fileUploadHandler);
+// TODO: Add saving the fileUploadHandler results to the database
+// and return a response. The results are currently in the request's context.
+const fileUploadHandler = new FileUploader("profile-picture-uploads").handler();
+router.post("/profile-pic", authHandler, fileUploadHandler);
+router.get("/profile-pic/:path+", authHandler, getProfilePic);
 
 // Web Sockets
 router.get("/ws", websocketHandler.handleSocket);

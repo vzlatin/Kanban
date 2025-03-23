@@ -12,7 +12,7 @@ export const profileImageHandler: Middleware = async (ctx, _next) => {
     lName: string;
   } = ctx.state.user;
   const uploadedFiles: FileUploadResult = ctx.state.uploadedFiles;
-  if (!uploadedFiles) {
+  if (!uploadedFiles || uploadedFiles.data.length === 0) {
     throw ApiError.BadRequestError("File upload result is invalid");
   }
   if (uploadedFiles.data.length > 1) {

@@ -10,6 +10,7 @@ const userSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8).max(18),
   role: z.enum(rolesEnumValues),
+  profileImageUrl: z.string().nullable(),
 });
 
 export const validateUser: Middleware = async (ctx, next) => {

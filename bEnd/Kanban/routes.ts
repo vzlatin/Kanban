@@ -15,6 +15,7 @@ import { validateUser } from "./src/https/validators/userValidator.ts";
 import { authHandler } from "./src/https/middleware/authHandler.ts";
 import websocketHandler from "./src/websockets/controllers/broadcasterController.ts";
 import { FileUploader } from "./src/https/middleware/fileUploadHandler.ts";
+import { profileImageHandler } from "./src/https/middleware/profileImageHandler.ts";
 
 const router = new Router();
 
@@ -31,10 +32,13 @@ router.get("/entity-collection", authHandler, getEntityCollection);
 router.get("/users", authHandler, getUsers);
 
 // File upload
-// TODO: Add saving the fileUploadHandler results to the database
-// and return a response. The results are currently in the request's context.
 const fileUploadHandler = new FileUploader("profile-picture-uploads").handler();
-router.post("/profile-pic", authHandler, fileUploadHandler);
+router.post(
+  "/profile-pic",
+  authHandler,
+  fileUploadHandler,
+  profileImageHandler,
+);
 router.get("/profile-pic/:path+", authHandler, getProfilePic);
 
 // Web Sockets

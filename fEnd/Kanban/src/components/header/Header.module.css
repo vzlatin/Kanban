@@ -46,7 +46,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 0.5rem;
   padding: 0.5rem;
   margin-left: auto;
   transition: box-shadow 0.3s ease-in-out, transform 0.2s ease-in-out;

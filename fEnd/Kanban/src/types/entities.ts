@@ -58,6 +58,7 @@ export type User = {
   lastName: string;
   email: string;
   role: UserRole;
+  profileImageUrl: string | null;
 };
 
 export enum TaskStatus {
@@ -69,10 +70,17 @@ export enum TaskStatus {
 
 export enum UserRole {
   Employee = "employee",
-  Manaager = "manager",
+  Manager = "manager",
   Admin = "admin",
   None = "none",
 }
+
+export const UserRoleLabels: Record<UserRole, string> = {
+  [UserRole.Employee]: "Employee",
+  [UserRole.Manager]: "Manager",
+  [UserRole.Admin]: "Admin",
+  [UserRole.None]: "None",
+};
 
 export type EntityCollection = {
   sections: Section[];

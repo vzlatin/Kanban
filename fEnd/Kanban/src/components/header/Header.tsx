@@ -1,13 +1,28 @@
-import { useNavigate } from "react-router-dom";
 import { useKanbanStore } from "../../state/stores/global/global.store";
 import PopUpMenu from "../menu/PopUpMenu";
 import UserPill from "../user-pill/UserPill";
 import styles from "./Header.module.css";
+import UpdateUserDialog from "../dialog/user/UpdateUserDialog";
+import { useState } from "react";
+import { useSigninStore } from "../../state/stores/signin/store";
+
+enum DialogType {
+  None = "",
+  Profile = "profile",
+  AdminPanel = "adminPanel",
+  Logout = "logout",
+}
 
 const Header = () => {
   const users = useKanbanStore((state) => state.users);
-  const navigate = useNavigate();
-  console.log("Header Rendered");
+  const currentUser = useSigninStore((state) => state.user);
+  const [openDialog, setIsOpenDialog] = useState<DialogType>(DialogType.None);
+  const closeDialog = () => setIsOpenDialog(DialogType.None);
+
+  const updateUser = () => {
+    console.log("poop");
+  };
+
   return (
     <>
       <div className={styles["header"]}>
@@ -34,7 +49,7 @@ const Header = () => {
               {
                 label: "Profile",
                 icon: "/user-profile-menu.svg",
-                onClick: () => navigate("/profile"),
+                onClick: () => setIsOpenDialog(DialogType.Profile),
               },
               {
                 label: "Admin Panel",
@@ -51,6 +66,13 @@ const Header = () => {
           </PopUpMenu>
         </div>
       </div>
+      <UpdateUserDialog
+        isOpen={openDialog === DialogType.Profile}
+        onClose={closeDialog}
+        user={currentUser}
+        messageHandler={updateUser}
+      >
+      </UpdateUserDialog>
     </>
   );
 };

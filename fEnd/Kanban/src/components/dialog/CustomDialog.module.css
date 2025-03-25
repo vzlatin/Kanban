@@ -30,9 +30,9 @@
   border-radius: 1rem;
   background-color: var(--color-background);
   padding: 1.5rem;
-  backdrop-filter: blur(32px); /* backdrop-blur-2xl */
-  transition-duration: 300ms; /* duration-300 */
-  transition-timing-function: ease-out; /* ease-out */
+  backdrop-filter: blur(32px);
+  transition-duration: 300ms;
+  transition-timing-function: ease-out;
   box-shadow: var(--shadow-box-main);
 }
 .dialog-panel[data-closed] {

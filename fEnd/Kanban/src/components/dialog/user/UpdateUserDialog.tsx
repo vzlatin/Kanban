@@ -2,22 +2,38 @@ import localstyles from "./UpdateUserDialog.module.css";
 import styles from "../CustomDialog.module.css";
 
 import { useState } from "react";
-import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { Dialog, DialogPanel } from "@headlessui/react";
 import { User, UserRoleLabels } from "../../../types/entities";
+import { useKanbanStore } from "../../../state/stores/global/global.store";
 
 type UpdateUserDialogProps = {
   isOpen: boolean;
   onClose: () => void;
-  //onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   user: User;
-  messageHandler: (user: User) => void;
 };
 
 const UpdateUserDialog: React.FC<UpdateUserDialogProps> = (
-  { isOpen, onClose, user, messageHandler },
+  { isOpen, onClose, user },
 ) => {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
+
+  const changeProfilePicture = useKanbanStore((state) =>
+    state.changeUserProfilePic
+  );
+
+  const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) {
+      return;
+    }
+    const form = new FormData();
+    for (const file of files) {
+      form.append(`${e.target.getAttribute("name")}`, file);
+    }
+    await changeProfilePicture(form);
+  };
+
   return (
     <Dialog
       open={isOpen}
@@ -44,9 +60,14 @@ const UpdateUserDialog: React.FC<UpdateUserDialogProps> = (
                         src="/user-profile.svg"
                       />
                     )}
-                  <button className={localstyles["update-profile-image"]}>
+                  <label className={localstyles["update-profile-image"]}>
+                    <input
+                      type="file"
+                      name="profile-image"
+                      onChange={(e) => uploadFile(e)}
+                    />
                     Change profile image
-                  </button>
+                  </label>
                 </div>
                 <div className={localstyles["personal-info"]}>
                   <div className={localstyles["first-name"]}>

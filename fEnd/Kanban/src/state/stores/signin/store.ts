@@ -12,6 +12,7 @@ const initialState = {
     firstName: "",
     lastName: "",
     role: UserRole.None,
+    profileImageUrl: "",
   },
   isAuthenticated: false,
   error: null,

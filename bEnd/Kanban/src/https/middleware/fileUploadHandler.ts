@@ -16,7 +16,7 @@ export class FileUploader {
     saveFile: true,
     readFile: false,
     useCurrentDir: true,
-    useDateTimeSubDir: true,
+    useDateTimeSubDir: false,
     onError: console.log,
   };
   private validationErrors: string[] = [];
@@ -89,7 +89,6 @@ export class FileUploader {
         const processedErrorResult = this.options.onError(ctx, error);
         if (processedErrorResult instanceof Promise) await processedErrorResult;
       }
-      await next();
     };
 
     return middleware;

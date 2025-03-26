@@ -61,6 +61,10 @@
   gap: 1rem;
 }
 
+input[type="file"] {
+  display: none;
+}
+
 .role {
   margin-left: 2.2rem;
   display: flex;

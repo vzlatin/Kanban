@@ -11,6 +11,7 @@ export const profileImageHandler: Middleware = async (ctx, _next) => {
     fName: string;
     lName: string;
   } = ctx.state.user;
+  console.log("USER: " + user);
   const uploadedFiles: FileUploadResult = ctx.state.uploadedFiles;
   if (!uploadedFiles || uploadedFiles.data.length === 0) {
     throw ApiError.BadRequestError("File upload result is invalid");

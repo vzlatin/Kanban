@@ -24,6 +24,7 @@ export const users = pgTable("users", {
   email: text().notNull().unique(),
   password: text().notNull(),
   role: userRoles(),
+  profileImageUrl: text(),
 });
 
 export const tokens = pgTable("tokens", {

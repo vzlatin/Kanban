@@ -11,7 +11,7 @@ import {
   tokens as tokenTable,
   users as userTable,
 } from "./schema.ts";
-import { eq, inArray } from "drizzle-orm/expressions";
+import { eq } from "drizzle-orm/expressions";
 
 const { Pool } = pg;
 const connectionString = Deno.env.get("DATABASE_URL");
@@ -55,6 +55,15 @@ export async function insertUser(
   user: typeof userTable.$inferInsert,
 ): Promise<User[]> {
   return await db.insert(userTable).values(user).returning();
+}
+
+export async function updateUser(
+  id: number,
+  payload: Partial<Omit<User, "password">>,
+) {
+  return await db.update(userTable).set({ ...payload }).where(
+    eq(userTable.id, id),
+  ).returning();
 }
 
 export async function findUserById(id: number): Promise<User[]> {

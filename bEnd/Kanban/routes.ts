@@ -9,11 +9,13 @@ import {
 } from "./src/https/controllers/user.controller.ts";
 import {
   getEntityCollection,
+  getProfilePic,
 } from "./src/https/controllers/data.controller.ts";
 import { validateUser } from "./src/https/validators/userValidator.ts";
 import { authHandler } from "./src/https/middleware/authHandler.ts";
 import websocketHandler from "./src/websockets/controllers/broadcasterController.ts";
 import { FileUploader } from "./src/https/middleware/fileUploadHandler.ts";
+import { profileImageHandler } from "./src/https/middleware/profileImageHandler.ts";
 
 const router = new Router();
 
@@ -30,8 +32,14 @@ router.get("/entity-collection", authHandler, getEntityCollection);
 router.get("/users", authHandler, getUsers);
 
 // File upload
-const fileUploadHandler = new FileUploader("uploads").handler();
-router.post("/profile_pic", fileUploadHandler);
+const fileUploadHandler = new FileUploader("profile-picture-uploads").handler();
+router.post(
+  "/profile-pic",
+  authHandler,
+  fileUploadHandler,
+  profileImageHandler,
+);
+router.get("/profile-pic/:path+", authHandler, getProfilePic);
 
 // Web Sockets
 router.get("/ws", websocketHandler.handleSocket);

@@ -1,32 +1,10 @@
 import { ensureDir, ensureDirSync } from "@std/fs";
 import { type Middleware } from "@oak/oak/middleware";
-import { Context } from "@oak/oak/context";
 import { join } from "@std/path";
 import { ApiError } from "../../errors/apiErrors.ts";
-
-interface UploadOptions {
-  extensions?: Array<string>;
-  maxSizeBytes?: number;
-  maxFileSizeBytes?: number;
-  saveFile?: boolean;
-  readFile?: boolean;
-  useCurrentDir?: boolean;
-  useDateTimeSubDir?: boolean;
-  onError?: (ctx: Context, error: unknown) => Promise<void> | void;
-}
-
-interface ProcessedFile {
-  filename: string;
-  size: number;
-  type: string;
-  contents: Uint8Array | null;
-  uri: string;
-  url: string;
-}
-
-interface Result {
-  data: Record<string, ProcessedFile>;
-}
+import { ProcessedFile } from "../../types/files.ts";
+import { UploadOptions } from "../../types/files.ts";
+import { FileUploadResult } from "../../types/files.ts";
 
 export class FileUploader {
   private path: string;
@@ -38,11 +16,11 @@ export class FileUploader {
     saveFile: true,
     readFile: false,
     useCurrentDir: true,
-    useDateTimeSubDir: true,
+    useDateTimeSubDir: false,
     onError: console.log,
   };
   private validationErrors: string[] = [];
-  private result: Result = { data: {} };
+  private result: FileUploadResult = { data: [] };
 
   constructor(path: string, options?: Partial<UploadOptions>) {
     this.path = path;
@@ -52,7 +30,7 @@ export class FileUploader {
   handler(): Middleware {
     ensureDirSync(join(Deno.cwd(), "temp_uploads"));
 
-    const middleware: Middleware = async (ctx, _next) => {
+    const middleware: Middleware = async (ctx, next) => {
       try {
         const { request } = ctx;
         if (!request.hasBody) {
@@ -65,7 +43,7 @@ export class FileUploader {
           throw ApiError.BadRequestError("Content length is 0");
         }
         if (!contentType) {
-          throw ApiError.BadRequestError("Content type is missingg");
+          throw ApiError.BadRequestError("Content type is missing");
         }
         if (parseInt(contentLength) > this.options.maxSizeBytes) {
           throw ApiError.BadRequestError(
@@ -89,11 +67,11 @@ export class FileUploader {
 
         for (const [key, value] of entries) {
           if (value instanceof File) {
-            this.result.data[key] = await this.processFiles([value]);
+            this.result.data.push({ [key]: await this.processFiles([value]) });
           } else if (Array.isArray(value)) {
             const files = value.filter((f) => f instanceof File);
             if (files.length > 0) {
-              this.result.data[key] = await this.processFiles(files);
+              this.result.data.push({ [key]: await this.processFiles(files) });
             }
           }
         }
@@ -106,12 +84,11 @@ export class FileUploader {
 
         ctx.state.uploadedFiles = this.result;
         console.log(ctx.state.uploadedFiles);
-        //await next();
+        await next();
       } catch (error) {
         const processedErrorResult = this.options.onError(ctx, error);
         if (processedErrorResult instanceof Promise) await processedErrorResult;
       }
-      //await next();
     };
 
     return middleware;
@@ -159,8 +136,16 @@ export class FileUploader {
       }
 
       if (this.options.saveFile) {
-        processedFile.uri = await this.saveFileToDisk(file);
-        processedFile.url = encodeURI(processedFile.uri);
+        const savedFilePath = await this.saveFileToDisk(file);
+        processedFile.uri = savedFilePath;
+        processedFile.url = savedFilePath.replace(Deno.cwd(), "").replace(
+          /\\/g,
+          "/",
+        );
+        if (!processedFile.url.startsWith("/")) {
+          processedFile.url = "/" + processedFile.url;
+        }
+        processedFile.url = encodeURI(processedFile.url);
       } else {
         const tempUploadsDir = join(Deno.cwd(), "temp_uploads");
         const tempFilePath = join(

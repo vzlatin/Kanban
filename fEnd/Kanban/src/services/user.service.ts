@@ -12,3 +12,13 @@ export const getUsers = async (): Promise<AxiosResponse<User[]>> => {
     },
   });
 };
+
+export const changeUserProfilePic = async (
+  data: FormData,
+): Promise<AxiosResponse<User>> => {
+  return $api.post<User>("/profile-pic", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};

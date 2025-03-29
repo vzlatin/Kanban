@@ -9,6 +9,7 @@ import {
   InboundMessageT,
 } from "../../../types/zod/validation";
 import { renderErrorToast } from "../../../miscellaneous/utils/toasts";
+import { changeUserProfilePic } from "../../../services/user.service";
 
 const initialState = {
   sections: [],
@@ -39,6 +40,26 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
         comments: entities.comments,
         users: entities.users,
       }));
+    } catch (e) {
+      if (e instanceof ApiError) set({ error: e });
+      else {
+        set({
+          error: new ApiError(
+            "An unkown error has occured",
+            "Unknown Error",
+            0,
+          ),
+        });
+      }
+    }
+  },
+
+  changeUserProfilePic: async (data) => {
+    try {
+      const response = await changeUserProfilePic(data);
+      const user = response.data;
+      console.log(user);
+      //set();
     } catch (e) {
       if (e instanceof ApiError) set({ error: e });
       else {

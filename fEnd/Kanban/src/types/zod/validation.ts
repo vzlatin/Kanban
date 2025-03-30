@@ -3,7 +3,8 @@ import {
   _Board,
   _Column,
   _Comment,
-  _ConnectedUser,
+  _ConnectedUsers,
+  _DisconnectedUser,
   _Section,
   _Task,
   _TaskToDo,
@@ -29,6 +30,7 @@ export const InboundMessageT = z.enum([
   "TaskToDoUpdated",
   "TaskToDoDeleted",
   "UserConnected",
+  "UserDisconnected",
 ]);
 
 export const _SectionCreatedPayload = _Section;
@@ -55,7 +57,8 @@ export const _TaskToDoCreatedPayload = _TaskToDo;
 export const _TaskToDoUpdatedPayload = _TaskToDo;
 export const _TaskToDoDeletedPayload = _TaskToDo;
 
-export const _ConnectedUserPayload = _ConnectedUser;
+export const _ConnectedUserPayload = _ConnectedUsers;
+export const _DisconnectedUsersPayload = _DisconnectedUser; 
 
 export const InboundMessageSchema = z.discriminatedUnion("type", [
   z.object({
@@ -134,6 +137,10 @@ export const InboundMessageSchema = z.discriminatedUnion("type", [
     type: z.literal("UserConnected"),
     payload: _ConnectedUserPayload,
   }),
+  z.object({
+    type: z.literal("UserDisconnected"),
+    payload: _DisconnectedUsersPayload,
+  }),
 ]);
 
 export type InboundMessage = z.infer<typeof InboundMessageSchema>;
@@ -168,4 +175,7 @@ export type MessageMap = {
     typeof _TaskDeletedPayload
   >;
   [InboundMessageT.Enum.UserConnected]: z.infer<typeof _ConnectedUserPayload>;
+  [InboundMessageT.Enum.UserDisconnected]: z.infer<
+    typeof _DisconnectedUsersPayload
+  >;
 };

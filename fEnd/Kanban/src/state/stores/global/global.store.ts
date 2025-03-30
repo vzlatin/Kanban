@@ -179,6 +179,12 @@ export const useKanbanStore = create<KanbanStore>((set) => ({
                 ),
               };
             }
+            case InboundMessageT.Enum.UserDisconnected: {
+              return {
+                ...state,
+                connectedUsers: state.connectedUsers.filter((user) => user.id !== m.payload.user.id)
+              };
+            }
             default:
               return state;
           }

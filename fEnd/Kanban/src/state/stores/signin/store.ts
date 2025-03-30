@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { SigninStore } from "./types";
 import { UserRole } from "../../../types/entities";
 import { ApiError } from "../../../miscellaneous/utils/errors";
-import { signin, signup } from "../../../services/auth.service";
+import { logout, signin, signup } from "../../../services/auth.service";
 import { refreshAccessToken } from "../../../services/token.service";
 
 const initialState = {
@@ -98,6 +98,16 @@ export const useSigninStore = create<SigninStore>((set) => ({
         });
       }
     }
+  },
+  logout: async () => {
+    await logout();
+    set((state) => ({
+      ...state,
+      isAuthenticated: false,
+      accessToken: "",
+      error: null,
+      trustDevice: false,
+    }));
   },
   setTrustDevice: (val) => {
     localStorage.setItem("trustDevice", JSON.stringify(val));

@@ -10,6 +10,7 @@ export interface SigninStore {
   trustDevice: boolean;
   signin: (email: string, password: string) => Promise<void>;
   signup: (credentials: Credentials) => Promise<void>;
+  logout: () => Promise<void>;
   setTrustDevice: (val: boolean) => void;
   refreshAccessToken: () => Promise<void>;
 }

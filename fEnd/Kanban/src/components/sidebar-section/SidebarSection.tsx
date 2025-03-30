@@ -219,7 +219,6 @@ const SidebarSection: React.FC<Section> = (
                       icon: "/pencil.svg",
                       onClick: () => {
                         setTrackedBoard(board);
-                        //setBoardTitle(board.title);
                         setIsOpenDialog(DialogType.UpdateBoard);
                       },
                     },

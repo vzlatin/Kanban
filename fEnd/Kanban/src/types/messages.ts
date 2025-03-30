@@ -30,6 +30,7 @@ export enum InboundMessageType {
   TaskToDoCreated = "TaskToDoCreated",
   TaskToDoUpdated = "TaskToDoUpdated",
   TaskToDoDeleted = "TaskToDoDeleted",
+  UserDisconnected = "UserDisconnected",
 }
 
 export enum OutboundMessageType {
@@ -51,6 +52,7 @@ export enum OutboundMessageType {
   CreateTaskToDo = "CreateTaskToDo",
   DeleteTaskToDo = "DeleteTaskToDo",
   UpdateTaskToDo = "UpdateTaskToDo",
+  DisconnectUser = "DisconnectUser",
 }
 
 // --------------------------------- Outbound Messages ----------------------------------
@@ -91,6 +93,9 @@ export type UpdateTaskToDoPayload = PartiallyRequired<
 >;
 export type DeleteTaskToDoPayload = TaskToDo;
 
+// ---- User ----
+export type DisconnectUserPayload = null;
+
 // --------------------------------- Inbound Messages ----------------------------------
 
 // ---- Sections ----
@@ -125,6 +130,7 @@ export type TaskToDoDeletedPayload = TaskToDo;
 
 // ---- Users ----
 export type UserConnectedPayload = { users: ConnectedUser[] };
+export type UserDisconnectedPayload = { user: ConnectedUser };
 
 export type Message =
   | {
@@ -200,8 +206,16 @@ export type Message =
     payload: DeleteCommentPayload;
   }
   | {
+    type: OutboundMessageType.DisconnectUser;
+    payload: DisconnectUserPayload;
+  }
+  | {
     type: InboundMessageType.UserConnected;
     payload: UserConnectedPayload;
+  }
+  | {
+    type: InboundMessageType.UserDisconnected;
+    payload: UserDisconnectedPayload;
   }
   // FIX: Check this after fixing the backend error message type
   //| {

@@ -30,6 +30,7 @@ export const InboundMessageT = z.enum([
   "CreateTaskToDo",
   "DeleteTaskToDo",
   "UpdateTaskToDo",
+  "DisconnectUser",
 ]);
 
 export const _CreateSectionPayload = _Section.omit({ id: true });
@@ -60,6 +61,8 @@ export const _CreateTaskToDoPayload = _TaskToDo.omit({ id: true });
 export const _UpdateTaskToDoPayload = _TaskToDo.omit({ taskId: true })
   .partial().required({ id: true });
 export const _DeleteTaskToDoPayload = z.object({ id: z.number() });
+
+export const _DisconnectUserPayload = z.null();
 
 export const InboundMessageSchema = z.discriminatedUnion("type", [
   z.object({
@@ -134,6 +137,10 @@ export const InboundMessageSchema = z.discriminatedUnion("type", [
     type: z.literal("DeleteSection"),
     payload: _DeleteSectionPayload,
   }),
+  z.object({
+    type: z.literal("DisconnectUser"),
+    payload: _DisconnectUserPayload,
+  }),
 ]);
 
 export type InboundMessage = z.infer<typeof InboundMessageSchema>;
@@ -165,4 +172,5 @@ export type MessageMap = {
   [InboundMessageT.Enum.CreateSection]: z.infer<typeof _CreateSectionPayload>;
   [InboundMessageT.Enum.UpdateSection]: z.infer<typeof _UpdateSectionPayload>;
   [InboundMessageT.Enum.DeleteSection]: z.infer<typeof _DeleteSectionPayload>;
+  [InboundMessageT.Enum.DisconnectUser]: z.infer<typeof _DisconnectUserPayload>;
 };

@@ -118,6 +118,7 @@ const Signup = () => {
         email: "",
         password: "",
         role: UserRole.Employee,
+        profileImageUrl: null
       },
     );
 

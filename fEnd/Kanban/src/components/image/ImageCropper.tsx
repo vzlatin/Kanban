@@ -123,7 +123,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ onClose, user }) => {
         {error && (
           <p
             style={{
-              "color": "red",
+              "color": "#860111",
               "fontFamily": "QuicksandMedium, sans-serif",
             }}
           >
@@ -160,7 +160,14 @@ const ImageCropper: React.FC<ImageCropperProps> = ({ onClose, user }) => {
                 >
                   Crop
                 </button>
-                <button className={styles["crop-button-nok"]}>Cancel</button>
+                <button
+                  className={styles["crop-button-nok"]}
+                  onClick={() => {
+                    onClose();
+                  }}
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           )}

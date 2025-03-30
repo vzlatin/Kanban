@@ -33,7 +33,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
   return (
     <>
       <div className={styles["container"]}>
-        <div className={styles.sidebar}>
+        <div className={styles["sidebar"]}>
           {sections.map((section) => (
             <SidebarSection
               key={section.id}

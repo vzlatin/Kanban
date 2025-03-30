@@ -69,7 +69,7 @@
   box-shadow: var(--shadow-input-inset);
 }
 
-.board_list {
+.board-list {
   list-style-type: none;
   font-family: "QuicksandMedium", sans-serif;
   font-size: 1.5rem;
@@ -83,7 +83,7 @@
   flex-direction: row;
   align-items: center;
 }
-.board_list_item_container:hover {
+.board-list-item-container:hover {
   background-color: var(--color-accent-blue);
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;

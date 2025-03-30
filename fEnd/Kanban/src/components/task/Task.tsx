@@ -6,7 +6,7 @@ type TaskProps = {
 };
 
 const Task: React.FC<TaskProps> = ({ task }) => {
-  return <div className={styles.task}>{task.title}</div>;
+  return <div className={styles["task"]}>{task["title"]}</div>;
 };
 
 export default Task;

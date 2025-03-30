@@ -97,7 +97,7 @@ const SidebarSection: React.FC<Section> = (
   };
 
   return (
-    <div ref={sectionRef} className={styles.section}>
+    <div ref={sectionRef} className={styles["section"]}>
       <div
         className={`${styles["section-title-container"]}`}
         onClick={(event) => {
@@ -192,14 +192,14 @@ const SidebarSection: React.FC<Section> = (
       >
       </DeleteSectionDialog>
 
-      <ul className={styles.board_list}>
+      <ul className={styles["board-list"]}>
         {boards.map((board, index) => {
           const isActive = location.pathname.includes(`/board/${board.id}`);
           return (
             <li
               key={index}
-              className={`${styles.board_list_item_container} ${
-                isActive ? styles.active : ""
+              className={`${styles["board-list-item-container"]} ${
+                isActive ? styles["active"] : ""
               }`}
               onClick={() => {
                 navigate(`/board/${board.id}`);

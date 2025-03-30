@@ -66,9 +66,9 @@
 .profile-menu {
   margin-top: 0.8rem;
   width: 10rem;
-  padding: 0.3rem;
+  padding: 0.5rem;
   border-radius: 0.5rem;
-  box-shadow: var(--shadow-box-main);
+  border: 1px solid var(--color-accent-grey-light);
   display: flex;
   flex-direction: column;
   gap: 0.3rem;

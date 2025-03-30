@@ -1,12 +1,15 @@
 .menu-item-wrap {
   display: flex;
   align-items: center;
-  padding: 0.2rem;
+  transition: transform 0.1s ease;
+  padding: 0.5rem;
+  background-color: var(--color-background);
 }
 .menu-item-wrap:hover {
   box-shadow: var(--shadow-box-main);
   border-radius: 0.5rem;
   cursor: pointer;
+  transform: scale(1.03);
 }
 .menu-item-wrap:active {
   box-shadow: var(--shadow-input-inset);
@@ -15,5 +18,5 @@
 }
 .menu-item-wrap img {
   margin-left: auto;
-  fill: var(--color-font);
+  /*fill: var(--color-font);*/
 }

@@ -43,10 +43,8 @@ const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
           ))}
         </div>
         <hr />
-        <div className={styles["add-section"]}>
-          <button
-            onClick={open}
-          >
+        <div className={styles["add-section"]} onClick={open}>
+          <button>
             Add a new Section
           </button>
           <img src="/board.svg" />

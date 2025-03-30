@@ -19,10 +19,6 @@ const Header = () => {
   const [openDialog, setIsOpenDialog] = useState<DialogType>(DialogType.None);
   const closeDialog = () => setIsOpenDialog(DialogType.None);
 
-  const updateUser = () => {
-    console.log("poop");
-  };
-
   return (
     <>
       <div className={styles["header"]}>
@@ -40,37 +36,34 @@ const Header = () => {
             ))}
           </div>
         </div>
-        <div className={styles["profile"]}>
-          <PopUpMenu
-            buttonClassName={styles["profile-menu-toggle"]}
-            menuClassName={styles["profile-menu"]}
-            buttonContent={<img src="/user-profile.svg" />}
-            menuItems={[
-              {
-                label: "Profile",
-                icon: "/user-profile-menu.svg",
-                onClick: () => setIsOpenDialog(DialogType.Profile),
-              },
-              {
-                label: "Admin Panel",
-                icon: "/admin-panel.svg",
-                onClick: () => console.log("poop"),
-              },
-              {
-                label: "Logout",
-                icon: "/logout.svg",
-                onClick: () => console.log("poop"),
-              },
-            ]}
-          >
-          </PopUpMenu>
-        </div>
+        <PopUpMenu
+          buttonClassName={styles["profile"]}
+          menuClassName={styles["profile-menu"]}
+          buttonContent={<img src="/user-profile.svg" />}
+          menuItems={[
+            {
+              label: "Profile",
+              icon: "/user-profile-menu.svg",
+              onClick: () => setIsOpenDialog(DialogType.Profile),
+            },
+            {
+              label: "Admin Panel",
+              icon: "/admin-panel.svg",
+              onClick: () => console.log("poop"),
+            },
+            {
+              label: "Logout",
+              icon: "/logout.svg",
+              onClick: () => console.log("poop"),
+            },
+          ]}
+        >
+        </PopUpMenu>
       </div>
       <UpdateUserDialog
         isOpen={openDialog === DialogType.Profile}
         onClose={closeDialog}
         user={currentUser}
-        messageHandler={updateUser}
       >
       </UpdateUserDialog>
     </>

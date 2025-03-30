@@ -33,7 +33,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
   return (
     <>
       <div className={styles["container"]}>
-        <div className={styles.sidebar}>
+        <div className={styles["sidebar"]}>
           {sections.map((section) => (
             <SidebarSection
               key={section.id}
@@ -43,10 +43,8 @@ const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
           ))}
         </div>
         <hr />
-        <div className={styles["add-section"]}>
-          <button
-            onClick={open}
-          >
+        <div className={styles["add-section"]} onClick={open}>
+          <button>
             Add a new Section
           </button>
           <img src="/board.svg" />

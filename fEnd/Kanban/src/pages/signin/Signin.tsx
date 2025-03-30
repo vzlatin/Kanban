@@ -34,7 +34,7 @@ const Signin = () => {
           <div className={styles["signup-container"]}>
             <div className={styles["content-container"]}>
               <div className={styles["signup-static"]}>
-                <div className={styles.logo}>
+                <div className={styles["logo"]}>
                   <h1>Kooking Board</h1>
                   <img
                     className={styles["logo-image"]}

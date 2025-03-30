@@ -47,6 +47,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.5rem;
+  border: none;
   padding: 0.5rem;
   margin-left: auto;
   transition: box-shadow 0.3s ease-in-out, transform 0.2s ease-in-out;
@@ -65,9 +66,9 @@
 .profile-menu {
   margin-top: 0.8rem;
   width: 10rem;
-  padding: 0.3rem;
+  padding: 0.5rem;
   border-radius: 0.5rem;
-  box-shadow: var(--shadow-box-main);
+  border: 1px solid var(--color-accent-grey-light);
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
@@ -77,9 +78,4 @@
   background: transparent;
   font-family: "QuicksandMedium", sans-serif;
   padding: 0.4rem;
-}
-
-.profile-menu-toggle {
-  border: none;
-  background: transparent;
 }

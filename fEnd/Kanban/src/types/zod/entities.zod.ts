@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const _ConnectedUser = z.object({
+export const _ConnectedUsers = z.object({
   users: z.array(
     z.object({
       id: z.number(),
@@ -9,6 +9,15 @@ export const _ConnectedUser = z.object({
       lName: z.string(),
     }),
   ),
+});
+
+export const _DisconnectedUser = z.object({
+  user: z.object({
+      id: z.number(),
+      email: z.string(),
+      fName: z.string(),
+      lName: z.string(),
+  })
 });
 
 export const _Section = z.object({

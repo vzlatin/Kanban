@@ -66,7 +66,7 @@ class Broadcaster {
       }
 
       try {
-        await this.handleMessage(result.data);
+        await this.handleMessage(result.data, socket);
       } catch (e) {
         sendErrorMessage(socket, e);
         return;
@@ -100,9 +100,7 @@ class Broadcaster {
     }
   }
 
-  // Non null assertion is justified because the id will always be
-  // returned from the database.
-  private async handleMessage(message: InboundMessage) {
+  private async handleMessage(message: InboundMessage, socket: WebSocket) {
     switch (message.type) {
       case InboundMessageT.Enum.CreateSection: {
         const section = await createSection(message.payload);
@@ -247,6 +245,14 @@ class Broadcaster {
           type: OutboundMessageType.TaskToDoDeleted,
           payload: tasktodo,
         });
+        break;
+      }
+      case InboundMessageT.Enum.DisconnectUser: {
+        this.broadcast({
+          type: OutboundMessageType.UserDisconnected,
+          payload: { user: socket._user }
+        })
+        this.disconnect(socket);
         break;
       }
     }

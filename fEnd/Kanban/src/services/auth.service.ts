@@ -27,3 +27,13 @@ export const signup = async (
     },
   });
 };
+
+export const logout = async (): Promise<
+  AxiosResponse<{ deletedToken: string }>
+> => {
+  return await $defaultApi.post<{ deletedToken: string }>("/logout", null, {
+    headers: {
+      "Content-Type": "application/json; charser=utf-8",
+    },
+  });
+};

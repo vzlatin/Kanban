@@ -8,22 +8,19 @@
   cursor: pointer;
 }
 .section-title-container:hover h2 {
-  cursor: pointer;
+  cursor: inherit;
   color: var(--color-font);
 }
 .section-title {
-  color: #d3d5d9;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  margin-left: 1.625rem;
+  color: var(--color-accent-grey);
+  margin: 0.5rem 1.625rem 0;
   font-family: "QuicksandMedium", sans-serif;
   font-size: 3rem;
 }
 
 .ellipsis-section {
   display: none;
-  opacity: 0;
-  transform: scale(0.8);
+  transform: scale(0.9);
   transition: opacity 0.1s ease, transform 0.1s ease;
 }
 .ellipsis-section:hover {
@@ -34,12 +31,11 @@
   color: var(--color-font);
 }
 .active-section .ellipsis-section {
-  opacity: 1;
   margin-left: auto;
   margin-right: 0.4rem;
   display: flex;
   align-items: center;
-  border: none;
+  border: 1px solid var(--color-accent-grey-light);
   background-color: transparent;
   border-radius: 0.5rem;
 }
@@ -47,46 +43,44 @@
 .active-section .ellipsis-section:hover {
   cursor: pointer;
   box-shadow: var(--shadow-box-main);
-  border: 1px solid var(--color-accent-grey-light);
   transform: scale(1);
 }
 .active-section .ellipsis-section:active {
   cursor: pointer;
   box-shadow: var(--shadow-input-inset);
-  border: 1px solid var(--color-accent-grey-light);
-  transform: scale(1);
 }
 .ellipsis-section[data-active] {
+  /* These rules are technically redundant 
+   * but they fix the weird flickering when clicking outside
+   */
   display: flex;
   align-items: center;
   margin-left: auto;
   margin-right: 0.4rem;
   box-shadow: var(--shadow-input-inset);
-  border: 1px solid var(--color-accent-grey-light);
   transform: scale(1);
 }
 .ellipsis-section[data-active]:hover {
   box-shadow: var(--shadow-input-inset);
 }
 
-.board_list {
+.board-list {
   list-style-type: none;
   font-family: "QuicksandMedium", sans-serif;
   font-size: 1.5rem;
 }
 
-.board_list_item_container {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 1rem;
+.board-list-item-container {
+  padding: 0.5rem 0 0.5rem 1rem;
+  margin: 0.3rem 0;
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-.board_list_item_container:hover {
+.board-list-item-container:hover {
   background-color: var(--color-accent-blue);
-  border-top-right-radius: 1rem;
-  border-bottom-right-radius: 1rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
   cursor: pointer;
   color: var(--color-background);
 }
@@ -101,61 +95,58 @@
 }
 
 .menu-items {
+  margin-top: 0.8rem;
+  width: 10rem;
+  padding: 0.5rem;
   border-radius: 0.5rem;
-  box-shadow: var(--shadow-box-main);
+  border: 1px solid var(--color-accent-grey-light);
   background-color: var(--color-background);
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  border: 1px solid var(--color-accent-grey-light);
-  padding: 0.4rem;
 }
-
 .menu-items button {
   border: none;
   background: transparent;
   font-family: "QuicksandMedium", sans-serif;
-}
-
-.menu-items *:hover {
-  cursor: pointer;
+  padding: 0.2rem;
 }
 
 .ellipsis {
   display: none;
-  transform: scale(0.8);
+  transform: scale(0.9);
   transition: transform 0.1s ease;
   border-radius: 0.5rem;
 }
 .active {
   background-color: var(--color-accent-blue);
-  border-top-right-radius: 1rem;
-  border-bottom-right-radius: 1rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
   color: var(--color-background);
 }
 .active .ellipsis {
   display: flex;
   align-items: center;
-  border: none;
+  border: 1px solid var(--color-accent-blue-light);
   background-color: transparent;
   cursor: pointer;
 }
 .active .ellipsis:hover {
-  box-shadow: 5px 5px 10px #2047ca, -5px -5px 10px #2c5fff;
-  cursor: pointer;
+  box-shadow: var(--shadow-box-main-blue);
+  cursor: inherit;
   transform: scale(1);
 }
 .active .ellipsis:active {
-  box-shadow: inset 5px 5px 10px #2047ca, inset -5px -5px 10px #2c5fff;
+  box-shadow: var(--shadow-box-main-blue);
 }
 .ellipsis:hover {
   cursor: pointer;
 }
 .ellipsis[data-active] {
-  box-shadow: inset 5px 5px 10px #2047ca, inset -5px -5px 10px #2c5fff;
+  box-shadow: var(--shadow-input-inset-blue);
   transform: scale(1);
 }
 .ellipsis[data-active]:hover {
-  box-shadow: inset 5px 5px 10px #2047ca, inset -5px -5px 10px #2c5fff;
+  box-shadow: var(--shadow-input-inset-blue);
   transform: scale(1);
 }

@@ -1,6 +1,7 @@
 import { Payload } from "jwt";
 import { ApiError } from "../errors/apiErrors.ts";
 import { Board, Column, Comment, Section, Task, TaskToDo } from "./entities.ts";
+import { InputTypeOfTuple } from "zod";
 
 export enum OutboundMessageType {
   UserConnected = "UserConnected",
@@ -23,6 +24,7 @@ export enum OutboundMessageType {
   SectionCreated = "SectionCreated",
   SectionUpdated = "SectionUpdated",
   SectionDeleted = "SectionDeleted",
+  UserDisconnected = "UserDisconnected",
 }
 
 export enum InboundMessageType {
@@ -44,6 +46,7 @@ export enum InboundMessageType {
   CreateSection = "CreateSection",
   UpdateSection = "UpdateSection",
   DeleteSection = "DeleteSection",
+  DisconnectUser = "DisconnectUser",
 }
 
 // FIX: This is unused. Either edit the conroller or remove.
@@ -86,6 +89,8 @@ export type CreateTaskToDoPayload = Omit<TaskToDo, "id">;
 export type UpdateTaskToDoPayload = Partial<Omit<TaskToDo, "taskId">>;
 export type DeleteTaskToDoPayload = TaskToDo;
 
+// ---- User ----
+export type DisconnectUserPayload = null;
 // --------------------------------- Outbound Messages ----------------------------------
 
 // --- Sections ----
@@ -121,6 +126,9 @@ export type TaskToDoDeletedPayload = TaskToDo;
 // ---- Users ----
 export type UserConnectedPayload = {
   users: Omit<Payload, "exp">[];
+};
+export type UserDisconnectedPayload = {
+  user: Omit<Payload, "exp">
 };
 
 export type Message =
@@ -197,8 +205,16 @@ export type Message =
     payload: DeleteSectionPayload;
   }
   | {
+    type: InboundMessageType.DisconnectUser;
+    payload: DisconnectUserPayload;
+  }
+  | {
     type: OutboundMessageType.UserConnected;
     payload: UserConnectedPayload;
+  }
+  | {
+    type: OutboundMessageType.UserDisconnected;
+    payload: UserDisconnectedPayload;
   }
   | {
     type: OutboundMessageType.Error;

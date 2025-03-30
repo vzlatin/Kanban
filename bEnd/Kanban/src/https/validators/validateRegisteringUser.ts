@@ -13,7 +13,7 @@ const userSchema = z.object({
   profileImageUrl: z.string().nullable(),
 });
 
-export const validateUser: Middleware = async (ctx, next) => {
+export const validateRegisteringUser: Middleware = async (ctx, next) => {
   const { request } = ctx;
 
   if (!request.hasBody) {

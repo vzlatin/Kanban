@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className={styles.content}>
+      <div className={styles["content"]}>
         <Sidebar sections={sections} />
         <Outlet />
       </div>

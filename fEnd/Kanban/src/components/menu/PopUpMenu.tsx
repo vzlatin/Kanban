@@ -28,8 +28,8 @@ const PopUpMenu: React.FC<DropdownMenuProps> = ({
       <MenuItems className={menuClassName} anchor="top end">
         {menuItems.map((item, index) => (
           <MenuItem key={index}>
-            <div className={styles["menu-item-wrap"]}>
-              <button onClick={item.onClick}>
+            <div className={styles["menu-item-wrap"]} onClick={item.onClick}>
+              <button>
                 {item.label}
               </button>
               {item.icon ? <img src={item.icon} alt={item.label} /> : ""}

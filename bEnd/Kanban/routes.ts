@@ -11,7 +11,8 @@ import {
   getEntityCollection,
   getProfilePic,
 } from "./src/https/controllers/data.controller.ts";
-import { validateUser } from "./src/https/validators/userValidator.ts";
+import { validateRegisteringUser } from "./src/https/validators/validateRegisteringUser.ts";
+import { validateAuthenticatingUser } from "./src/https/validators/validateAuthenticatingUser.ts";
 import { authHandler } from "./src/https/middleware/authHandler.ts";
 import websocketHandler from "./src/websockets/controllers/broadcasterController.ts";
 import { FileUploader } from "./src/https/middleware/fileUploadHandler.ts";
@@ -22,8 +23,8 @@ const router = new Router();
 // TODO: to add auth handlers !
 
 // Auth routes
-router.post("/signup", validateUser, registerUser);
-router.post("/signin", loginUser);
+router.post("/signup", validateRegisteringUser, registerUser);
+router.post("/signin", validateAuthenticatingUser, loginUser);
 router.post("/logout", logoutUser);
 router.get("/refresh", refreshUser);
 

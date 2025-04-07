@@ -32,7 +32,7 @@ const Board = () => {
   return (
     <>
       {/* <h1>Board: {boardID.boardID}</h1> */}
-      <div className="flex flex-col w-100% grow">
+      <div className="flex flex-col w-100%">
         <DragDropContext onDragEnd={dragHandler}>
           <Droppable droppableId="columns" direction="horizontal">
             {(provided) => (

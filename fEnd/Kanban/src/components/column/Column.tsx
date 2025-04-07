@@ -1,5 +1,3 @@
-import styles from "./Column.module.css";
-
 import Task from "../task/Task";
 import { Column as Col } from "../../types/entities";
 import { useKanbanStore } from "../../state/stores/global/global.store";

@@ -1,7 +1,6 @@
 import { useKanbanStore } from "../../state/stores/global/global.store";
 import PopUpMenu from "../menu/PopUpMenu";
 import UserPill from "../user-pill/UserPill";
-import styles from "./Header.module.css";
 import UpdateUserDialog from "../dialog/user/UpdateUserDialog";
 import { useState } from "react";
 import { useSigninStore } from "../../state/stores/signin/store";
@@ -40,7 +39,7 @@ const Header = () => {
         <div className="w-[15rem] flex flex-row">
           <input
             type="text"
-            className="h-[2.5rem] py-[0.4rem] pr-[0.4rem] pl-[2rem] rounded-[0.5rem] border-none appearance-none font-medium bg-background bg-[url(/search.svg)] bg-no-repeat bg-position-[0.5rem] border border-accent-grey-100 inset-shadow-md"
+            className="h-[2.5rem] py-[0.4rem] pr-[0.4rem] pl-[2rem] rounded-[0.5rem] appearance-none font-medium bg-background bg-[url(/search.svg)] bg-no-repeat bg-position-[0.5rem] border border-accent-grey-100 inset-shadow-md focus:border focus:border-accent-blue-200"
             placeholder="Search"
           />
         </div>
@@ -52,7 +51,12 @@ const Header = () => {
           </div>
         </div>
         <PopUpMenu
-          buttonContent={<img src="/user-profile.svg" />}
+          buttonContent={
+            <img
+              className="p-[0.5rem] rounded-[0.52rem]"
+              src="/user-profile.svg"
+            />
+          }
           menuItems={[
             {
               label: "Profile",

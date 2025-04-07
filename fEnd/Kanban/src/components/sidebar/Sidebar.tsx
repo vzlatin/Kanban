@@ -1,5 +1,3 @@
-import styles from "./Sidebar.module.css";
-
 import { useState } from "react";
 import { Section } from "../../types/entities";
 import SidebarSection from "../sidebar-section/SidebarSection";

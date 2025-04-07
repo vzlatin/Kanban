@@ -1,4 +1,3 @@
-import styles from "./PopUpMenu.module.css";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
 interface MenuItemType {
@@ -29,11 +28,18 @@ const PopUpMenu: React.FC<DropdownMenuProps> = ({
       >
         {menuItems.map((item, index) => (
           <MenuItem key={index}>
-            <div className={styles["menu-item-wrap"]} onClick={item.onClick}>
+            <div
+              className="flex flex-row items-center transition-transform duration-100 ease-in-out p-[0.5rem] bg-background rounded-md hover:shadow-md hover:cursor-pointer hover:scale-[1.03] active:shadow-none active:inset-shadow-md"
+              onClick={item.onClick}
+            >
               <button className="border-none bg-background font-medium text-[0.8rem] p-[0.2rem]">
                 {item.label}
               </button>
-              {item.icon ? <img src={item.icon} alt={item.label} /> : ""}
+              {item.icon ? (
+                <img className="ml-auto" src={item.icon} alt={item.label} />
+              ) : (
+                ""
+              )}
             </div>
           </MenuItem>
         ))}

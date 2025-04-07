@@ -8,12 +8,10 @@ const Home = () => {
 
   return (
     <>
-      <div className="max-h-screen flex flex-col">
-        <Header />
-        <div className="flex flex-row">
-          <Sidebar sections={sections} />
-          <Outlet />
-        </div>
+      <Header />
+      <div className="flex flex-row">
+        <Sidebar sections={sections} />
+        <Outlet />
       </div>
     </>
   );

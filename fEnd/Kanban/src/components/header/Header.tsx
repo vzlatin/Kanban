@@ -36,24 +36,22 @@ const Header = () => {
 
   return (
     <>
-      <div className={styles["header"]}>
-        <div className={styles["search"]}>
+      <div className="h-[3.125rem] w-100% px-[1rem] flex flex-row gap-[10rem] items-center">
+        <div className="w-[15rem] flex flex-row">
           <input
             type="text"
-            className={styles["search-input"]}
+            className="h-[2.5rem] py-[0.4rem] pr-[0.4rem] pl-[2rem] rounded-[0.5rem] border-none appearance-none font-medium bg-background bg-[url(/search.svg)] bg-no-repeat bg-position-[0.5rem] border border-accent-grey-100 inset-shadow-md"
             placeholder="Search"
           />
         </div>
-        <div className={styles["team"]}>
-          <div className={styles["team-members"]}>
+        <div className="flex">
+          <div className="flex flex-row content-center gap-[1rem]">
             {users.map((user, index) => (
               <UserPill user={user} key={index}></UserPill>
             ))}
           </div>
         </div>
         <PopUpMenu
-          buttonClassName={styles["profile"]}
-          menuClassName={styles["profile-menu"]}
           buttonContent={<img src="/user-profile.svg" />}
           menuItems={[
             {
@@ -74,15 +72,13 @@ const Header = () => {
               },
             },
           ]}
-        >
-        </PopUpMenu>
+        ></PopUpMenu>
       </div>
       <UpdateUserDialog
         isOpen={openDialog === DialogType.Profile}
         onClose={closeDialog}
         user={currentUser}
-      >
-      </UpdateUserDialog>
+      ></UpdateUserDialog>
     </>
   );
 };

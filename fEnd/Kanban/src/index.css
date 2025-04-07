@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   /* Colors */
   --color-error: #860111;
@@ -42,36 +44,30 @@ ul {
   padding: 0;
 }
 
-/* --- react toastify styles start --- */
+@theme {
+  --font-light: "QuicksandLight", sans-serif;
+  --font-regular: "QuicksandRegular", sans-serif;
+  --font-medium: "QuicksandMedium", sans-serif;
+  --font-semibold: "Quicksand-SemiBold", sans-serif;
+  --font-bold: "QuicksandBold", sans-serif;
 
-.error-toast {
-  border: 0.08rem solid var(--color-error);
-  background-color: var(--color-background);
-}
-.error-toast-body {
-  font-size: 1rem;
-  color: var(--color-font);
-}
+  --color-danger: #860111;
+  --color-info: #f5c71a;
+  --color-primary: #44476a;
+  --color-white: #ffffff;
+  --color-background: #e6e7ee;
+  --color-accent-blue-100: #9aaded;
+  --color-accent-blue-200: #2653ee;
+  --color-accent-grey-100: #dad7d7;
+  --color-accent-grey-200: #d3d5d9;
 
-.info-toast {
-  border: 0.08rem solid var(--color-info);
-  background-color: var(--color-background);
+  --shadow-md: 6px 6px 12px #9f9f9f, -6px -6px 12px #ffffff;
+  --shadow-sm: 3px 3px 7px #9f9f9f, -3px -3px 7px #ffffff;
+  --shadow-md-blue: 5px 5px 10px #2047ca, -5px -5px 10px #2c5fff;
+  --inset-shadow-md: inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #ffffff;
+  --inset-shadow-md-blue:
+    inset 5px 5px 10px #2047ca, inset -5px -5px 10px #2c5fff;
 }
-.info-toast-body {
-  font-size: 1rem;
-  color: var(--color-font);
-}
-
-.Toastify {
-  --toastify-color-progress-info: var(--color-info);
-  --toastify-color-progress-error: var(--color-error);
-  --toastify-toast-width: 31.25rem;
-  --toastify-toast-min-height: 4rem;
-  --toastify-toast-max-height: 50rem;
-  --toastify-font-family: "QuicksandRegular", sans-serif;
-}
-
-/* --- React Toastify styles end --- */
 
 @font-face {
   font-family: "QuicksandLight";
@@ -107,3 +103,34 @@ ul {
   font-weight: 700;
   font-style: normal;
 }
+
+/* --- react toastify styles start --- */
+
+.error-toast {
+  border: 0.08rem solid var(--color-error);
+  background-color: var(--color-background);
+}
+.error-toast-body {
+  font-size: 1rem;
+  color: var(--color-font);
+}
+
+.info-toast {
+  border: 0.08rem solid var(--color-info);
+  background-color: var(--color-background);
+}
+.info-toast-body {
+  font-size: 1rem;
+  color: var(--color-font);
+}
+
+.Toastify {
+  --toastify-color-progress-info: var(--color-info);
+  --toastify-color-progress-error: var(--color-error);
+  --toastify-toast-width: 31.25rem;
+  --toastify-toast-min-height: 4rem;
+  --toastify-toast-max-height: 50rem;
+  --toastify-font-family: "QuicksandRegular", sans-serif;
+}
+
+/* --- React Toastify styles end --- */

@@ -50,33 +50,35 @@ const Header = () => {
             ))}
           </div>
         </div>
-        <PopUpMenu
-          buttonContent={
-            <img
-              className="p-[0.5rem] rounded-[0.52rem]"
-              src="/user-profile.svg"
-            />
-          }
-          menuItems={[
-            {
-              label: "Profile",
-              icon: "/user-profile-menu.svg",
-              onClick: () => setIsOpenDialog(DialogType.Profile),
-            },
-            {
-              label: "Admin Panel",
-              icon: "/admin-panel.svg",
-              onClick: () => console.log("poop"),
-            },
-            {
-              label: "Logout",
-              icon: "/logout.svg",
-              onClick: () => {
-                userLogout();
+        <div className="ml-auto">
+          <PopUpMenu
+            buttonContent={
+              <img
+                className="p-[0.5rem] rounded-[0.52rem]"
+                src="/user-profile.svg"
+              />
+            }
+            menuItems={[
+              {
+                label: "Profile",
+                icon: "/user-profile-menu.svg",
+                onClick: () => setIsOpenDialog(DialogType.Profile),
               },
-            },
-          ]}
-        ></PopUpMenu>
+              {
+                label: "Admin Panel",
+                icon: "/admin-panel.svg",
+                onClick: () => console.log("poop"),
+              },
+              {
+                label: "Logout",
+                icon: "/logout.svg",
+                onClick: () => {
+                  userLogout();
+                },
+              },
+            ]}
+          ></PopUpMenu>
+        </div>
       </div>
       <UpdateUserDialog
         isOpen={openDialog === DialogType.Profile}

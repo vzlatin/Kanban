@@ -19,7 +19,7 @@ const PopUpMenu: React.FC<DropdownMenuProps> = ({
 }) => {
   return (
     <Menu>
-      <MenuButton className="ml-auto scale-[0.9] transition-all ease-in-out border border-accent-grey-100 rounded-[0.5rem] flex items-center justify-center bg-background hover:scale-[1] hover:cursor-pointer hover:shadow-md active:shadow-none active:inset-shadow-md data-active:scale-[1] data-active:shadow-none data-active:inset-shadow-md">
+      <MenuButton className="scale-[0.9] transition-all ease-in-out border border-accent-grey-100 rounded-[0.5rem] flex items-center justify-center bg-background hover:scale-[1] hover:cursor-pointer hover:shadow-md active:shadow-none active:inset-shadow-md data-active:scale-[1] data-active:shadow-none data-active:inset-shadow-md">
         {buttonContent}
       </MenuButton>
       <MenuItems

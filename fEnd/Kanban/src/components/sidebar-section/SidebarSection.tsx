@@ -29,6 +29,7 @@ const SidebarSection: React.FC<Section> = (section) => {
   const send = useKanbanStore((state) => state.send);
 
   const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionMenuRef = useRef<HTMLDivElement>(null);
   const [openDialog, setIsOpenDialog] = useState<DialogType>(DialogType.None);
   const [boardTitle, setBoardTitle] = useState("");
   const [trackedBoard, setTrackedBoard] = useState<Board | null>(null);
@@ -40,9 +41,12 @@ const SidebarSection: React.FC<Section> = (section) => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         sectionRef.current &&
-        !sectionRef.current.contains(event.target as Node)
+        !sectionRef.current.contains(event.target as Node) &&
+        sectionMenuRef.current &&
+        !sectionMenuRef.current.contains(event.target as Node)
       ) {
         setActiveSection(false);
+        console.log(activeSection);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -97,7 +101,7 @@ const SidebarSection: React.FC<Section> = (section) => {
   return (
     <div ref={sectionRef}>
       <div
-        className="flex flex-row items-center gap-[0.3rem] hover:cursor-pointer"
+        className="flex flex-row gap-[0.3rem] hover:cursor-pointer items-center"
         onClick={(event) => {
           if ((event.target as HTMLElement).closest("#section-menu")) {
             event.stopPropagation();
@@ -107,14 +111,15 @@ const SidebarSection: React.FC<Section> = (section) => {
         }}
       >
         <h2
-          className={`${activeSection && "text-primary"} text-accent-grey-200 font-medium text-[3rem] mt-[0.5rem] ml-[1.625rem] mb-0 hover:cursor-pointer hover:text-primary`}
+          className={`${activeSection && "text-primary"} text-accent-grey-200 font-medium text-[3rem] ml-[1.625rem] hover:cursor-pointer hover:text-primary`}
         >
           {section.title}
         </h2>
 
         <div
           id="section-menu"
-          className={`mr-[0.4rem] ml-auto items-center flex flex-row ${!activeSection && "hidden"}`}
+          ref={sectionMenuRef}
+          className={`mr-[0.3rem] ml-auto flex flex-row justify-center ${!activeSection && "invisible"}`}
         >
           <PopUpMenu
             buttonContent={<img src="/ellipsis-dark.svg" />}
@@ -184,6 +189,7 @@ const SidebarSection: React.FC<Section> = (section) => {
           );
         })}
       </ul>
+
       {/* ------- Add Board Dialog ------- */}
       <AddBoardDialog
         isOpen={openDialog === DialogType.AddBoard}

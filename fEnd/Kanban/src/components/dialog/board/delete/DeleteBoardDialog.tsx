@@ -1,6 +1,3 @@
-import localstyles from "./DeleteBoardDialog.module.css";
-import styles from "../../CustomDialog.module.css";
-
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { Board } from "../../../../types/entities";
 
@@ -29,7 +26,7 @@ const DeleteBoardDialog: React.FC<DeleteBoardDialogProps> = ({
               Delete Board: {board?.title}
             </DialogTitle>
             <div className="flex flex-row items-center gap-[2rem]">
-              <p className={localstyles["dialog-warning"]}>
+              <p className="font-medium text-[0.8rem] text-primary p-[0.5rem] border border-danger rounded-[0.5rem]">
                 Deleting a Board will result in the deletion of all of its
                 associated data (Columns, Tasks, Comments etc.) Do you want to
                 proceed?

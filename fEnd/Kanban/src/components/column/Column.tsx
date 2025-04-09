@@ -1,5 +1,3 @@
-import styles from "./Column.module.css";
-
 import Task from "../task/Task";
 import { Column as Col } from "../../types/entities";
 import { useKanbanStore } from "../../state/stores/global/global.store";
@@ -23,8 +21,8 @@ enum DialogType {
 }
 
 const Column: React.FC<ColumnProps> = ({ column, index }) => {
-  const tasks = useKanbanStore((state) => state.tasks).filter((task) =>
-    task.columnId === column.id
+  const tasks = useKanbanStore((state) => state.tasks).filter(
+    (task) => task.columnId === column.id,
   );
   const send = useKanbanStore((state) => state.send);
 
@@ -55,17 +53,15 @@ const Column: React.FC<ColumnProps> = ({ column, index }) => {
         key={column.id}
       >
         {(provided) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-          >
-            <div className={styles["container"]}>
-              <div className={styles["header"]} {...provided.dragHandleProps}>
-                <h4 className={styles["column-title"]}>{column.title}</h4>
-                <div className={styles["menu-container"]}>
+          <div ref={provided.innerRef} {...provided.draggableProps}>
+            <div>
+              <div
+                className="flex flex-row items-center mt-[0.8rem]"
+                {...provided.dragHandleProps}
+              >
+                <h4 className="font-medium text-[1rem]">{column.title}</h4>
+                <div className="flex items-center w-[1.5rem] h-[1.5rem] mr-4 ml-auto my-0">
                   <PopUpMenu
-                    buttonClassName={styles["ellipsis"]}
-                    menuClassName={styles["menu-items"]}
                     buttonContent={<img src="/ellipsis-dark.svg" />}
                     menuItems={[
                       {
@@ -84,12 +80,13 @@ const Column: React.FC<ColumnProps> = ({ column, index }) => {
                         onClick: () => setIsOpenDialog(DialogType.DeleteColumn),
                       },
                     ]}
-                  >
-                  </PopUpMenu>
+                  ></PopUpMenu>
                 </div>
               </div>
-              <div className={styles["column"]}>
-                {tasks.map((task) => <Task task={task} key={task.id} />)}
+              <div className="min-h-40 w-60 my-2 p-2 flex-shrink-0 rounded-lg flex flex-col items-center gap-4">
+                {tasks.map((task) => (
+                  <Task task={task} key={task.id} />
+                ))}
               </div>
             </div>
           </div>
@@ -101,16 +98,14 @@ const Column: React.FC<ColumnProps> = ({ column, index }) => {
         onClose={closeDialog}
         column={column}
         messageHandler={updateColumn}
-      >
-      </UpdateColumnDialog>
+      ></UpdateColumnDialog>
 
       <DeleteColumnDialog
         isOpen={openDialog === DialogType.DeleteColumn}
         onClose={closeDialog}
         column={column}
         messageHandler={deleteColumn}
-      >
-      </DeleteColumnDialog>
+      ></DeleteColumnDialog>
     </>
   );
 };

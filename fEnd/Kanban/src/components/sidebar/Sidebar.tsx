@@ -1,5 +1,3 @@
-import styles from "./Sidebar.module.css";
-
 import { useState } from "react";
 import { Section } from "../../types/entities";
 import SidebarSection from "../sidebar-section/SidebarSection";
@@ -32,8 +30,8 @@ const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
   };
   return (
     <>
-      <div className={styles["container"]}>
-        <div className={styles["sidebar"]}>
+      <div className="flex flex-col">
+        <div className="w-[20rem] mt-[0.625rem] shrink-[0] overflow-y-scroll">
           {sections.map((section) => (
             <SidebarSection
               key={section.id}
@@ -42,9 +40,12 @@ const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
             />
           ))}
         </div>
-        <hr />
-        <div className={styles["add-section"]} onClick={open}>
-          <button>
+        <hr className="text-primary w-90%" />
+        <div
+          className="flex flex-row items-center mt-[1rem] mx-auto p-[0.4rem] transition-transform duration-100 ease-in-out rounded-[0.5rem] hover:shadow-md hover:scale-[1.03] hover:cursor-poiner active:shadow-none active:inset-shadow-md"
+          onClick={open}
+        >
+          <button className="text-primary p-[0.5rem] bg-background border-none font-medium text-[1.2rem]">
             Add a new Section
           </button>
           <img src="/board.svg" />
@@ -57,8 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
         onChange={(e) => setSectionTitle(e.target.value)}
         sectionTitle={sectionTitle}
         messageHandler={addSection}
-      >
-      </AddSectionDialog>
+      ></AddSectionDialog>
     </>
   );
 };

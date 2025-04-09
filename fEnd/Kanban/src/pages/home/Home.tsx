@@ -1,5 +1,3 @@
-import styles from "./Home.module.css";
-
 import { Outlet } from "react-router-dom";
 import Header from "../../components/header/Header";
 import Sidebar from "../../components/sidebar/Sidebar";
@@ -11,7 +9,7 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className={styles["content"]}>
+      <div className="flex flex-row">
         <Sidebar sections={sections} />
         <Outlet />
       </div>

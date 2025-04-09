@@ -1,6 +1,3 @@
-import localstyles from "./UpdateUserDialog.module.css";
-import styles from "../CustomDialog.module.css";
-
 import { useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { User, UserRoleLabels } from "../../../types/entities";
@@ -12,9 +9,11 @@ type UpdateUserDialogProps = {
   user: User;
 };
 
-const UpdateUserDialog: React.FC<UpdateUserDialogProps> = (
-  { isOpen, onClose, user },
-) => {
+const UpdateUserDialog: React.FC<UpdateUserDialogProps> = ({
+  isOpen,
+  onClose,
+  user,
+}) => {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
 
@@ -26,53 +25,54 @@ const UpdateUserDialog: React.FC<UpdateUserDialogProps> = (
       <Dialog
         open={isOpen}
         as="div"
-        className={styles.dialog}
+        className="absolute z-10"
         onClose={onClose}
       >
-        <div className={styles["dialog-overlay"]}>
-          <div className={styles["dialog-panel-wrapper"]}>
-            <DialogPanel transition className={localstyles["dialog-panel"]}>
-              <div className={styles["dialog-description"]}>
-                <div className={localstyles["personal-info-container"]}>
-                  <div className={localstyles["profile-image-container"]}>
-                    {user.profileImageUrl
-                      ? (
-                        <img
-                          className={localstyles["profile-image"]}
-                          src={user.profileImageUrl}
-                        />
-                      )
-                      : (
-                        <img
-                          className={localstyles["profile-image"]}
-                          src="/user-profile.svg"
-                        />
-                      )}
+        <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-background">
+          <div className="min-h-screen z-10 flex justify-center items-center p-[1rem]">
+            <DialogPanel
+              transition
+              className="rounded-[0.5rem] bg-background p-[1.5rem] backdrop-blur-[32px] duration-300 ease-out"
+            >
+              <div className="flex flex-row items-center gap-[0.2rem]">
+                <div className="rounded-[0.5rem] bg-background shadow-md flex flex-row p-[1rem] gap-[1rem]">
+                  <div className="flex flex-col items-center">
+                    {user.profileImageUrl ? (
+                      <img
+                        className="w-[7rem] h-[7rem]"
+                        src={user.profileImageUrl}
+                      />
+                    ) : (
+                      <img
+                        className="w-[7rem] h-[7rem]"
+                        src="/user-profile.svg"
+                      />
+                    )}
                     <button
-                      className={localstyles["update-profile-image"]}
+                      className="font-medium text-[0.86rem] text-primary border-none rounded-[0.5rem] p-[0.5rem] hover:cursor-pointer hover:bg-primary hover:text-background active:bg-background active:text-primary"
                       onClick={() => setImageCropperDialogOpen(true)}
                     >
                       Change profile image
                     </button>
                   </div>
-                  <div className={localstyles["personal-info"]}>
-                    <div className={localstyles["first-name"]}>
-                      <label className={localstyles["label"]}>
+                  <div className="flex flex-col gap-[0.5rem]">
+                    <div>
+                      <label className="font-medium text-[0.86rem] flex flex-row gap-[1rem]">
                         <p>First Name:</p>
                         <input
                           name="first-name"
-                          className={localstyles["dialog-description-input"]}
+                          className="rounded-[0.5rem] p-[0.5rem] text-primary appearance-none font-medium bg-background inset-shadow-md border border-accent-grey-200"
                           type="text"
                           onChange={(e) => setFirstName(e.target.value)}
                           value={firstName}
                         />
                       </label>
                     </div>
-                    <div className={localstyles["last-name"]}>
-                      <label className={localstyles["label"]}>
+                    <div>
+                      <label className="font-medium text-[0.86rem] flex flex-row gap-[1rem]">
                         <p>Last Name:</p>
                         <input
-                          className={localstyles["dialog-description-input"]}
+                          className="rounded-[0.5rem] p-[0.5rem] text-primary appearance-none font-medium bg-background inset-shadow-md border border-accent-grey-200"
                           type="text"
                           onChange={(e) => setLastName(e.target.value)}
                           value={lastName}
@@ -80,17 +80,15 @@ const UpdateUserDialog: React.FC<UpdateUserDialogProps> = (
                       </label>
                     </div>
                     <div>
-                      <label className={localstyles["label"]}>
+                      <label className="font-medium text-[0.86rem] flex flex-row gap-[1rem]">
                         <p>Role:</p>
-                        <div className={localstyles["role"]}>
-                          <img src="role.svg" />
+                        <div className="ml-[2.5rem] flex flex-row">
+                          <img src="/role.svg" />
                           <p>{UserRoleLabels[user.role]}</p>
                         </div>
                       </label>
                     </div>
                   </div>
-                </div>
-                <div className={localstyles["buttons"]}>
                 </div>
               </div>
             </DialogPanel>
@@ -101,8 +99,7 @@ const UpdateUserDialog: React.FC<UpdateUserDialogProps> = (
         isOpen={ImageCropperDialogOpen}
         onClose={closeImageCropperDialog}
         user={user}
-      >
-      </ImageCropperDialog>
+      ></ImageCropperDialog>
     </>
   );
 };

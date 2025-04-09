@@ -1,9 +1,0 @@
-.no-board-selected {
-  font-family: "QuicksandBold", sans-serif;
-  color: var(--color-font);
-  font-size: 2rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}

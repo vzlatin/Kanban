@@ -61,17 +61,17 @@ const Header = () => {
             menuItems={[
               {
                 label: "Profile",
-                icon: "/user-profile-menu.svg",
+                icon: "/popups/user-profile-menu.svg",
                 onClick: () => setIsOpenDialog(DialogType.Profile),
               },
               {
                 label: "Admin Panel",
-                icon: "/admin-panel.svg",
+                icon: "/popups/admin-panel.svg",
                 onClick: () => console.log("poop"),
               },
               {
                 label: "Logout",
-                icon: "/logout.svg",
+                icon: "/popups/logout.svg",
                 onClick: () => {
                   userLogout();
                 },

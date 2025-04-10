@@ -1,45 +1,17 @@
 @import "tailwindcss";
 
-:root {
-  /* Colors */
-  --color-error: #860111;
-  --color-info: #f5c71a;
-  --color-font: #44476a;
-  --color-white: #ffffff;
-  --color-background: #e6e7ee;
-  --color-accent-blue: #2653ee;
-  --color-accent-blue-light: #9aaded;
-  --color-accent-grey: #d3d5d9;
-  --color-accent-grey-light: #dad7d7;
-
-  /* Shadows */
-  --shadow-input-inset: inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #ffffff;
-  --shadow-input-inset-blue:
-    inset 5px 5px 10px #2047ca, inset -5px -5px 10px #2c5fff;
-
-  --shadow-box-main-blue: 5px 5px 10px #2047ca, -5px -5px 10px #2c5fff;
-  --shadow-box-main: 6px 6px 12px #9f9f9f, -6px -6px 12px #ffffff;
-  --shadow-box-main-short: 3px 3px 7px #9f9f9f, -3px -3px 7px #ffffff;
-}
-
 * {
   box-sizing: border-box;
 }
 
 /* TEMPORARY */
-body {
-  overflow-y: scroll;
-}
+/*body {*/
+/*  overflow-y: scroll;*/
+/*}*/
 
 html,
 body {
   background-color: var(--color-background);
-  color: var(--color-font);
-  margin: 0;
-  padding: 0;
-}
-
-ul {
   margin: 0;
   padding: 0;
 }

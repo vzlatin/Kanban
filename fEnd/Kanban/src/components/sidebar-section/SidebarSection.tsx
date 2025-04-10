@@ -126,34 +126,34 @@ const SidebarSection: React.FC<Section> = (section) => {
             menuItems={[
               {
                 label: "Add Board",
-                icon: "/plus.svg",
+                icon: "/popups/board.svg",
                 onClick: () => {
                   setBoardTitle("");
                   setIsOpenDialog(DialogType.AddBoard);
                 },
               },
               {
-                label: "Delete Section",
-                icon: "/trashcan.svg",
-                onClick: () => setIsOpenDialog(DialogType.DeleteSection),
+                label: "Edit Section",
+                icon: "/popups/pencil.svg",
+                onClick: () => setIsOpenDialog(DialogType.UpdateSection),
               },
               {
-                label: "Edit Section",
-                icon: "/pencil.svg",
-                onClick: () => setIsOpenDialog(DialogType.UpdateSection),
+                label: "Delete Section",
+                icon: "/popups/trashcan.svg",
+                onClick: () => setIsOpenDialog(DialogType.DeleteSection),
               },
             ]}
           ></PopUpMenu>
         </div>
       </div>
 
-      <ul className="list-none font-medium text-[1.5rem]">
+      <ul className="list-none m-0 p-0 font-medium text-[1.5rem]">
         {boards.map((board, index) => {
           const isActive = location.pathname.includes(`/board/${board.id}`);
           return (
             <li
               key={index}
-              className={`${isActive && "text-accent-blue-200 outline outline-accent-blue-200 rounded-r-[0.5rem]"} py-[0.5rem] pl-[1rem] my-[0.3rem] mr-[0.1rem] flex flex-row items-center hover:outline hover:outline-accent-blue-200 hover:text-accent-blue-200 hover:rounded-r-[0.5rem] hover:cursor-pointer`}
+              className={`${isActive && "text-accent-blue-200 outline outline-accent-blue-200 rounded-r-[0.5rem]"} py-[0.5rem] pl-[1rem] my-[0.3rem] mr-[0.1rem] text-primary flex flex-row items-center hover:outline hover:outline-accent-blue-200 hover:text-accent-blue-200 hover:rounded-r-[0.5rem] hover:cursor-pointer`}
               onClick={() => {
                 navigate(`/board/${board.id}`);
               }}
@@ -168,7 +168,7 @@ const SidebarSection: React.FC<Section> = (section) => {
                   menuItems={[
                     {
                       label: "Edit Board",
-                      icon: "/pencil.svg",
+                      icon: "/popups/pencil.svg",
                       onClick: () => {
                         setTrackedBoard(board);
                         setIsOpenDialog(DialogType.UpdateBoard);
@@ -176,7 +176,7 @@ const SidebarSection: React.FC<Section> = (section) => {
                     },
                     {
                       label: "Delete Board",
-                      icon: "/trashcan.svg",
+                      icon: "/popups/trashcan.svg",
                       onClick: () => {
                         setTrackedBoard(board);
                         setIsOpenDialog(DialogType.DeleteBoard);

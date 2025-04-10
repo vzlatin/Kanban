@@ -42,13 +42,13 @@ const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
         </div>
         <hr className="text-primary w-90%" />
         <div
-          className="flex flex-row items-center mt-[1rem] mx-auto p-[0.4rem] transition-transform duration-100 ease-in-out rounded-[0.5rem] hover:shadow-md hover:scale-[1.03] hover:cursor-poiner active:shadow-none active:inset-shadow-md"
+          className="flex flex-row items-center mt-[1rem] mx-auto p-[0.4rem] transition-transform duration-100 ease-in-out rounded-[0.5rem] hover:shadow-md hover:scale-[1.03] hover:cursor-pointer active:shadow-none active:inset-shadow-md"
           onClick={open}
         >
-          <button className="text-primary p-[0.5rem] bg-background border-none font-medium text-[1.2rem]">
+          <button className="text-primary p-[0.5rem] bg-background border-none font-medium text-[1.2rem] hover:cursor-pointer">
             Add a new Section
           </button>
-          <img src="/board.svg" />
+          <img src="/section.svg" />
         </div>
       </div>
 

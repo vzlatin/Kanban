@@ -126,21 +126,21 @@ const SidebarSection: React.FC<Section> = (section) => {
             menuItems={[
               {
                 label: "Add Board",
-                icon: "/plus.svg",
+                icon: "/popups/board.svg",
                 onClick: () => {
                   setBoardTitle("");
                   setIsOpenDialog(DialogType.AddBoard);
                 },
               },
               {
-                label: "Delete Section",
-                icon: "/trashcan.svg",
-                onClick: () => setIsOpenDialog(DialogType.DeleteSection),
+                label: "Edit Section",
+                icon: "/popups/pencil.svg",
+                onClick: () => setIsOpenDialog(DialogType.UpdateSection),
               },
               {
-                label: "Edit Section",
-                icon: "/pencil.svg",
-                onClick: () => setIsOpenDialog(DialogType.UpdateSection),
+                label: "Delete Section",
+                icon: "/popups/trashcan.svg",
+                onClick: () => setIsOpenDialog(DialogType.DeleteSection),
               },
             ]}
           ></PopUpMenu>
@@ -168,7 +168,7 @@ const SidebarSection: React.FC<Section> = (section) => {
                   menuItems={[
                     {
                       label: "Edit Board",
-                      icon: "/pencil.svg",
+                      icon: "/popups/pencil.svg",
                       onClick: () => {
                         setTrackedBoard(board);
                         setIsOpenDialog(DialogType.UpdateBoard);
@@ -176,7 +176,7 @@ const SidebarSection: React.FC<Section> = (section) => {
                     },
                     {
                       label: "Delete Board",
-                      icon: "/trashcan.svg",
+                      icon: "/popups/trashcan.svg",
                       onClick: () => {
                         setTrackedBoard(board);
                         setIsOpenDialog(DialogType.DeleteBoard);

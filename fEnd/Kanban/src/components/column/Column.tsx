@@ -66,17 +66,17 @@ const Column: React.FC<ColumnProps> = ({ column, index }) => {
                     menuItems={[
                       {
                         label: "Add a Task",
-                        icon: "/task.svg",
+                        icon: "/popups/task.svg",
                         onClick: () => console.log("poop"),
                       },
                       {
                         label: "Edit Column",
-                        icon: "/column-edit.svg",
+                        icon: "/popups/column-edit.svg",
                         onClick: () => setIsOpenDialog(DialogType.UpdateColumn),
                       },
                       {
                         label: "Delete Column",
-                        icon: "/trashcan.svg",
+                        icon: "/popups/trashcan.svg",
                         onClick: () => setIsOpenDialog(DialogType.DeleteColumn),
                       },
                     ]}

@@ -36,50 +36,50 @@ const Signup = () => {
   //TODO: Make a better spinner here
   return (
     <>
-      {loading
-        ? <p>Loading Spinner ...</p>
-        : (
-          <div className={styles["signup-container"]}>
-            <div className={styles["content-container"]}>
-              <div className={styles["signup-static"]}>
-                <div className={styles["logo"]}>
-                  <h1>Kooking Board</h1>
-                  <img
-                    className={styles["logo-image"]}
-                    src="src/assets/images/logo.svg"
-                    alt="Logo Image"
-                  />
-                </div>
-                <div className={styles["welcome-text"]}>
-                  <h1>Welcome to the Sign Up page</h1>
-                  <h3>
-                    Complete the tasks and drag them to the Done
-                    <br />
-                    column to proceed with the sign up.
-                  </h3>
-
-                  <p>
-                    Already have an account ? <br />
-                    <NavLink to={"/signin"}>Sign in here.</NavLink>
-                  </p>
-                  <button
-                    className={styles["signup-button"]}
-                    onClick={signupHandler}
-                  >
-                    Sign Up
-                  </button>
-                </div>
+      {loading ? (
+        <p>Loading Spinner ...</p>
+      ) : (
+        <div className={styles["signup-container"]}>
+          <div className={styles["content-container"]}>
+            <div className={styles["signup-static"]}>
+              <div className={styles["logo"]}>
+                <h1>Kooking Board</h1>
+                <img
+                  className={styles["logo-image"]}
+                  src="/login-signup/logo.svg"
+                  alt="Logo Image"
+                />
               </div>
-              <DragDropContext onDragEnd={dragEndHandler}>
-                <div className={styles["signup-form"]}>
-                  {columns.map((column) => {
-                    return <SignupColumn key={column.id} column={column} />;
-                  })}
-                </div>
-              </DragDropContext>
+              <div className={styles["welcome-text"]}>
+                <h1>Welcome to the Sign Up page</h1>
+                <h3>
+                  Complete the tasks and drag them to the Done
+                  <br />
+                  column to proceed with the sign up.
+                </h3>
+
+                <p>
+                  Already have an account ? <br />
+                  <NavLink to={"/signin"}>Sign in here.</NavLink>
+                </p>
+                <button
+                  className={styles["signup-button"]}
+                  onClick={signupHandler}
+                >
+                  Sign Up
+                </button>
+              </div>
             </div>
+            <DragDropContext onDragEnd={dragEndHandler}>
+              <div className={styles["signup-form"]}>
+                {columns.map((column) => {
+                  return <SignupColumn key={column.id} column={column} />;
+                })}
+              </div>
+            </DragDropContext>
           </div>
-        )}
+        </div>
+      )}
     </>
   );
 
@@ -118,7 +118,7 @@ const Signup = () => {
         email: "",
         password: "",
         role: UserRole.Employee,
-        profileImageUrl: null
+        profileImageUrl: null,
       },
     );
 

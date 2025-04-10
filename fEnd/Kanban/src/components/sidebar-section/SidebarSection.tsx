@@ -147,13 +147,13 @@ const SidebarSection: React.FC<Section> = (section) => {
         </div>
       </div>
 
-      <ul className="list-none font-medium text-[1.5rem]">
+      <ul className="list-none m-0 p-0 font-medium text-[1.5rem]">
         {boards.map((board, index) => {
           const isActive = location.pathname.includes(`/board/${board.id}`);
           return (
             <li
               key={index}
-              className={`${isActive && "text-accent-blue-200 outline outline-accent-blue-200 rounded-r-[0.5rem]"} py-[0.5rem] pl-[1rem] my-[0.3rem] mr-[0.1rem] flex flex-row items-center hover:outline hover:outline-accent-blue-200 hover:text-accent-blue-200 hover:rounded-r-[0.5rem] hover:cursor-pointer`}
+              className={`${isActive && "text-accent-blue-200 outline outline-accent-blue-200 rounded-r-[0.5rem]"} py-[0.5rem] pl-[1rem] my-[0.3rem] mr-[0.1rem] text-primary flex flex-row items-center hover:outline hover:outline-accent-blue-200 hover:text-accent-blue-200 hover:rounded-r-[0.5rem] hover:cursor-pointer`}
               onClick={() => {
                 navigate(`/board/${board.id}`);
               }}

@@ -1,5 +1,3 @@
-import styles from "./Signup.module.css";
-
 import { useEffect, useState } from "react";
 import { UserRole } from "../../types/entities";
 import { checkAuth } from "../../services/user.service";
@@ -39,31 +37,40 @@ const Signup = () => {
       {loading ? (
         <p>Loading Spinner ...</p>
       ) : (
-        <div className={styles["signup-container"]}>
-          <div className={styles["content-container"]}>
-            <div className={styles["signup-static"]}>
-              <div className={styles["logo"]}>
-                <h1>Kooking Board</h1>
+        <div className="h-screen flex flex-row gap-4 justify-center items-center">
+          <div className="flex flex-row">
+            <div className="flex flex-col gap-16">
+              <div className="flex flex-row gap-4 items-center">
+                <h1 className="font-bold text-primary text-4xl">
+                  Kooking Board
+                </h1>
                 <img
-                  className={styles["logo-image"]}
+                  className="h-40 w-40"
                   src="/login-signup/logo.svg"
                   alt="Logo Image"
                 />
               </div>
-              <div className={styles["welcome-text"]}>
-                <h1>Welcome to the Sign Up page</h1>
-                <h3>
+              <div className="flex flex-col justify-center">
+                <h1 className="m-0 font-medium text-primary text-2xl">
+                  Welcome to the Sign Up page
+                </h1>
+                <h3 className="m-0 font-light text-primary">
                   Complete the tasks and drag them to the Done
                   <br />
                   column to proceed with the sign up.
                 </h3>
 
-                <p>
+                <p className="text-primary font-medium">
                   Already have an account ? <br />
-                  <NavLink to={"/signin"}>Sign in here.</NavLink>
+                  <NavLink
+                    to={"/signin"}
+                    className="text-primary font-bold hover:text-accent-blue-200"
+                  >
+                    Sign in here.
+                  </NavLink>
                 </p>
                 <button
-                  className={styles["signup-button"]}
+                  className="border-none text-white bg-accent-blue-200 text-base font-bold mt-[0.78rem] w-72 h-24 rounded-[0.5rem] shadow-md hover:cursor-pointer hover:text-accent-blue-200 hover:bg-background hover:border-accent-blue-200 active:shadow-none active:inset-shadow-md"
                   onClick={signupHandler}
                 >
                   Sign Up
@@ -71,7 +78,7 @@ const Signup = () => {
               </div>
             </div>
             <DragDropContext onDragEnd={dragEndHandler}>
-              <div className={styles["signup-form"]}>
+              <div className="w-[45rem] m-0 flex flex-row gap-8 justify-center">
                 {columns.map((column) => {
                   return <SignupColumn key={column.id} column={column} />;
                 })}

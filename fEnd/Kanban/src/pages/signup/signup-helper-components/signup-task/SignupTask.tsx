@@ -1,5 +1,3 @@
-import styles from "./SignupTask.module.css";
-
 import { useState } from "react";
 import { validate } from "../../validators";
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
@@ -34,31 +32,35 @@ const SignupTask: React.FC<TaskProps> = ({ taskId, index }) => {
       {(provided: DraggableProvided) => {
         return (
           <div
-            className={styles["task"]}
+            className="w-[18rem] h-32 flex flex-col mb-4 rounded-[0.5rem] shadow-sm p-2 font-medium text-primary border-[1px] border-accent-grey-100"
             ref={provided.innerRef}
             {...provided.draggableProps}
           >
-            <div className={styles["title-container"]}>
-              <div className={styles["task-number"]}>
+            <div className="flex flex-row justify-between mt-2">
+              <div className="text-[0.85rem] ml-2">
                 <p>{task.title}</p>
               </div>
               <div
-                className={`${styles["drag-handle"]} ${
-                  errors.length === 0
-                    ? styles["drag-handle-enabled"]
-                    : styles["drag-handle-disabled"]
-                }`}
+                className={`text-[0.85rem] w-24 mr-2 pl-[0.2rem] pr-[0.2rem] rounded-[0.5rem] border-[0.063rem] border-primary border-dashed flex flex-row items-center justify-center
+                  ${
+                    errors.length === 0
+                      ? "text-accent-blue-200 hover:cursor-pointer"
+                      : "text-danger hover:cursor-not-allowed"
+                  }`}
                 {...provided.dragHandleProps}
               >
-                <p>Drag Me</p>
+                <p className={`m-0`}>Drag Me</p>
               </div>
             </div>
-            <div className={styles["task-input"]}>
-              <label className={styles["label"]} htmlFor={task.htmlId}>
+            <div className="flex flex-row items-center mt-6 gap-2 relative">
+              <label
+                className="absolute left-2 font-light text-primary"
+                htmlFor={task.htmlId}
+              >
                 {task.content}
               </label>
               <input
-                className={styles["task-field-input"]}
+                className="absolute right-4 h-8 p-[0.4rem] w-[60%] rounded-[0.5rem] appearance-none font-medium text-xs text-primary bg-background inset-shadow-md border-[0.063rem] border-accent-grey-100 border-solid focus:outline-none"
                 value={inputValue}
                 onChange={(e) => {
                   setInputValue(e.target.value);
@@ -70,8 +72,10 @@ const SignupTask: React.FC<TaskProps> = ({ taskId, index }) => {
               />
             </div>
 
-            <div className={styles["error-container"]}>
-              <div className={styles["error-message"]}>{errors[0]?.error}</div>
+            <div className="mt-6 pl-2 pr-2">
+              <div className="text-[0.75rem] text-danger font-light">
+                {errors[0]?.error}
+              </div>
             </div>
           </div>
         );

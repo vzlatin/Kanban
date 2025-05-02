@@ -1,11 +1,10 @@
-import styles from "./Signin.module.css";
-
 import { useEffect, useState } from "react";
 import { checkAuth } from "../../services/user.service";
 import { useSigninStore } from "../../state/stores/signin/store";
 import { renderErrorToast } from "../../miscellaneous/utils/toasts";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import ErrorNotification from "../../components/error/ErrorNotification";
+import { Switch } from "@headlessui/react";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -31,36 +30,45 @@ const Signin = () => {
       {loading ? (
         <p>Loading Spinner ...</p>
       ) : (
-        <div className={styles["signup-container"]}>
-          <div className={styles["content-container"]}>
-            <div className={styles["signup-static"]}>
-              <div className={styles["logo"]}>
-                <h1>Kooking Board</h1>
+        <div className="h-screen flex flex-row gap-[1rem] justify-center items-center">
+          <div className="flex flex-row">
+            <div className="flex flex-col gap-[4rem]">
+              <div className="flex flex-row gap-[1rem] items-center">
+                <h1 className="font-bold text-primary">Kooking Board</h1>
                 <img
-                  className={styles["logo-image"]}
+                  className="w-[10rem] h-[10rem]"
                   src="/login-signup/logo.svg"
                   alt="Logo Image"
                 />
               </div>
-              <div className={styles["welcome-text"]}>
-                <h1>Welcome to the Sign In page</h1>
-                <h3>Please provide your account email and pasword.</h3>
+              <div className="flex flex-col justify-center">
+                <h1 className="m-0 font-medium text-primary">
+                  Welcome to the Sign In page
+                </h1>
+                <h3 className="m-0 font-light text-primary">
+                  Please provide your account email and pasword.
+                </h3>
 
-                <p>
+                <p className="text-primary">
                   Don't have an account ? <br />
-                  <NavLink to={"/signup"}>Sign up here.</NavLink>
+                  <NavLink to={"/signup"} className="text-accent-blue-200">
+                    Sign up here.
+                  </NavLink>
                 </p>
               </div>
             </div>
-            <div className={styles["form-container"]}>
-              <div className={styles["email"]}>
-                <label htmlFor="signin-email" className={styles["label-email"]}>
+            <div className="mt-[2rem] w-[20rem] flex flex-col items-center gap-[2rem]">
+              <div className="flex flex-col w-[80%]">
+                <label
+                  htmlFor="signin-email"
+                  className="font-light text-primary"
+                >
                   Email
                 </label>
                 <input
                   type="text"
                   id="signin-email"
-                  className={styles["email-input"]}
+                  className="h-[2.5rem] p-[0.4rem] rounded-[0.5rem] appearance-none font-medium bg-background border border-accent-grey-200 inset-shadow-md"
                   autoComplete="on"
                   value={email}
                   onChange={(e) => {
@@ -68,17 +76,17 @@ const Signin = () => {
                   }}
                 />
               </div>
-              <div className={styles["password"]}>
+              <div className="flex flex-col w-[80%]">
                 <label
                   htmlFor="signin-password"
-                  className={styles["label-password"]}
+                  className="font-light text-primary"
                 >
                   Password
                 </label>
                 <input
                   type="password"
                   id="signin-password"
-                  className={styles["password-input"]}
+                  className="h-[2.5rem] p-[0.4rem] rounded-[0.5rem] appearance-none font-medium bg-background border border-accent-grey-100 inset-shadow-md"
                   autoComplete="off"
                   value={password}
                   onChange={(e) => {
@@ -86,24 +94,18 @@ const Signin = () => {
                   }}
                 />
               </div>
-              <div className={styles["trust-device"]}>
-                <p>Trust this device</p>
-                <input
-                  type="checkbox"
-                  id="signin-trust-device"
-                  className={styles["trust-device-input"]}
+              <div className="flex flex-row items-center gap-[0.5rem] w-[80%]">
+                <p className="text-primary font-light">Trust this device</p>
+                <Switch
                   checked={trustDevice}
-                  onChange={(e) => {
-                    setTrustDevice(e.target.checked);
-                  }}
-                />
-                <label
-                  htmlFor="signin-trust-device"
-                  className={styles["label-trust-device"]}
-                ></label>
+                  onChange={setTrustDevice}
+                  className="group inline-flex h-6 w-11 items-center rounded-full bg-primary transition data-[checked]:bg-accent-blue-200 hover:cursor-pointer"
+                >
+                  <span className="size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6" />
+                </Switch>
               </div>
               <button
-                className={styles["signup-button"]}
+                className="border-none text-white bg-accent-blue-200 text-[1rem] font-bold mt-[0.78rem] w-[16rem] h-[6rem] rounded-[0.5rem] shadow-md hover:cursor-pointer hover:bg-background hover:text-accent-blue-200 hover:border hover:border-accent-blue-200 active:inset-shadow-md"
                 onClick={signinHandler}
               >
                 Sign In

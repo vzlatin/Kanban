@@ -35,7 +35,7 @@ const Board = () => {
           <Droppable droppableId="columns" direction="horizontal">
             {(provided) => (
               <div
-                className="max-h-[37.5rem] min-h-[37.5rem] overflow-y-scroll overflow-x-auto my-[1.625rem] px-[0.635rem] flex flex-row gap-[0.625rem]"
+                className="max-h-[37.5rem] min-h-[37.5rem] overflow-auto my-[1.625rem] px-[0.635rem] flex flex-row gap-[0.625rem]"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >

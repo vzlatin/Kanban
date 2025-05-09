@@ -31,7 +31,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sections }) => {
   return (
     <>
       <div className="flex flex-col">
-        <div className="w-[20rem] mt-[0.625rem] shrink-[0] overflow-y-scroll">
+        <div className="w-[20rem] mt-[0.625rem] shrink-[0] overflow-y-auto">
           {sections.map((section) => (
             <SidebarSection
               key={section.id}

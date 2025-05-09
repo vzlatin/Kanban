@@ -8,9 +8,8 @@ import { Message, OutboundMessageType } from "../../types/messages";
 
 const Board = () => {
   const { boardID } = useParams<{ boardID: string }>();
-  if (!boardID) return;
 
-  const id = parseInt(boardID);
+  const id = parseInt(boardID ?? "0");
 
   const columns = useKanbanStore((state) => state.columns)
     .filter((column) => column.boardId === id)
@@ -31,12 +30,13 @@ const Board = () => {
 
   return (
     <>
-      <div className="flex flex-col w-100%">
+      <div className="flex flex-col w-[100%]">
         <DragDropContext onDragEnd={dragHandler}>
           <Droppable droppableId="columns" direction="horizontal">
             {(provided) => (
               <div
-                className="max-h-[37.5rem] min-h-[37.5rem] overflow-y-scroll overflow-x-auto my-[1.625rem] px-[0.635rem] flex flex-row gap-[0.625rem]"
+                // className="max-h-[37.5rem] min-h-[37.5rem] overflow-auto my-[1.625rem] px-[0.635rem] flex flex-row gap-[0.625rem]"
+                className="flex-4/6 overflow-auto my-[1.625rem] px-[0.635rem] flex flex-row gap-[0.625rem]"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
@@ -48,7 +48,8 @@ const Board = () => {
             )}
           </Droppable>
         </DragDropContext>
-        <div className="flex flex-row items-center gap-[2rem] ml-[0.625rem] mt-[0.8rem] font-medium text-[1.2rem]">
+
+        <div className="flex flex-row items-center gap-[2rem] ml-[0.625rem] mb-[0.8rem] px-[1rem] font-medium text-[1.2rem]">
           <div>{columns.length} Columns.</div>
           <div>{numberOfTasks} Tasks.</div>
           <div>
@@ -58,8 +59,9 @@ const Board = () => {
             {/* TODO: Calculate this number dynamically. Add a criticality property to the Task entity */}
             0 Critical Tasks.
           </div>
-          <div className="flex flex-row items-center ml-[1.5rem] p-[0.4rem] transform-transform duration-100 ease-in rounded-[0.5rem] border border-accent-blue-200 hover:shadow-md hover:cursor-pointer hover:scale-[1.03] active:shadow-none active:inset-shadow-md">
+          <div className="flex flex-row items-center ml-auto p-[0.4rem] transform-transform duration-100 ease-in rounded-[0.5rem] border border-accent-blue-200 hover:shadow-md hover:cursor-pointer hover:scale-[1.03] active:shadow-none active:inset-shadow-md">
             <button
+              className="hover:cursor-pointer"
               onClick={() => {
                 setColumnTitle("");
                 setIsOpen(true);

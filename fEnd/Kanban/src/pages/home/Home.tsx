@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className="flex flex-row">
+      <div className="flex flex-row flex-1">
         <Sidebar sections={sections} />
         <Outlet />
       </div>

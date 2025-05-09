@@ -46,7 +46,6 @@ const SidebarSection: React.FC<Section> = (section) => {
         !sectionMenuRef.current.contains(event.target as Node)
       ) {
         setActiveSection(false);
-        console.log(activeSection);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);

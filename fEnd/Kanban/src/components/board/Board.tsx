@@ -8,9 +8,8 @@ import { Message, OutboundMessageType } from "../../types/messages";
 
 const Board = () => {
   const { boardID } = useParams<{ boardID: string }>();
-  if (!boardID) return;
 
-  const id = parseInt(boardID);
+  const id = parseInt(boardID ?? "0");
 
   const columns = useKanbanStore((state) => state.columns)
     .filter((column) => column.boardId === id)

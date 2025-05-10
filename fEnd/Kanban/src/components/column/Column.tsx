@@ -7,6 +7,7 @@ import { useState } from "react";
 import UpdateColumnDialog from "../dialog/column/update/UpdateColumnDialog";
 import { Message, OutboundMessageType } from "../../types/messages";
 import DeleteColumnDialog from "../dialog/column/delete/DeleteColumnDialog";
+import AddTaskDialog from "../dialog/task/AddTaskDialog";
 
 type ColumnProps = {
   column: Col;
@@ -67,7 +68,7 @@ const Column: React.FC<ColumnProps> = ({ column, index }) => {
                       {
                         label: "Add a Task",
                         icon: "/popups/task.svg",
-                        onClick: () => console.log("poop"),
+                        onClick: () => setIsOpenDialog(DialogType.AddTask),
                       },
                       {
                         label: "Edit Column",
@@ -106,6 +107,11 @@ const Column: React.FC<ColumnProps> = ({ column, index }) => {
         column={column}
         messageHandler={deleteColumn}
       ></DeleteColumnDialog>
+
+      <AddTaskDialog
+        isOpen={openDialog === DialogType.AddTask}
+        onClose={closeDialog}
+      ></AddTaskDialog>
     </>
   );
 };
